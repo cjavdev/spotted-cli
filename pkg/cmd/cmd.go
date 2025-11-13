@@ -1,0 +1,389 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+package cmd
+
+import (
+	"compress/gzip"
+	"context"
+	"fmt"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+
+	docs "github.com/urfave/cli-docs/v3"
+	"github.com/urfave/cli/v3"
+)
+
+var (
+	Command       *cli.Command
+	OutputFormats = []string{"auto", "explore", "json", "pretty", "raw", "yaml"}
+)
+
+func init() {
+	Command = &cli.Command{
+		Name:    "spotted",
+		Usage:   "CLI for the spotted API",
+		Version: Version,
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "debug",
+				Usage: "Enable debug logging",
+			},
+			&cli.StringFlag{
+				Name:        "base-url",
+				DefaultText: "url",
+				Usage:       "Override the base URL for API requests",
+			},
+			&cli.StringFlag{
+				Name:  "format",
+				Usage: "The format for displaying response data (one of: " + strings.Join(OutputFormats, ", ") + ")",
+				Value: "auto",
+				Validator: func(format string) error {
+					if !slices.Contains(OutputFormats, strings.ToLower(format)) {
+						return fmt.Errorf("format must be one of: %s", strings.Join(OutputFormats, ", "))
+					}
+					return nil
+				},
+			},
+			&cli.StringFlag{
+				Name:  "format-error",
+				Usage: "The format for displaying error data (one of: " + strings.Join(OutputFormats, ", ") + ")",
+				Value: "auto",
+				Validator: func(format string) error {
+					if !slices.Contains(OutputFormats, strings.ToLower(format)) {
+						return fmt.Errorf("format must be one of: %s", strings.Join(OutputFormats, ", "))
+					}
+					return nil
+				},
+			},
+			&cli.StringFlag{
+				Name:  "transform",
+				Usage: "The GJSON transformation for data output.",
+			},
+			&cli.StringFlag{
+				Name:  "transform-error",
+				Usage: "The GJSON transformation for errors.",
+			},
+		},
+		Commands: []*cli.Command{
+			{
+				Name:     "albums",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&albumsRetrieve,
+					&albumsBulkRetrieve,
+					&albumsListTracks,
+				},
+			},
+			{
+				Name:     "artists",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&artistsRetrieve,
+					&artistsBulkRetrieve,
+					&artistsListAlbums,
+					&artistsListRelatedArtists,
+					&artistsTopTracks,
+				},
+			},
+			{
+				Name:     "shows",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&showsRetrieve,
+					&showsBulkRetrieve,
+					&showsListEpisodes,
+				},
+			},
+			{
+				Name:     "episodes",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&episodesRetrieve,
+					&episodesBulkRetrieve,
+				},
+			},
+			{
+				Name:     "audiobooks",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&audiobooksRetrieve,
+					&audiobooksBulkRetrieve,
+					&audiobooksListChapters,
+				},
+			},
+			{
+				Name:     "me",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meRetrieve,
+				},
+			},
+			{
+				Name:     "me:audiobooks",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meAudiobooksList,
+					&meAudiobooksCheck,
+				},
+			},
+			{
+				Name:     "me:playlists",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&mePlaylistsList,
+				},
+			},
+			{
+				Name:     "me:top",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meTopListTopArtists,
+					&meTopListTopTracks,
+				},
+			},
+			{
+				Name:     "me:albums",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meAlbumsList,
+					&meAlbumsCheck,
+				},
+			},
+			{
+				Name:     "me:tracks",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meTracksList,
+					&meTracksCheck,
+				},
+			},
+			{
+				Name:     "me:episodes",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meEpisodesList,
+					&meEpisodesCheck,
+				},
+			},
+			{
+				Name:     "me:shows",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meShowsList,
+					&meShowsCheck,
+				},
+			},
+			{
+				Name:     "me:following",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&meFollowingBulkRetrieve,
+					&meFollowingCheck,
+				},
+			},
+			{
+				Name:     "me:player",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&mePlayerGetCurrentlyPlaying,
+					&mePlayerGetDevices,
+					&mePlayerGetState,
+					&mePlayerListRecentlyPlayed,
+				},
+			},
+			{
+				Name:     "me:player:queue",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&mePlayerQueueGet,
+				},
+			},
+			{
+				Name:     "chapters",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&chaptersRetrieve,
+					&chaptersBulkRetrieve,
+				},
+			},
+			{
+				Name:     "tracks",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&tracksRetrieve,
+					&tracksBulkRetrieve,
+				},
+			},
+			{
+				Name:     "search",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&searchQuery,
+				},
+			},
+			{
+				Name:     "playlists",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&playlistsRetrieve,
+				},
+			},
+			{
+				Name:     "playlists:tracks",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&playlistsTracksUpdate,
+					&playlistsTracksList,
+					&playlistsTracksAdd,
+					&playlistsTracksRemove,
+				},
+			},
+			{
+				Name:     "playlists:followers",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&playlistsFollowersCheck,
+				},
+			},
+			{
+				Name:     "playlists:images",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&playlistsImagesList,
+				},
+			},
+			{
+				Name:     "users",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&usersRetrieveProfile,
+				},
+			},
+			{
+				Name:     "users:playlists",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&usersPlaylistsCreate,
+					&usersPlaylistsList,
+				},
+			},
+			{
+				Name:     "browse",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&browseGetFeaturedPlaylists,
+					&browseGetNewReleases,
+				},
+			},
+			{
+				Name:     "browse:categories",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&browseCategoriesRetrieve,
+					&browseCategoriesList,
+					&browseCategoriesGetPlaylists,
+				},
+			},
+			{
+				Name:     "audio-features",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&audioFeaturesRetrieve,
+					&audioFeaturesBulkRetrieve,
+				},
+			},
+			{
+				Name:     "audio-analysis",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&audioAnalysisRetrieve,
+				},
+			},
+			{
+				Name:     "recommendations",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&recommendationsGet,
+					&recommendationsListAvailableGenreSeeds,
+				},
+			},
+			{
+				Name:     "markets",
+				Category: "API RESOURCE",
+				Commands: []*cli.Command{
+					&marketsList,
+				},
+			},
+			{
+				Name:            "@manpages",
+				Usage:           "Generate documentation for 'man'",
+				UsageText:       "spotted @manpages [-o spotted.1] [--gzip]",
+				Hidden:          true,
+				Action:          generateManpages,
+				HideHelpCommand: true,
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "output",
+						Aliases: []string{"o"},
+						Usage:   "write manpages to the given folder",
+						Value:   "man",
+					},
+					&cli.BoolFlag{
+						Name:    "gzip",
+						Aliases: []string{"z"},
+						Usage:   "output gzipped manpage files to .gz",
+						Value:   true,
+					},
+					&cli.BoolFlag{
+						Name:    "text",
+						Aliases: []string{"z"},
+						Usage:   "output uncompressed text files",
+						Value:   false,
+					},
+				},
+			},
+		},
+		EnableShellCompletion:      true,
+		ShellCompletionCommandName: "@completion",
+		HideHelpCommand:            true,
+	}
+}
+
+func generateManpages(ctx context.Context, c *cli.Command) error {
+	manpage, err := docs.ToManWithSection(Command, 1)
+	if err != nil {
+		return err
+	}
+	dir := c.String("output")
+	err = os.MkdirAll(filepath.Join(dir, "man1"), 0755)
+	if err != nil {
+		// handle error
+	}
+	if c.Bool("text") {
+		file, err := os.Create(filepath.Join(dir, "man1", "spotted.1"))
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+		if _, err := file.WriteString(manpage); err != nil {
+			return err
+		}
+	}
+	if c.Bool("gzip") {
+		file, err := os.Create(filepath.Join(dir, "man1", "spotted.1.gz"))
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+		gzWriter := gzip.NewWriter(file)
+		defer gzWriter.Close()
+		_, err = gzWriter.Write([]byte(manpage))
+		if err != nil {
+			return err
+		}
+	}
+	fmt.Printf("Wrote manpages to %s\n", dir)
+	return nil
+}
