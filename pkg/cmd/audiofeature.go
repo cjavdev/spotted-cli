@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -30,13 +29,9 @@ var audioFeaturesBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get audio features for multiple tracks based on their Spotify IDs.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids)\nfor the tracks. Maximum: 100 IDs.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "ids",
-			},
 		},
 	},
 	Action:          handleAudioFeaturesBulkRetrieve,
@@ -44,7 +39,7 @@ var audioFeaturesBulkRetrieve = cli.Command{
 }
 
 func handleAudioFeaturesRetrieve(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
 		cmd.Set("id", unusedArgs[0])
@@ -54,10 +49,10 @@ func handleAudioFeaturesRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	var res []byte
-	_, err := cc.client.AudioFeatures.Get(
+	_, err := client.AudioFeatures.Get(
 		ctx,
 		cmd.Value("id").(string),
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -71,17 +66,19 @@ func handleAudioFeaturesRetrieve(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.AudioFeatureBulkGetParams{}
+	params := spotted.AudioFeatureBulkGetParams{
+		IDs: cmd.Value("ids").(string),
+	}
 	var res []byte
-	_, err := cc.client.AudioFeatures.BulkGet(
+	_, err := client.AudioFeatures.BulkGet(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {

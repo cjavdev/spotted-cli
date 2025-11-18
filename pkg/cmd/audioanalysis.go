@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
@@ -25,7 +26,7 @@ var audioAnalysisRetrieve = cli.Command{
 }
 
 func handleAudioAnalysisRetrieve(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
 		cmd.Set("id", unusedArgs[0])
@@ -35,10 +36,10 @@ func handleAudioAnalysisRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	var res []byte
-	_, err := cc.client.AudioAnalysis.Get(
+	_, err := client.AudioAnalysis.Get(
 		ctx,
 		cmd.Value("id").(string),
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {

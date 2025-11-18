@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
@@ -25,7 +26,7 @@ var usersRetrieveProfile = cli.Command{
 }
 
 func handleUsersRetrieveProfile(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("user-id") && len(unusedArgs) > 0 {
 		cmd.Set("user-id", unusedArgs[0])
@@ -35,10 +36,10 @@ func handleUsersRetrieveProfile(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	var res []byte
-	_, err := cc.client.Users.GetProfile(
+	_, err := client.Users.GetProfile(
 		ctx,
 		cmd.Value("user-id").(string),
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {

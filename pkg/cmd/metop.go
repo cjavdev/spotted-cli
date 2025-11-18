@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -17,31 +16,18 @@ var meTopListTopArtists = cli.Command{
 	Name:  "list-top-artists",
 	Usage: "Get the current user's top artists based on calculated affinity.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "time-range",
 			Usage: "Over what time frame the affinities are computed. Valid values: `long_term` (calculated from ~1 year of data and including all new data as it becomes available), `medium_term` (approximately last 6 months), `short_term` (approximately last 4 weeks). Default: `medium_term`\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "time_range",
-			},
 			Value: "medium_term",
 		},
 	},
@@ -53,31 +39,18 @@ var meTopListTopTracks = cli.Command{
 	Name:  "list-top-tracks",
 	Usage: "Get the current user's top tracks based on calculated affinity.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "time-range",
 			Usage: "Over what time frame the affinities are computed. Valid values: `long_term` (calculated from ~1 year of data and including all new data as it becomes available), `medium_term` (approximately last 6 months), `short_term` (approximately last 4 weeks). Default: `medium_term`\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "time_range",
-			},
 			Value: "medium_term",
 		},
 	},
@@ -86,17 +59,26 @@ var meTopListTopTracks = cli.Command{
 }
 
 func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MeTopListTopArtistsParams{}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
+	if cmd.IsSet("time-range") {
+		params.TimeRange = spotted.Opt(cmd.Value("time-range").(string))
+	}
 	var res []byte
-	_, err := cc.client.Me.Top.ListTopArtists(
+	_, err := client.Me.Top.ListTopArtists(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -110,17 +92,26 @@ func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleMeTopListTopTracks(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MeTopListTopTracksParams{}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
+	if cmd.IsSet("time-range") {
+		params.TimeRange = spotted.Opt(cmd.Value("time-range").(string))
+	}
 	var res []byte
-	_, err := cc.client.Me.Top.ListTopTracks(
+	_, err := client.Me.Top.ListTopTracks(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {

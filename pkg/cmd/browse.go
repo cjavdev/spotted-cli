@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -17,31 +16,18 @@ var browseGetFeaturedPlaylists = cli.Command{
 	Name:  "get-featured-playlists",
 	Usage: "Get a list of Spotify featured playlists (shown, for example, on a Spotify\nplayer's 'Browse' tab).",
 	Flags: []cli.Flag{
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "locale",
 			Usage: "The desired language, consisting of an [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code and an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning &quot;Spanish (Mexico)&quot;. Provide this parameter if you want the category strings returned in a particular language.<br/> _**Note**: if `locale` is not supplied, or if the specified language is not available, the category strings returned will be in the Spotify default language (American English)._\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "locale",
-			},
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
 	},
 	Action:          handleBrowseGetFeaturedPlaylists,
@@ -52,23 +38,14 @@ var browseGetNewReleases = cli.Command{
 	Name:  "get-new-releases",
 	Usage: "Get a list of new album releases featured in Spotify (shown, for example, on a\nSpotify player’s “Browse” tab).",
 	Flags: []cli.Flag{
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
 	},
 	Action:          handleBrowseGetNewReleases,
@@ -76,17 +53,25 @@ var browseGetNewReleases = cli.Command{
 }
 
 func handleBrowseGetFeaturedPlaylists(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.BrowseGetFeaturedPlaylistsParams{}
+	params := spotted.BrowseGetFeaturedPlaylistsParams{
+		Locale: spotted.String(cmd.Value("locale").(string)),
+	}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
 	var res []byte
-	_, err := cc.client.Browse.GetFeaturedPlaylists(
+	_, err := client.Browse.GetFeaturedPlaylists(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -100,17 +85,23 @@ func handleBrowseGetFeaturedPlaylists(ctx context.Context, cmd *cli.Command) err
 }
 
 func handleBrowseGetNewReleases(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.BrowseGetNewReleasesParams{}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
 	var res []byte
-	_, err := cc.client.Browse.GetNewReleases(
+	_, err := client.Browse.GetNewReleases(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
