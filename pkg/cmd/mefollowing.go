@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -17,29 +16,17 @@ var meFollowingBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get the current user's followed artists.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "type",
 			Usage: "The ID type: currently only `artist` is supported.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "type",
-			},
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "after",
 			Usage: "The last artist ID retrieved from the previous request.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "after",
-			},
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
 	},
@@ -51,21 +38,13 @@ var meFollowingCheck = cli.Command{
 	Name:  "check",
 	Usage: "Check to see if the current user is following one or more artists or other\nSpotify users.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the artist or the user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) to check. For example: `ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q`. A maximum of 50 IDs can be sent in one request.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "ids",
-			},
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "type",
 			Usage: "The ID type: either `artist` or `user`.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "type",
-			},
 		},
 	},
 	Action:          handleMeFollowingCheck,
@@ -76,21 +55,9 @@ var meFollowingFollow = cli.Command{
 	Name:  "follow",
 	Usage: "Add the current user as a follower of one or more artists or other Spotify\nusers.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
-			Name:  "ids",
+		&cli.StringSliceFlag{
+			Name:  "id",
 			Usage: "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids).\nFor example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "ids.#",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name:  "+id",
-			Usage: "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids).\nFor example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "ids.-1",
-			},
 		},
 	},
 	Action:          handleMeFollowingFollow,
@@ -101,21 +68,9 @@ var meFollowingUnfollow = cli.Command{
 	Name:  "unfollow",
 	Usage: "Remove the current user as a follower of one or more artists or other Spotify\nusers.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
-			Name:  "ids",
+		&cli.StringSliceFlag{
+			Name:  "id",
 			Usage: "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "ids.#",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name:  "+id",
-			Usage: "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "ids.-1",
-			},
 		},
 	},
 	Action:          handleMeFollowingUnfollow,
@@ -123,17 +78,23 @@ var meFollowingUnfollow = cli.Command{
 }
 
 func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.MeFollowingBulkGetParams{}
+	params := spotted.MeFollowingBulkGetParams{
+		Type:  cmd.Value("type").(spotted.MeFollowingBulkGetParamsType),
+		After: spotted.String(cmd.Value("after").(string)),
+	}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
 	var res []byte
-	_, err := cc.client.Me.Following.BulkGet(
+	_, err := client.Me.Following.BulkGet(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -147,17 +108,20 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.MeFollowingCheckParams{}
+	params := spotted.MeFollowingCheckParams{
+		IDs:  cmd.Value("ids").(string),
+		Type: cmd.Value("type").(spotted.MeFollowingCheckParamsType),
+	}
 	var res []byte
-	_, err := cc.client.Me.Following.Check(
+	_, err := client.Me.Following.Check(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -171,29 +135,39 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MeFollowingFollowParams{}
-	return cc.client.Me.Following.Follow(
+	if err := unmarshalStdinWithFlags(cmd, map[string]string{
+		"ids": "ids",
+	}, &params); err != nil {
+		return err
+	}
+	return client.Me.Following.Follow(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 	)
 }
 
 func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MeFollowingUnfollowParams{}
-	return cc.client.Me.Following.Unfollow(
+	if err := unmarshalStdinWithFlags(cmd, map[string]string{
+		"ids": "ids",
+	}, &params); err != nil {
+		return err
+	}
+	return client.Me.Following.Unfollow(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 	)
 }

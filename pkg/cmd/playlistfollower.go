@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -21,13 +20,9 @@ var playlistsFollowersCheck = cli.Command{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "ids",
 			Usage: "**Deprecated** A single item list containing current user's [Spotify Username](/documentation/web-api/concepts/spotify-uris-ids). Maximum: 1 id.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "ids",
-			},
 		},
 	},
 	Action:          handlePlaylistsFollowersCheck,
@@ -42,14 +37,9 @@ var playlistsFollowersFollow = cli.Command{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&jsonflag.JSONBoolFlag{
+		&cli.BoolFlag{
 			Name:  "public",
 			Usage: "Defaults to `true`. If `true` the playlist will be included in user's public playlists (added to profile), if `false` it will remain private. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			Config: jsonflag.JSONConfig{
-				Kind:     jsonflag.Body,
-				Path:     "public",
-				SetValue: true,
-			},
 		},
 	},
 	Action:          handlePlaylistsFollowersFollow,
@@ -70,7 +60,7 @@ var playlistsFollowersUnfollow = cli.Command{
 }
 
 func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
 		cmd.Set("playlist-id", unusedArgs[0])
@@ -79,13 +69,15 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.PlaylistFollowerCheckParams{}
+	params := spotted.PlaylistFollowerCheckParams{
+		IDs: spotted.String(cmd.Value("ids").(string)),
+	}
 	var res []byte
-	_, err := cc.client.Playlists.Followers.Check(
+	_, err := client.Playlists.Followers.Check(
 		ctx,
 		cmd.Value("playlist-id").(string),
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -99,7 +91,7 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
 		cmd.Set("playlist-id", unusedArgs[0])
@@ -109,16 +101,21 @@ func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.PlaylistFollowerFollowParams{}
-	return cc.client.Playlists.Followers.Follow(
+	if err := unmarshalStdinWithFlags(cmd, map[string]string{
+		"public": "public",
+	}, &params); err != nil {
+		return err
+	}
+	return client.Playlists.Followers.Follow(
 		ctx,
 		cmd.Value("playlist-id").(string),
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 	)
 }
 
 func handlePlaylistsFollowersUnfollow(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
 		cmd.Set("playlist-id", unusedArgs[0])
@@ -127,9 +124,9 @@ func handlePlaylistsFollowersUnfollow(ctx context.Context, cmd *cli.Command) err
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	return cc.client.Playlists.Followers.Unfollow(
+	return client.Playlists.Followers.Unfollow(
 		ctx,
 		cmd.Value("playlist-id").(string),
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 	)
 }

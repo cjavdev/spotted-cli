@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -17,23 +16,14 @@ var meAudiobooksList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of the audiobooks saved in the current Spotify user's 'Your Music'\nlibrary.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
 	},
 	Action:          handleMeAudiobooksList,
@@ -44,13 +34,9 @@ var meAudiobooksCheck = cli.Command{
 	Name:  "check",
 	Usage: "Check if one or more audiobooks are already saved in the current Spotify user's\nlibrary.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "ids",
-			},
 		},
 	},
 	Action:          handleMeAudiobooksCheck,
@@ -61,13 +47,9 @@ var meAudiobooksRemove = cli.Command{
 	Name:  "remove",
 	Usage: "Remove one or more audiobooks from the Spotify user's library.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "ids",
-			},
 		},
 	},
 	Action:          handleMeAudiobooksRemove,
@@ -78,13 +60,9 @@ var meAudiobooksSave = cli.Command{
 	Name:  "save",
 	Usage: "Save one or more audiobooks to the current Spotify user's library.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "ids",
-			},
 		},
 	},
 	Action:          handleMeAudiobooksSave,
@@ -92,17 +70,23 @@ var meAudiobooksSave = cli.Command{
 }
 
 func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MeAudiobookListParams{}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
 	var res []byte
-	_, err := cc.client.Me.Audiobooks.List(
+	_, err := client.Me.Audiobooks.List(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -116,17 +100,19 @@ func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.MeAudiobookCheckParams{}
+	params := spotted.MeAudiobookCheckParams{
+		IDs: cmd.Value("ids").(string),
+	}
 	var res []byte
-	_, err := cc.client.Me.Audiobooks.Check(
+	_, err := client.Me.Audiobooks.Check(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -140,29 +126,33 @@ func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleMeAudiobooksRemove(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.MeAudiobookRemoveParams{}
-	return cc.client.Me.Audiobooks.Remove(
+	params := spotted.MeAudiobookRemoveParams{
+		IDs: cmd.Value("ids").(string),
+	}
+	return client.Me.Audiobooks.Remove(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 	)
 }
 
 func handleMeAudiobooksSave(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.MeAudiobookSaveParams{}
-	return cc.client.Me.Audiobooks.Save(
+	params := spotted.MeAudiobookSaveParams{
+		IDs: cmd.Value("ids").(string),
+	}
+	return client.Me.Audiobooks.Save(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 	)
 }

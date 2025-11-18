@@ -5,8 +5,9 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
+	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
@@ -20,13 +21,11 @@ var playlistsImagesUpdate = cli.Command{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&jsonflag.JSONStringFlag{
-			Name:  "body",
-			Usage: "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "body",
-			},
+		&cli.GenericFlag{
+			Name:      "body",
+			Usage:     "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
+			Value:     &fileReader{},
+			TakesFile: true,
 		},
 	},
 	Action:          handlePlaylistsImagesUpdate,
@@ -47,7 +46,7 @@ var playlistsImagesList = cli.Command{
 }
 
 func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
 		cmd.Set("playlist-id", unusedArgs[0])
@@ -61,10 +60,11 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	var res []byte
-	_, err := cc.client.Playlists.Images.Update(
+	_, err := client.Playlists.Images.Update(
 		ctx,
 		cmd.Value("playlist-id").(string),
-		option.WithMiddleware(cc.AsMiddleware()),
+		cmd.Value("body").(io.Reader),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -78,7 +78,7 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
 		cmd.Set("playlist-id", unusedArgs[0])
@@ -88,10 +88,10 @@ func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	var res []byte
-	_, err := cc.client.Playlists.Images.List(
+	_, err := client.Playlists.Images.List(
 		ctx,
 		cmd.Value("playlist-id").(string),
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {

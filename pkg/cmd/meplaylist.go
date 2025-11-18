@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -17,23 +16,14 @@ var mePlaylistsList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of the playlists owned or followed by the current Spotify user.",
 	Flags: []cli.Flag{
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "'The index of the first playlist to return. Default:\n0 (the first object). Maximum offset: 100.000\\. Use with `limit` to get the\nnext set of playlists.'\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
 	},
 	Action:          handleMePlaylistsList,
@@ -41,17 +31,23 @@ var mePlaylistsList = cli.Command{
 }
 
 func handleMePlaylistsList(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MePlaylistListParams{}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
 	var res []byte
-	_, err := cc.client.Me.Playlists.List(
+	_, err := client.Me.Playlists.List(
 		ctx,
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {

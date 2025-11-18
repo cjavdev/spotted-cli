@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonflag"
 	"github.com/stainless-sdks/spotted-go"
 	"github.com/stainless-sdks/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -21,39 +20,21 @@ var usersPlaylistsCreate = cli.Command{
 			Name:  "user-id",
 			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "name",
 			Usage: "The name for the new playlist, for example `\"Your Coolest Playlist\"`. This name does not need to be unique; a user may have several playlists with the same name.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "name",
-			},
 		},
-		&jsonflag.JSONBoolFlag{
+		&cli.BoolFlag{
 			Name:  "collaborative",
 			Usage: "Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a collaborative playlist you must also set `public` to `false`. To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](/documentation/web-api/concepts/scopes/#list-of-scopes)._\n",
-			Config: jsonflag.JSONConfig{
-				Kind:     jsonflag.Body,
-				Path:     "collaborative",
-				SetValue: true,
-			},
 		},
-		&jsonflag.JSONStringFlag{
+		&cli.StringFlag{
 			Name:  "description",
 			Usage: "value for playlist description as displayed in Spotify Clients and in the Web API.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "description",
-			},
 		},
-		&jsonflag.JSONBoolFlag{
+		&cli.BoolFlag{
 			Name:  "public",
 			Usage: "Defaults to `true`. The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/web-api/concepts/scopes/#list-of-scopes). For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			Config: jsonflag.JSONConfig{
-				Kind:     jsonflag.Body,
-				Path:     "public",
-				SetValue: true,
-			},
 		},
 	},
 	Action:          handleUsersPlaylistsCreate,
@@ -68,23 +49,14 @@ var usersPlaylistsList = cli.Command{
 			Name:  "user-id",
 			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "limit",
-			},
 			Value: 20,
 		},
-		&jsonflag.JSONIntFlag{
+		&cli.Int64Flag{
 			Name:  "offset",
 			Usage: "The index of the first playlist to return. Default:\n0 (the first object). Maximum offset: 100.000\\. Use with `limit` to get the\nnext set of playlists.\n",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Query,
-				Path: "offset",
-			},
-			Value: 0,
 		},
 	},
 	Action:          handleUsersPlaylistsList,
@@ -92,7 +64,7 @@ var usersPlaylistsList = cli.Command{
 }
 
 func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("user-id") && len(unusedArgs) > 0 {
 		cmd.Set("user-id", unusedArgs[0])
@@ -102,12 +74,20 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.UserPlaylistNewParams{}
+	if err := unmarshalStdinWithFlags(cmd, map[string]string{
+		"name":          "name",
+		"collaborative": "collaborative",
+		"description":   "description",
+		"public":        "public",
+	}, &params); err != nil {
+		return err
+	}
 	var res []byte
-	_, err := cc.client.Users.Playlists.New(
+	_, err := client.Users.Playlists.New(
 		ctx,
 		cmd.Value("user-id").(string),
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
@@ -121,7 +101,7 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
-	cc := getAPICommandContext(cmd)
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("user-id") && len(unusedArgs) > 0 {
 		cmd.Set("user-id", unusedArgs[0])
@@ -131,12 +111,18 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.UserPlaylistListParams{}
+	if cmd.IsSet("limit") {
+		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	}
+	if cmd.IsSet("offset") {
+		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	}
 	var res []byte
-	_, err := cc.client.Users.Playlists.List(
+	_, err := client.Users.Playlists.List(
 		ctx,
 		cmd.Value("user-id").(string),
 		params,
-		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
 		option.WithResponseBodyInto(&res),
 	)
 	if err != nil {
