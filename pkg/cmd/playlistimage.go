@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/stainless-sdks/spotted-go"
-	"github.com/stainless-sdks/spotted-go/option"
+	"github.com/cjavdev/spotted-go"
+	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
