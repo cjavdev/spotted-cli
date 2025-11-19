@@ -17,8 +17,8 @@ import (
 
 	"golang.org/x/term"
 
+	"github.com/cjavdev/spotted-cli/pkg/jsonview"
 	"github.com/cjavdev/spotted-go/option"
-	"github.com/stainless-sdks/spotted-cli/pkg/jsonview"
 
 	"github.com/itchyny/json2yaml"
 	"github.com/tidwall/gjson"
