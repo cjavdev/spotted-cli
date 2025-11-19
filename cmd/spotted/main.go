@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/cjavdev/spotted-cli/pkg/cmd"
 	"github.com/cjavdev/spotted-go"
-	"github.com/stainless-sdks/spotted-cli/pkg/cmd"
 	"github.com/tidwall/gjson"
 )
 

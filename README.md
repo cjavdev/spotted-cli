@@ -8,15 +8,21 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ### Installing with Go
 
+<!-- x-release-please-start-version -->
+
 ```sh
-go install 'github.com/stainless-sdks/spotted-cli/cmd/spotted@latest'
+go install 'github.com/cjavdev/spotted-cli/cmd/spotted@latest'
 ```
 
 ### Running Locally
 
+<!-- x-release-please-start-version -->
+
 ```sh
 go run cmd/spotted/main.go
 ```
+
+<!-- x-release-please-end -->
 
 ## Usage
 
