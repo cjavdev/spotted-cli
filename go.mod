@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/spotted-cli
+module github.com/cjavdev/spotted-cli
 
 go 1.25
 
