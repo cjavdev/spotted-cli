@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2025-11-20)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/cjavdev/spotted-cli/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* **api:** api update ([69c5a71](https://github.com/cjavdev/spotted-cli/commit/69c5a7180b22af414d74bff10e0f973e8fea4477))
+
 ## 0.2.0 (2025-11-20)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/cjavdev/spotted-cli/compare/v0.1.0...v0.2.0)
