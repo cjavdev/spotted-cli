@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.0 (2025-11-20)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/cjavdev/spotted-cli/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([b03429c](https://github.com/cjavdev/spotted-cli/commit/b03429c8e0f17d1fa7858d27a5bbf7fcc81c216b))
+* **api:** manual updates ([1db4bd8](https://github.com/cjavdev/spotted-cli/commit/1db4bd868e66cc9c1b58ce7a176f39f0b158e132))
+* **api:** manual updates ([b4803bf](https://github.com/cjavdev/spotted-cli/commit/b4803bfe55401cd872398a259edf65f682c73621))
+* **api:** rename public to published for java ([1038d95](https://github.com/cjavdev/spotted-cli/commit/1038d95443438a83a2397f9f0db196cee7c1d34e))
+
+
+### Chores
+
+* update SDK settings ([8aceb97](https://github.com/cjavdev/spotted-cli/commit/8aceb9769c5246baf9c12f8a9db51b3d0b90d3e3))
+
 ## 0.1.0 (2025-11-19)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/cjavdev/spotted-cli/compare/v0.0.1...v0.1.0)
