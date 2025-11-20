@@ -46,7 +46,7 @@ var playlistsUpdate = cli.Command{
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
 		&cli.BoolFlag{
-			Name:  "components-schemas-properties-published",
+			Name:  "paths-request-body-content-application-json-schema-properties-published",
 			Usage: "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
 		},
 		&cli.BoolFlag{
@@ -111,7 +111,7 @@ func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
 	}
 	params := spotted.PlaylistUpdateParams{}
 	if err := unmarshalStdinWithFlags(cmd, map[string]string{
-		"components-schemas-properties-published": "$\\.components\\.schemas\\.*\\.properties\\.published",
+		"paths-request-body-content-application-json-schema-properties-published": "$\\.paths['*']\\.*\\.requestBody\\.content['application/json']\\.schema\\.properties\\.published",
 		"collaborative": "collaborative",
 		"description":   "description",
 		"name":          "name",

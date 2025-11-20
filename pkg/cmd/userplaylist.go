@@ -25,7 +25,7 @@ var usersPlaylistsCreate = cli.Command{
 			Usage: "The name for the new playlist, for example `\"Your Coolest Playlist\"`. This name does not need to be unique; a user may have several playlists with the same name.\n",
 		},
 		&cli.BoolFlag{
-			Name:  "components-schemas-properties-published",
+			Name:  "paths-request-body-content-application-json-schema-properties-published",
 			Usage: "Defaults to `true`. The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/web-api/concepts/scopes/#list-of-scopes). For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
 		},
 		&cli.BoolFlag{
@@ -76,7 +76,7 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 	params := spotted.UserPlaylistNewParams{}
 	if err := unmarshalStdinWithFlags(cmd, map[string]string{
 		"name": "name",
-		"components-schemas-properties-published": "$\\.components\\.schemas\\.*\\.properties\\.published",
+		"paths-request-body-content-application-json-schema-properties-published": "$\\.paths['*']\\.*\\.requestBody\\.content['application/json']\\.schema\\.properties\\.published",
 		"collaborative": "collaborative",
 		"description":   "description",
 	}, &params); err != nil {
