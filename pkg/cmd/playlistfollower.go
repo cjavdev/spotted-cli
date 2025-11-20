@@ -38,7 +38,7 @@ var playlistsFollowersFollow = cli.Command{
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
 		&cli.BoolFlag{
-			Name:  "public",
+			Name:  "components-schemas-properties-published",
 			Usage: "Defaults to `true`. If `true` the playlist will be included in user's public playlists (added to profile), if `false` it will remain private. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
 		},
 	},
@@ -102,7 +102,7 @@ func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error
 	}
 	params := spotted.PlaylistFollowerFollowParams{}
 	if err := unmarshalStdinWithFlags(cmd, map[string]string{
-		"public": "public",
+		"components-schemas-properties-published": "$\\.components\\.schemas\\.*\\.properties\\.published",
 	}, &params); err != nil {
 		return err
 	}
