@@ -25,16 +25,16 @@ var usersPlaylistsCreate = cli.Command{
 			Usage: "The name for the new playlist, for example `\"Your Coolest Playlist\"`. This name does not need to be unique; a user may have several playlists with the same name.\n",
 		},
 		&cli.BoolFlag{
-			Name:  "paths-request-body-content-application-json-schema-properties-published",
-			Usage: "Defaults to `true`. The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/web-api/concepts/scopes/#list-of-scopes). For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-		},
-		&cli.BoolFlag{
 			Name:  "collaborative",
 			Usage: "Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a collaborative playlist you must also set `public` to `false`. To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](/documentation/web-api/concepts/scopes/#list-of-scopes)._\n",
 		},
 		&cli.StringFlag{
 			Name:  "description",
 			Usage: "value for playlist description as displayed in Spotify Clients and in the Web API.\n",
+		},
+		&cli.BoolFlag{
+			Name:  "public",
+			Usage: "Defaults to `true`. The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/web-api/concepts/scopes/#list-of-scopes). For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
 		},
 	},
 	Action:          handleUsersPlaylistsCreate,
@@ -75,10 +75,10 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 	}
 	params := spotted.UserPlaylistNewParams{}
 	if err := unmarshalStdinWithFlags(cmd, map[string]string{
-		"name": "name",
-		"paths-request-body-content-application-json-schema-properties-published": "$\\.paths['*']\\.*\\.requestBody\\.content['application/json']\\.schema\\.properties\\.published",
+		"name":          "name",
 		"collaborative": "collaborative",
 		"description":   "description",
+		"public":        "public",
 	}, &params); err != nil {
 		return err
 	}
