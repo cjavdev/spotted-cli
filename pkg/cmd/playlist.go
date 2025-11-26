@@ -58,7 +58,7 @@ var playlistsUpdate = cli.Command{
 			Usage: "The new name for the playlist, for example `\"My New Playlist Title\"`\n",
 		},
 		&cli.BoolFlag{
-			Name:  "public",
+			Name:  "published",
 			Usage: "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
 		},
 	},
@@ -114,7 +114,7 @@ func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
 		"collaborative": "collaborative",
 		"description":   "description",
 		"name":          "name",
-		"public":        "public",
+		"published":     "published",
 	}, &params); err != nil {
 		return err
 	}
