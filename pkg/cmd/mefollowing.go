@@ -84,7 +84,7 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MeFollowingBulkGetParams{
-		Type:  cmd.Value("type").(spotted.MeFollowingBulkGetParamsType),
+		// Type:  cmd.Value("type").(spotted.MeFollowingBulkGetParamsType),
 		After: spotted.String(cmd.Value("after").(string)),
 	}
 	if cmd.IsSet("limit") {

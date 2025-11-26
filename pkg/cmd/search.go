@@ -55,7 +55,7 @@ func handleSearchQuery(ctx context.Context, cmd *cli.Command) error {
 	params := spotted.SearchQueryParams{
 		Q:               cmd.Value("q").(string),
 		Type:            cmd.Value("type").([]string),
-		IncludeExternal: cmd.Value("include-external").(spotted.SearchQueryParamsIncludeExternal),
+		IncludeExternal: spotted.SearchQueryParamsIncludeExternal(cmd.Value("include-external").(string)),
 		Market:          spotted.String(cmd.Value("market").(string)),
 	}
 	if cmd.IsSet("limit") {
