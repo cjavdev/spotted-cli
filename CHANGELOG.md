@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.1 (2025-12-02)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/cjavdev/spotted-cli/compare/v0.4.0...v0.4.1)
+
+### Bug Fixes
+
+* use correct user agent value ([c8e1d98](https://github.com/cjavdev/spotted-cli/commit/c8e1d98fb9c15ea3af4546b11227498171c5e5a5))
+
+
+### Chores
+
+* add scripts ([6ac6913](https://github.com/cjavdev/spotted-cli/commit/6ac6913f42322ced773e71bfb92e5705cdc5cb12))
+
 ## 0.4.0 (2025-11-26)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/cjavdev/spotted-cli/compare/v0.3.0...v0.4.0)
