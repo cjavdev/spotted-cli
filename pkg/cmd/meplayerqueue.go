@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -16,13 +18,19 @@ var mePlayerQueueAdd = cli.Command{
 	Name:  "add",
 	Usage: "Add an item to be played next in the user's current playback queue. This API\nonly works for users who have Spotify Premium. The order of execution is not\nguaranteed when you use this API with other Player API endpoints.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "uri",
 			Usage: "The uri of the item to add to the queue. Must be a track or an episode uri.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "uri",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "device-id",
 			Usage: "The id of the device this command is targeting. If\nnot supplied, the user's currently active device is the target.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "device_id",
+			},
 		},
 	},
 	Action:          handleMePlayerQueueAdd,
@@ -43,14 +51,21 @@ func handleMePlayerQueueAdd(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.MePlayerQueueAddParams{
-		Uri:      cmd.Value("uri").(string),
-		DeviceID: spotted.String(cmd.Value("device-id").(string)),
+	params := spotted.MePlayerQueueAddParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	return client.Me.Player.Queue.Add(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
+		options...,
 	)
 }
 
@@ -60,12 +75,18 @@ func handleMePlayerQueueGet(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	var res []byte
-	_, err := client.Me.Player.Queue.Get(
-		ctx,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
 	)
+	if err != nil {
+		return err
+	}
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Me.Player.Queue.Get(ctx, options...)
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -16,18 +18,27 @@ var browseGetFeaturedPlaylists = cli.Command{
 	Name:  "get-featured-playlists",
 	Usage: "Get a list of Spotify featured playlists (shown, for example, on a Spotify\nplayer's 'Browse' tab).",
 	Flags: []cli.Flag{
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
 			Value: 20,
+			Config: requestflag.RequestConfig{
+				QueryPath: "limit",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "locale",
 			Usage: "The desired language, consisting of an [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code and an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning &quot;Spanish (Mexico)&quot;. Provide this parameter if you want the category strings returned in a particular language.<br/> _**Note**: if `locale` is not supplied, or if the specified language is not available, the category strings returned will be in the Spotify default language (American English)._\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "locale",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "offset",
+			},
 		},
 	},
 	Action:          handleBrowseGetFeaturedPlaylists,
@@ -38,14 +49,20 @@ var browseGetNewReleases = cli.Command{
 	Name:  "get-new-releases",
 	Usage: "Get a list of new album releases featured in Spotify (shown, for example, on a\nSpotify player’s “Browse” tab).",
 	Flags: []cli.Flag{
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
 			Value: 20,
+			Config: requestflag.RequestConfig{
+				QueryPath: "limit",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "offset",
+			},
 		},
 	},
 	Action:          handleBrowseGetNewReleases,
@@ -58,21 +75,23 @@ func handleBrowseGetFeaturedPlaylists(ctx context.Context, cmd *cli.Command) err
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.BrowseGetFeaturedPlaylistsParams{
-		Locale: spotted.String(cmd.Value("locale").(string)),
-	}
-	if cmd.IsSet("limit") {
-		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
-	}
-	if cmd.IsSet("offset") {
-		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	params := spotted.BrowseGetFeaturedPlaylistsParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Browse.GetFeaturedPlaylists(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Browse.GetFeaturedPlaylists(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -91,18 +110,22 @@ func handleBrowseGetNewReleases(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.BrowseGetNewReleasesParams{}
-	if cmd.IsSet("limit") {
-		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
-	}
-	if cmd.IsSet("offset") {
-		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Browse.GetNewReleases(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Browse.GetNewReleases(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err

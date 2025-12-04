@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -16,194 +18,335 @@ var recommendationsGet = cli.Command{
 	Name:  "get",
 	Usage: "Recommendations are generated based on the available information for a given\nseed entity and matched against similar artists and tracks. If there is\nsufficient information about the provided seeds, a list of tracks will be\nreturned together with pool size details.",
 	Flags: []cli.Flag{
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The target size of the list of recommended tracks. For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. Debugging information for such cases is available in the response. Default: 20\\. Minimum: 1\\. Maximum: 100.\n",
 			Value: 20,
+			Config: requestflag.RequestConfig{
+				QueryPath: "limit",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "market",
 			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "market",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-acousticness",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_acousticness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-danceability",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_danceability",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "max-duration-ms",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_duration_ms",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-energy",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_energy",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-instrumentalness",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_instrumentalness",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "max-key",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_key",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-liveness",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_liveness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-loudness",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_loudness",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "max-mode",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_mode",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "max-popularity",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_popularity",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-speechiness",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_speechiness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-tempo",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_tempo",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "max-time-signature",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_time_signature",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "max-valence",
 			Usage: "For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `max_instrumentalness=0.35` would filter out most tracks that are likely to be instrumental.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "max_valence",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-acousticness",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_acousticness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-danceability",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_danceability",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "min-duration-ms",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_duration_ms",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-energy",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_energy",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-instrumentalness",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_instrumentalness",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "min-key",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_key",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-liveness",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_liveness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-loudness",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_loudness",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "min-mode",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_mode",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "min-popularity",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_popularity",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-speechiness",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_speechiness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-tempo",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_tempo",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "min-time-signature",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_time_signature",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "min-valence",
 			Usage: "For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided. See tunable track attributes below for the list of available options. For example, `min_tempo=140` would restrict results to only those tracks with a tempo of greater than 140 beats per minute.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "min_valence",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "seed-artists",
 			Usage: "A comma separated list of [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for seed artists.  Up to 5 seed values may be provided in any combination of `seed_artists`, `seed_tracks` and `seed_genres`.<br/> _**Note**: only required if `seed_genres` and `seed_tracks` are not set_.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "seed_artists",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "seed-genres",
 			Usage: "A comma separated list of any genres in the set of [available genre seeds](/documentation/web-api/reference/get-recommendation-genres). Up to 5 seed values may be provided in any combination of `seed_artists`, `seed_tracks` and `seed_genres`.<br/> _**Note**: only required if `seed_artists` and `seed_tracks` are not set_.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "seed_genres",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "seed-tracks",
 			Usage: "A comma separated list of [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for a seed track.  Up to 5 seed values may be provided in any combination of `seed_artists`, `seed_tracks` and `seed_genres`.<br/> _**Note**: only required if `seed_artists` and `seed_genres` are not set_.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "seed_tracks",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-acousticness",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_acousticness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-danceability",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_danceability",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "target-duration-ms",
 			Usage: "Target duration of the track (ms)",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_duration_ms",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-energy",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_energy",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-instrumentalness",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_instrumentalness",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "target-key",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_key",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-liveness",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_liveness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-loudness",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_loudness",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "target-mode",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_mode",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "target-popularity",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_popularity",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-speechiness",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_speechiness",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-tempo",
 			Usage: "Target tempo (BPM)",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_tempo",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "target-time-signature",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_time_signature",
+			},
 		},
-		&cli.Float64Flag{
+		&requestflag.FloatFlag{
 			Name:  "target-valence",
 			Usage: "For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request `target_energy=0.6` and `target_danceability=0.8`. All target values will be weighed equally in ranking results.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "target_valence",
+			},
 		},
 	},
 	Action:          handleRecommendationsGet,
@@ -224,63 +367,23 @@ func handleRecommendationsGet(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.RecommendationGetParams{
-		Market:                 spotted.String(cmd.Value("market").(string)),
-		MaxAcousticness:        spotted.Float(cmd.Value("max-acousticness").(float64)),
-		MaxDanceability:        spotted.Float(cmd.Value("max-danceability").(float64)),
-		MaxDurationMs:          spotted.Int(cmd.Value("max-duration-ms").(int64)),
-		MaxEnergy:              spotted.Float(cmd.Value("max-energy").(float64)),
-		MaxInstrumentalness:    spotted.Float(cmd.Value("max-instrumentalness").(float64)),
-		MaxKey:                 spotted.Int(cmd.Value("max-key").(int64)),
-		MaxLiveness:            spotted.Float(cmd.Value("max-liveness").(float64)),
-		MaxLoudness:            spotted.Float(cmd.Value("max-loudness").(float64)),
-		MaxMode:                spotted.Int(cmd.Value("max-mode").(int64)),
-		MaxPopularity:          spotted.Int(cmd.Value("max-popularity").(int64)),
-		MaxSpeechiness:         spotted.Float(cmd.Value("max-speechiness").(float64)),
-		MaxTempo:               spotted.Float(cmd.Value("max-tempo").(float64)),
-		MaxTimeSignature:       spotted.Int(cmd.Value("max-time-signature").(int64)),
-		MaxValence:             spotted.Float(cmd.Value("max-valence").(float64)),
-		MinAcousticness:        spotted.Float(cmd.Value("min-acousticness").(float64)),
-		MinDanceability:        spotted.Float(cmd.Value("min-danceability").(float64)),
-		MinDurationMs:          spotted.Int(cmd.Value("min-duration-ms").(int64)),
-		MinEnergy:              spotted.Float(cmd.Value("min-energy").(float64)),
-		MinInstrumentalness:    spotted.Float(cmd.Value("min-instrumentalness").(float64)),
-		MinKey:                 spotted.Int(cmd.Value("min-key").(int64)),
-		MinLiveness:            spotted.Float(cmd.Value("min-liveness").(float64)),
-		MinLoudness:            spotted.Float(cmd.Value("min-loudness").(float64)),
-		MinMode:                spotted.Int(cmd.Value("min-mode").(int64)),
-		MinPopularity:          spotted.Int(cmd.Value("min-popularity").(int64)),
-		MinSpeechiness:         spotted.Float(cmd.Value("min-speechiness").(float64)),
-		MinTempo:               spotted.Float(cmd.Value("min-tempo").(float64)),
-		MinTimeSignature:       spotted.Int(cmd.Value("min-time-signature").(int64)),
-		MinValence:             spotted.Float(cmd.Value("min-valence").(float64)),
-		SeedArtists:            spotted.String(cmd.Value("seed-artists").(string)),
-		SeedGenres:             spotted.String(cmd.Value("seed-genres").(string)),
-		SeedTracks:             spotted.String(cmd.Value("seed-tracks").(string)),
-		TargetAcousticness:     spotted.Float(cmd.Value("target-acousticness").(float64)),
-		TargetDanceability:     spotted.Float(cmd.Value("target-danceability").(float64)),
-		TargetDurationMs:       spotted.Int(cmd.Value("target-duration-ms").(int64)),
-		TargetEnergy:           spotted.Float(cmd.Value("target-energy").(float64)),
-		TargetInstrumentalness: spotted.Float(cmd.Value("target-instrumentalness").(float64)),
-		TargetKey:              spotted.Int(cmd.Value("target-key").(int64)),
-		TargetLiveness:         spotted.Float(cmd.Value("target-liveness").(float64)),
-		TargetLoudness:         spotted.Float(cmd.Value("target-loudness").(float64)),
-		TargetMode:             spotted.Int(cmd.Value("target-mode").(int64)),
-		TargetPopularity:       spotted.Int(cmd.Value("target-popularity").(int64)),
-		TargetSpeechiness:      spotted.Float(cmd.Value("target-speechiness").(float64)),
-		TargetTempo:            spotted.Float(cmd.Value("target-tempo").(float64)),
-		TargetTimeSignature:    spotted.Int(cmd.Value("target-time-signature").(int64)),
-		TargetValence:          spotted.Float(cmd.Value("target-valence").(float64)),
-	}
-	if cmd.IsSet("limit") {
-		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
+	params := spotted.RecommendationGetParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Recommendations.Get(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Recommendations.Get(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -298,12 +401,18 @@ func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	var res []byte
-	_, err := client.Recommendations.ListAvailableGenreSeeds(
-		ctx,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
 	)
+	if err != nil {
+		return err
+	}
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Recommendations.ListAvailableGenreSeeds(ctx, options...)
 	if err != nil {
 		return err
 	}

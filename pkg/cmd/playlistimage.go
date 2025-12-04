@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -17,15 +19,16 @@ var playlistsImagesUpdate = cli.Command{
 	Name:  "update",
 	Usage: "Replace the image used to represent a specific playlist.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&cli.GenericFlag{
-			Name:      "body",
-			Usage:     "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
-			Value:     &fileReader{},
-			TakesFile: true,
+		&requestflag.StringFlag{
+			Name:  "body",
+			Usage: "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
+			Config: requestflag.RequestConfig{
+				BodyPath: "body",
+			},
 		},
 	},
 	Action:          handlePlaylistsImagesUpdate,
@@ -36,7 +39,7 @@ var playlistsImagesList = cli.Command{
 	Name:  "list",
 	Usage: "Get the current image associated with a specific playlist.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
@@ -59,13 +62,22 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
+	}
 	var res []byte
-	_, err := client.Playlists.Images.Update(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Playlists.Images.Update(
 		ctx,
-		cmd.Value("playlist-id").(string),
-		cmd.Value("body").(io.Reader),
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
+		requestflag.CommandRequestValue[io.Reader](cmd, "body"),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -87,12 +99,21 @@ func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
+	}
 	var res []byte
-	_, err := client.Playlists.Images.List(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Playlists.Images.List(
 		ctx,
-		cmd.Value("playlist-id").(string),
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
+		options...,
 	)
 	if err != nil {
 		return err
