@@ -86,7 +86,7 @@ var playlistsTracksList = cli.Command{
 		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 100.\n",
-			Value: 20,
+			Value: requestflag.Value[int64](20),
 			Config: requestflag.RequestConfig{
 				QueryPath: "limit",
 			},

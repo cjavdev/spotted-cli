@@ -42,7 +42,7 @@ var searchQuery = cli.Command{
 		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of results to return in each item type.\n",
-			Value: 20,
+			Value: requestflag.Value[int64](20),
 			Config: requestflag.RequestConfig{
 				QueryPath: "limit",
 			},
