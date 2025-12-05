@@ -21,7 +21,7 @@ var recommendationsGet = cli.Command{
 		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The target size of the list of recommended tracks. For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. Debugging information for such cases is available in the response. Default: 20\\. Minimum: 1\\. Maximum: 100.\n",
-			Value: 20,
+			Value: requestflag.Value[int64](20),
 			Config: requestflag.RequestConfig{
 				QueryPath: "limit",
 			},

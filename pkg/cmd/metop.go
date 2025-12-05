@@ -21,7 +21,7 @@ var meTopListTopArtists = cli.Command{
 		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: 20,
+			Value: requestflag.Value[int64](20),
 			Config: requestflag.RequestConfig{
 				QueryPath: "limit",
 			},
@@ -36,7 +36,7 @@ var meTopListTopArtists = cli.Command{
 		&requestflag.StringFlag{
 			Name:  "time-range",
 			Usage: "Over what time frame the affinities are computed. Valid values: `long_term` (calculated from ~1 year of data and including all new data as it becomes available), `medium_term` (approximately last 6 months), `short_term` (approximately last 4 weeks). Default: `medium_term`\n",
-			Value: "medium_term",
+			Value: requestflag.Value[string]("medium_term"),
 			Config: requestflag.RequestConfig{
 				QueryPath: "time_range",
 			},
@@ -53,7 +53,7 @@ var meTopListTopTracks = cli.Command{
 		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: 20,
+			Value: requestflag.Value[int64](20),
 			Config: requestflag.RequestConfig{
 				QueryPath: "limit",
 			},
@@ -68,7 +68,7 @@ var meTopListTopTracks = cli.Command{
 		&requestflag.StringFlag{
 			Name:  "time-range",
 			Usage: "Over what time frame the affinities are computed. Valid values: `long_term` (calculated from ~1 year of data and including all new data as it becomes available), `medium_term` (approximately last 6 months), `short_term` (approximately last 4 weeks). Default: `medium_term`\n",
-			Value: "medium_term",
+			Value: requestflag.Value[string]("medium_term"),
 			Config: requestflag.RequestConfig{
 				QueryPath: "time_range",
 			},
