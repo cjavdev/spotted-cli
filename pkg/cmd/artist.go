@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -137,26 +138,24 @@ func handleArtistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Artists.Get(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
-		options...,
-	)
+	_, err = client.Artists.Get(ctx, requestflag.CommandRequestValue[string](cmd, "id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("artists retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "artists retrieve", obj, format, transform)
 }
 
 func handleArtistsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -171,21 +170,18 @@ func handleArtistsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Artists.BulkGet(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Artists.BulkGet(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("artists bulk-retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "artists bulk-retrieve", obj, format, transform)
 }
 
 func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
@@ -209,22 +205,41 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Artists.ListAlbums(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("artists list-albums", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Artists.ListAlbums(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "id"),
+			params,
+			options...,
+		)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "artists list-albums", obj, format, transform)
+	} else {
+		iter := client.Artists.ListAlbumsAutoPaging(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "id"),
+			params,
+			options...,
+		)
+		return streamOutput("artists list-albums", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "artists list-albums", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleArtistsListRelatedArtists(ctx context.Context, cmd *cli.Command) error {
@@ -246,21 +261,18 @@ func handleArtistsListRelatedArtists(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Artists.ListRelatedArtists(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
-		options...,
-	)
+	_, err = client.Artists.ListRelatedArtists(ctx, requestflag.CommandRequestValue[string](cmd, "id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("artists list-related-artists", json, format, transform)
+	return ShowJSON(os.Stdout, "artists list-related-artists", obj, format, transform)
 }
 
 func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
@@ -284,6 +296,7 @@ func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Artists.TopTracks(
@@ -296,8 +309,8 @@ func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("artists top-tracks", json, format, transform)
+	return ShowJSON(os.Stdout, "artists top-tracks", obj, format, transform)
 }

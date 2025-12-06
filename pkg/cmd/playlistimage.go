@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -71,6 +72,7 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Images.Update(
@@ -83,10 +85,10 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:images update", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists:images update", obj, format, transform)
 }
 
 func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
@@ -108,19 +110,16 @@ func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Playlists.Images.List(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
-		options...,
-	)
+	_, err = client.Playlists.Images.List(ctx, requestflag.CommandRequestValue[string](cmd, "playlist-id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:images list", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists:images list", obj, format, transform)
 }

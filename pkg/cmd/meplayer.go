@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -309,6 +310,7 @@ var mePlayerTransfer = cli.Command{
 func handleMePlayerGetCurrentlyPlaying(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -323,26 +325,24 @@ func handleMePlayerGetCurrentlyPlaying(ctx context.Context, cmd *cli.Command) er
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Player.GetCurrentlyPlaying(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Me.Player.GetCurrentlyPlaying(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:player get-currently-playing", json, format, transform)
+	return ShowJSON(os.Stdout, "me:player get-currently-playing", obj, format, transform)
 }
 
 func handleMePlayerGetDevices(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -355,6 +355,7 @@ func handleMePlayerGetDevices(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Me.Player.GetDevices(ctx, options...)
@@ -362,15 +363,16 @@ func handleMePlayerGetDevices(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:player get-devices", json, format, transform)
+	return ShowJSON(os.Stdout, "me:player get-devices", obj, format, transform)
 }
 
 func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -385,26 +387,24 @@ func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Player.GetState(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Me.Player.GetState(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:player get-state", json, format, transform)
+	return ShowJSON(os.Stdout, "me:player get-state", obj, format, transform)
 }
 
 func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -419,26 +419,37 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Player.ListRecentlyPlayed(
-		ctx,
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:player list-recently-played", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Me.Player.ListRecentlyPlayed(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "me:player list-recently-played", obj, format, transform)
+	} else {
+		iter := client.Me.Player.ListRecentlyPlayedAutoPaging(ctx, params, options...)
+		return streamOutput("me:player list-recently-played", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "me:player list-recently-played", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleMePlayerPausePlayback(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -453,16 +464,14 @@ func handleMePlayerPausePlayback(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.PausePlayback(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.PausePlayback(ctx, params, options...)
 }
 
 func handleMePlayerSeekToPosition(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -477,16 +486,14 @@ func handleMePlayerSeekToPosition(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.SeekToPosition(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.SeekToPosition(ctx, params, options...)
 }
 
 func handleMePlayerSetRepeatMode(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -501,16 +508,14 @@ func handleMePlayerSetRepeatMode(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.SetRepeatMode(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.SetRepeatMode(ctx, params, options...)
 }
 
 func handleMePlayerSetVolume(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -525,16 +530,14 @@ func handleMePlayerSetVolume(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.SetVolume(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.SetVolume(ctx, params, options...)
 }
 
 func handleMePlayerSkipNext(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -549,16 +552,14 @@ func handleMePlayerSkipNext(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.SkipNext(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.SkipNext(ctx, params, options...)
 }
 
 func handleMePlayerSkipPrevious(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -573,16 +574,14 @@ func handleMePlayerSkipPrevious(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.SkipPrevious(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.SkipPrevious(ctx, params, options...)
 }
 
 func handleMePlayerStartPlayback(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -597,16 +596,14 @@ func handleMePlayerStartPlayback(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.StartPlayback(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.StartPlayback(ctx, params, options...)
 }
 
 func handleMePlayerToggleShuffle(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -621,16 +618,14 @@ func handleMePlayerToggleShuffle(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.ToggleShuffle(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.ToggleShuffle(ctx, params, options...)
 }
 
 func handleMePlayerTransfer(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -645,9 +640,6 @@ func handleMePlayerTransfer(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Player.Transfer(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Player.Transfer(ctx, params, options...)
 }

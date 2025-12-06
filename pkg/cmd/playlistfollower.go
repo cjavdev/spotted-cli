@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -88,6 +89,7 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Followers.Check(
@@ -100,10 +102,10 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:followers check", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists:followers check", obj, format, transform)
 }
 
 func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error {
@@ -127,6 +129,7 @@ func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
 	return client.Playlists.Followers.Follow(
 		ctx,
 		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
@@ -154,9 +157,6 @@ func handlePlaylistsFollowersUnfollow(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
-	return client.Playlists.Followers.Unfollow(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
-		options...,
-	)
+
+	return client.Playlists.Followers.Unfollow(ctx, requestflag.CommandRequestValue[string](cmd, "playlist-id"), options...)
 }
