@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -113,6 +114,7 @@ func handleShowsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Shows.Get(
@@ -125,15 +127,16 @@ func handleShowsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("shows retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "shows retrieve", obj, format, transform)
 }
 
 func handleShowsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -148,21 +151,18 @@ func handleShowsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Shows.BulkGet(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Shows.BulkGet(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("shows bulk-retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "shows bulk-retrieve", obj, format, transform)
 }
 
 func handleShowsListEpisodes(ctx context.Context, cmd *cli.Command) error {
@@ -186,20 +186,39 @@ func handleShowsListEpisodes(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Shows.ListEpisodes(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("shows list-episodes", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Shows.ListEpisodes(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "id"),
+			params,
+			options...,
+		)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "shows list-episodes", obj, format, transform)
+	} else {
+		iter := client.Shows.ListEpisodesAutoPaging(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "id"),
+			params,
+			options...,
+		)
+		return streamOutput("shows list-episodes", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "shows list-episodes", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }

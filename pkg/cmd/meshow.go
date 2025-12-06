@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -89,6 +90,7 @@ var meShowsSave = cli.Command{
 func handleMeShowsList(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -103,26 +105,37 @@ func handleMeShowsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Shows.List(
-		ctx,
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:shows list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Me.Shows.List(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "me:shows list", obj, format, transform)
+	} else {
+		iter := client.Me.Shows.ListAutoPaging(ctx, params, options...)
+		return streamOutput("me:shows list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "me:shows list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleMeShowsCheck(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -137,26 +150,24 @@ func handleMeShowsCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Shows.Check(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Me.Shows.Check(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:shows check", json, format, transform)
+	return ShowJSON(os.Stdout, "me:shows check", obj, format, transform)
 }
 
 func handleMeShowsRemove(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -171,16 +182,14 @@ func handleMeShowsRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Shows.Remove(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Shows.Remove(ctx, params, options...)
 }
 
 func handleMeShowsSave(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -195,9 +204,6 @@ func handleMeShowsSave(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Shows.Save(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Shows.Save(ctx, params, options...)
 }

@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -103,6 +104,7 @@ var meFollowingUnfollow = cli.Command{
 func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -117,26 +119,24 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Following.BulkGet(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Me.Following.BulkGet(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:following bulk-retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "me:following bulk-retrieve", obj, format, transform)
 }
 
 func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -151,26 +151,24 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Me.Following.Check(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Me.Following.Check(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me:following check", json, format, transform)
+	return ShowJSON(os.Stdout, "me:following check", obj, format, transform)
 }
 
 func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -185,16 +183,14 @@ func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Following.Follow(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Following.Follow(ctx, params, options...)
 }
 
 func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -209,9 +205,6 @@ func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	return client.Me.Following.Unfollow(
-		ctx,
-		params,
-		options...,
-	)
+
+	return client.Me.Following.Unfollow(ctx, params, options...)
 }

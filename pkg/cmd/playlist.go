@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -110,6 +111,7 @@ func handlePlaylistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Get(
@@ -122,10 +124,10 @@ func handlePlaylistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists retrieve", obj, format, transform)
 }
 
 func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -149,6 +151,7 @@ func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	return client.Playlists.Update(
 		ctx,
 		requestflag.CommandRequestValue[string](cmd, "playlist-id"),

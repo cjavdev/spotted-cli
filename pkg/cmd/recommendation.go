@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -364,6 +365,7 @@ var recommendationsListAvailableGenreSeeds = cli.Command{
 func handleRecommendationsGet(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -378,26 +380,24 @@ func handleRecommendationsGet(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Recommendations.Get(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Recommendations.Get(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("recommendations get", json, format, transform)
+	return ShowJSON(os.Stdout, "recommendations get", obj, format, transform)
 }
 
 func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -410,6 +410,7 @@ func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Recommendations.ListAvailableGenreSeeds(ctx, options...)
@@ -417,8 +418,8 @@ func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("recommendations list-available-genre-seeds", json, format, transform)
+	return ShowJSON(os.Stdout, "recommendations list-available-genre-seeds", obj, format, transform)
 }

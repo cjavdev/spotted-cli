@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -72,6 +73,7 @@ var browseGetNewReleases = cli.Command{
 func handleBrowseGetFeaturedPlaylists(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -86,26 +88,24 @@ func handleBrowseGetFeaturedPlaylists(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Browse.GetFeaturedPlaylists(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Browse.GetFeaturedPlaylists(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("browse get-featured-playlists", json, format, transform)
+	return ShowJSON(os.Stdout, "browse get-featured-playlists", obj, format, transform)
 }
 
 func handleBrowseGetNewReleases(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -120,19 +120,16 @@ func handleBrowseGetNewReleases(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Browse.GetNewReleases(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Browse.GetNewReleases(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("browse get-new-releases", json, format, transform)
+	return ShowJSON(os.Stdout, "browse get-new-releases", obj, format, transform)
 }

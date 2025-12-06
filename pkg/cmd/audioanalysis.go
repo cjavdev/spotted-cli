@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -46,19 +47,16 @@ func handleAudioAnalysisRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.AudioAnalysis.Get(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
-		options...,
-	)
+	_, err = client.AudioAnalysis.Get(ctx, requestflag.CommandRequestValue[string](cmd, "id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("audio-analysis retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "audio-analysis retrieve", obj, format, transform)
 }

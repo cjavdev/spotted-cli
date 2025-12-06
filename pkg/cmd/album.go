@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -113,6 +114,7 @@ func handleAlbumsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Albums.Get(
@@ -125,15 +127,16 @@ func handleAlbumsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("albums retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "albums retrieve", obj, format, transform)
 }
 
 func handleAlbumsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -148,21 +151,18 @@ func handleAlbumsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Albums.BulkGet(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Albums.BulkGet(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("albums bulk-retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "albums bulk-retrieve", obj, format, transform)
 }
 
 func handleAlbumsListTracks(ctx context.Context, cmd *cli.Command) error {
@@ -186,20 +186,39 @@ func handleAlbumsListTracks(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Albums.ListTracks(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("albums list-tracks", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Albums.ListTracks(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "id"),
+			params,
+			options...,
+		)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "albums list-tracks", obj, format, transform)
+	} else {
+		iter := client.Albums.ListTracksAutoPaging(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "id"),
+			params,
+			options...,
+		)
+		return streamOutput("albums list-tracks", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "albums list-tracks", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }

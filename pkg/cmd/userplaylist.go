@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -104,6 +105,7 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Users.Playlists.New(
@@ -116,10 +118,10 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("users:playlists create", json, format, transform)
+	return ShowJSON(os.Stdout, "users:playlists create", obj, format, transform)
 }
 
 func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
@@ -143,20 +145,39 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Users.Playlists.List(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "user-id"),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("users:playlists list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Users.Playlists.List(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "user-id"),
+			params,
+			options...,
+		)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "users:playlists list", obj, format, transform)
+	} else {
+		iter := client.Users.Playlists.ListAutoPaging(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "user-id"),
+			params,
+			options...,
+		)
+		return streamOutput("users:playlists list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "users:playlists list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }

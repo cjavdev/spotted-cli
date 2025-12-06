@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -185,6 +186,7 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Tracks.Update(
@@ -197,10 +199,10 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:tracks update", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists:tracks update", obj, format, transform)
 }
 
 func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
@@ -224,22 +226,41 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Playlists.Tracks.List(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:tracks list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Playlists.Tracks.List(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "playlist-id"),
+			params,
+			options...,
+		)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "playlists:tracks list", obj, format, transform)
+	} else {
+		iter := client.Playlists.Tracks.ListAutoPaging(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "playlist-id"),
+			params,
+			options...,
+		)
+		return streamOutput("playlists:tracks list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "playlists:tracks list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
@@ -263,6 +284,7 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Tracks.Add(
@@ -275,10 +297,10 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:tracks add", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists:tracks add", obj, format, transform)
 }
 
 func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
@@ -302,6 +324,7 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Tracks.Remove(
@@ -314,8 +337,8 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("playlists:tracks remove", json, format, transform)
+	return ShowJSON(os.Stdout, "playlists:tracks remove", obj, format, transform)
 }
