@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.5.0 (2025-12-11)
+
+Full Changelog: [v0.4.1...v0.5.0](https://github.com/cjavdev/spotted-cli/compare/v0.4.1...v0.5.0)
+
+### Features
+
+* **api:** api update ([738092a](https://github.com/cjavdev/spotted-cli/commit/738092a414a997c6235bbc766d1bd86a043ee037))
+* **api:** manual updates ([f000397](https://github.com/cjavdev/spotted-cli/commit/f000397fd4e33c7c9a75bce729e960eddda106c3))
+* **api:** manual updates ([c715264](https://github.com/cjavdev/spotted-cli/commit/c71526472ea039fd3f984b8f5079615f8927215d))
+* **api:** manual updates ([851ecb7](https://github.com/cjavdev/spotted-cli/commit/851ecb7629e44f3773549aeefa05bf99edb916c1))
+* **api:** unskipping csharp ([ab10178](https://github.com/cjavdev/spotted-cli/commit/ab10178a73b71c5aefb4a1c4c06e6f0975c7175c))
+* **cli:** automatic streaming for paginated endpoints ([35d3cb9](https://github.com/cjavdev/spotted-cli/commit/35d3cb92ec2dc62fc0c733d087aaad24458c55d4))
+* fix edge cases for sending request data and add YAML support ([f27561a](https://github.com/cjavdev/spotted-cli/commit/f27561a196c991d0271da5bb3a0f8dc0d471f0ef))
+* new and simplified CLI flag parsing code and YAML support ([e82759e](https://github.com/cjavdev/spotted-cli/commit/e82759e0a7737823829da262ae5406103841aa7e))
+* redact `Authorization` header when using debug option ([c60cd69](https://github.com/cjavdev/spotted-cli/commit/c60cd6982d47c7afb0c72c8fdf20eff2dafba328))
+* redact secrets from other authentication headers when using debug option ([f679098](https://github.com/cjavdev/spotted-cli/commit/f679098fa8b5a47ff50f8f7a68ae920937347f00))
+
+
+### Bug Fixes
+
+* fix for default flag values ([04cfbb6](https://github.com/cjavdev/spotted-cli/commit/04cfbb60d7b21fc9a1b1df0103c3b8914cd05334))
+* **mcp:** correct code tool API endpoint ([b4c79b5](https://github.com/cjavdev/spotted-cli/commit/b4c79b59aa7256a5184dd53eeb9c1999c16fdaad))
+* paginated endpoints now behave better with pagers by default ([e6dd719](https://github.com/cjavdev/spotted-cli/commit/e6dd71969aa8ecd0471616a1de10600c08970c45))
+
+
+### Chores
+
+* **internal:** codegen related update ([c7cbe7b](https://github.com/cjavdev/spotted-cli/commit/c7cbe7b95ea7ae883fb68077ef4d3e6e0b5db4b4))
+* **internal:** codegen related update ([faf47b5](https://github.com/cjavdev/spotted-cli/commit/faf47b5d1a492c0f305b1d6c4d2432cc43fd7ba8))
+* **internal:** codegen related update ([fb57d18](https://github.com/cjavdev/spotted-cli/commit/fb57d1839f4d0d7dcefc24cd77d7072ba8e963f5))
+* update dependencies ([c968afa](https://github.com/cjavdev/spotted-cli/commit/c968afaac1bc34ba1c0fa46c432ff3d08ddab33d))
+
 ## 0.4.1 (2025-12-02)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/cjavdev/spotted-cli/compare/v0.4.0...v0.4.1)
