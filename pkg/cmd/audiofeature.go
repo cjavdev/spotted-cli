@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -16,7 +18,7 @@ var audioFeaturesRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get audio feature information for a single track identified by its unique\nSpotify ID.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
 		},
@@ -29,9 +31,12 @@ var audioFeaturesBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get audio features for multiple tracks based on their Spotify IDs.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids)\nfor the tracks. Maximum: 100 IDs.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "ids",
+			},
 		},
 	},
 	Action:          handleAudioFeaturesBulkRetrieve,
@@ -48,12 +53,21 @@ func handleAudioFeaturesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
+	}
 	var res []byte
-	_, err := client.AudioFeatures.Get(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.AudioFeatures.Get(
 		ctx,
-		cmd.Value("id").(string),
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		requestflag.CommandRequestValue[string](cmd, "id"),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -71,15 +85,23 @@ func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) erro
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.AudioFeatureBulkGetParams{
-		IDs: cmd.Value("ids").(string),
+	params := spotted.AudioFeatureBulkGetParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.AudioFeatures.BulkGet(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.AudioFeatures.BulkGet(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err

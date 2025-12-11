@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -16,7 +18,7 @@ var artistsRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get Spotify catalog information for a single artist identified by their unique\nSpotify ID.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
@@ -29,9 +31,12 @@ var artistsBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get Spotify catalog information for several artists based on their Spotify IDs.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "ids",
 			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the artists. Maximum: 50 IDs.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "ids",
+			},
 		},
 	},
 	Action:          handleArtistsBulkRetrieve,
@@ -42,26 +47,38 @@ var artistsListAlbums = cli.Command{
 	Name:  "list-albums",
 	Usage: "Get Spotify catalog information about an artist's albums.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "include-groups",
 			Usage: "A comma-separated list of keywords that will be used to filter the response. If not supplied, all album types will be returned. <br/>\nValid values are:<br/>- `album`<br/>- `single`<br/>- `appears_on`<br/>- `compilation`<br/>For example: `include_groups=album,single`.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "include_groups",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
 			Value: 20,
+			Config: requestflag.RequestConfig{
+				QueryPath: "limit",
+			},
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "market",
 			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "market",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "offset",
 			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "offset",
+			},
 		},
 	},
 	Action:          handleArtistsListAlbums,
@@ -72,7 +89,7 @@ var artistsListRelatedArtists = cli.Command{
 	Name:  "list-related-artists",
 	Usage: "Get Spotify catalog information about artists similar to a given artist.\nSimilarity is based on analysis of the Spotify community's listening history.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
@@ -85,13 +102,16 @@ var artistsTopTracks = cli.Command{
 	Name:  "top-tracks",
 	Usage: "Get Spotify catalog information about an artist's top tracks by country.",
 	Flags: []cli.Flag{
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
-		&cli.StringFlag{
+		&requestflag.StringFlag{
 			Name:  "market",
 			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "market",
+			},
 		},
 	},
 	Action:          handleArtistsTopTracks,
@@ -108,12 +128,21 @@ func handleArtistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
+	}
 	var res []byte
-	_, err := client.Artists.Get(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Artists.Get(
 		ctx,
-		cmd.Value("id").(string),
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		requestflag.CommandRequestValue[string](cmd, "id"),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -131,15 +160,23 @@ func handleArtistsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.ArtistBulkGetParams{
-		IDs: cmd.Value("ids").(string),
+	params := spotted.ArtistBulkGetParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Artists.BulkGet(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Artists.BulkGet(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -161,23 +198,24 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.ArtistListAlbumsParams{
-		IncludeGroups: spotted.String(cmd.Value("include-groups").(string)),
-		Market:        spotted.String(cmd.Value("market").(string)),
-	}
-	if cmd.IsSet("limit") {
-		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
-	}
-	if cmd.IsSet("offset") {
-		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+	params := spotted.ArtistListAlbumsParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Artists.ListAlbums(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Artists.ListAlbums(
 		ctx,
-		cmd.Value("id").(string),
+		requestflag.CommandRequestValue[string](cmd, "id"),
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -199,12 +237,21 @@ func handleArtistsListRelatedArtists(ctx context.Context, cmd *cli.Command) erro
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
+	}
 	var res []byte
-	_, err := client.Artists.ListRelatedArtists(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Artists.ListRelatedArtists(
 		ctx,
-		cmd.Value("id").(string),
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		requestflag.CommandRequestValue[string](cmd, "id"),
+		options...,
 	)
 	if err != nil {
 		return err
@@ -226,16 +273,24 @@ func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := spotted.ArtistTopTracksParams{
-		Market: spotted.String(cmd.Value("market").(string)),
+	params := spotted.ArtistTopTracksParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Artists.TopTracks(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Artists.TopTracks(
 		ctx,
-		cmd.Value("id").(string),
+		requestflag.CommandRequestValue[string](cmd, "id"),
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err

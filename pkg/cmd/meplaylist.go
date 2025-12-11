@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -16,14 +18,20 @@ var mePlaylistsList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of the playlists owned or followed by the current Spotify user.",
 	Flags: []cli.Flag{
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "limit",
 			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
 			Value: 20,
+			Config: requestflag.RequestConfig{
+				QueryPath: "limit",
+			},
 		},
-		&cli.Int64Flag{
+		&requestflag.IntFlag{
 			Name:  "offset",
 			Usage: "'The index of the first playlist to return. Default:\n0 (the first object). Maximum offset: 100.000\\. Use with `limit` to get the\nnext set of playlists.'\n",
+			Config: requestflag.RequestConfig{
+				QueryPath: "offset",
+			},
 		},
 	},
 	Action:          handleMePlaylistsList,
@@ -37,18 +45,22 @@ func handleMePlaylistsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := spotted.MePlaylistListParams{}
-	if cmd.IsSet("limit") {
-		params.Limit = spotted.Opt(cmd.Value("limit").(int64))
-	}
-	if cmd.IsSet("offset") {
-		params.Offset = spotted.Opt(cmd.Value("offset").(int64))
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+	)
+	if err != nil {
+		return err
 	}
 	var res []byte
-	_, err := client.Me.Playlists.List(
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Me.Playlists.List(
 		ctx,
 		params,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+		options...,
 	)
 	if err != nil {
 		return err
