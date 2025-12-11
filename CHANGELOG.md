@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 (2025-12-11)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/cjavdev/spotted-cli/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* **api:** homebrew release ([cf4a12d](https://github.com/cjavdev/spotted-cli/commit/cf4a12d1b67c6a62c61b7f50af8cf934919d6f48))
+
 ## 0.5.1 (2025-12-11)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/cjavdev/spotted-cli/compare/v0.5.0...v0.5.1)
