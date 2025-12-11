@@ -19,16 +19,14 @@ var audiobooksRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get Spotify catalog information for a single audiobook. Audiobooks are only\navailable within the US, UK, Canada, Ireland, New Zealand and Australia markets.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "market",
-			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "market",
-			},
+		&requestflag.Flag[string]{
+			Name:      "market",
+			Usage:     "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			QueryPath: "market",
 		},
 	},
 	Action:          handleAudiobooksRetrieve,
@@ -39,19 +37,15 @@ var audiobooksBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get Spotify catalog information for several audiobooks identified by their\nSpotify IDs. Audiobooks are only available within the US, UK, Canada, Ireland,\nNew Zealand and Australia markets.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
+			QueryPath: "ids",
 		},
-		&requestflag.StringFlag{
-			Name:  "market",
-			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "market",
-			},
+		&requestflag.Flag[string]{
+			Name:      "market",
+			Usage:     "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			QueryPath: "market",
 		},
 	},
 	Action:          handleAudiobooksBulkRetrieve,
@@ -62,31 +56,25 @@ var audiobooksListChapters = cli.Command{
 	Name:  "list-chapters",
 	Usage: "Get Spotify catalog information about an audiobook's chapters. Audiobooks are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringFlag{
-			Name:  "market",
-			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "market",
-			},
+		&requestflag.Flag[string]{
+			Name:      "market",
+			Usage:     "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			QueryPath: "market",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleAudiobooksListChapters,
@@ -119,7 +107,7 @@ func handleAudiobooksRetrieve(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Audiobooks.Get(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
+		cmd.Value("id").(string),
 		params,
 		options...,
 	)
@@ -194,7 +182,7 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 		options = append(options, option.WithResponseBodyInto(&res))
 		_, err = client.Audiobooks.ListChapters(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "id"),
+			cmd.Value("id").(string),
 			params,
 			options...,
 		)
@@ -206,7 +194,7 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 	} else {
 		iter := client.Audiobooks.ListChaptersAutoPaging(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "id"),
+			cmd.Value("id").(string),
 			params,
 			options...,
 		)

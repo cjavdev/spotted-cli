@@ -19,16 +19,14 @@ var browseCategoriesRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get a single category used to tag items in Spotify (on, for example, the Spotify\nplayer’s “Browse” tab).",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "category-id",
 			Usage: "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "locale",
-			Usage: "The desired language, consisting of an [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code and an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning &quot;Spanish (Mexico)&quot;. Provide this parameter if you want the category strings returned in a particular language.<br/> _**Note**: if `locale` is not supplied, or if the specified language is not available, the category strings returned will be in the Spotify default language (American English)._\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "locale",
-			},
+		&requestflag.Flag[string]{
+			Name:      "locale",
+			Usage:     "The desired language, consisting of an [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code and an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning &quot;Spanish (Mexico)&quot;. Provide this parameter if you want the category strings returned in a particular language.<br/> _**Note**: if `locale` is not supplied, or if the specified language is not available, the category strings returned will be in the Spotify default language (American English)._\n",
+			QueryPath: "locale",
 		},
 	},
 	Action:          handleBrowseCategoriesRetrieve,
@@ -39,27 +37,21 @@ var browseCategoriesList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of categories used to tag items in Spotify (on, for example, the\nSpotify player’s “Browse” tab).",
 	Flags: []cli.Flag{
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringFlag{
-			Name:  "locale",
-			Usage: "The desired language, consisting of an [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code and an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning &quot;Spanish (Mexico)&quot;. Provide this parameter if you want the category strings returned in a particular language.<br/> _**Note**: if `locale` is not supplied, or if the specified language is not available, the category strings returned will be in the Spotify default language (American English)._\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "locale",
-			},
+		&requestflag.Flag[string]{
+			Name:      "locale",
+			Usage:     "The desired language, consisting of an [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code and an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning &quot;Spanish (Mexico)&quot;. Provide this parameter if you want the category strings returned in a particular language.<br/> _**Note**: if `locale` is not supplied, or if the specified language is not available, the category strings returned will be in the Spotify default language (American English)._\n",
+			QueryPath: "locale",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleBrowseCategoriesList,
@@ -70,24 +62,20 @@ var browseCategoriesGetPlaylists = cli.Command{
 	Name:  "get-playlists",
 	Usage: "Get a list of Spotify playlists tagged with a particular category.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "category-id",
 			Usage: "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleBrowseCategoriesGetPlaylists,
@@ -120,7 +108,7 @@ func handleBrowseCategoriesRetrieve(ctx context.Context, cmd *cli.Command) error
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Browse.Categories.Get(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "category-id"),
+		cmd.Value("category-id").(string),
 		params,
 		options...,
 	)
@@ -192,7 +180,7 @@ func handleBrowseCategoriesGetPlaylists(ctx context.Context, cmd *cli.Command) e
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Browse.Categories.GetPlaylists(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "category-id"),
+		cmd.Value("category-id").(string),
 		params,
 		options...,
 	)

@@ -19,7 +19,7 @@ var artistsRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get Spotify catalog information for a single artist identified by their unique\nSpotify ID.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
@@ -32,12 +32,10 @@ var artistsBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get Spotify catalog information for several artists based on their Spotify IDs.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the artists. Maximum: 50 IDs.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the artists. Maximum: 50 IDs.\n",
+			QueryPath: "ids",
 		},
 	},
 	Action:          handleArtistsBulkRetrieve,
@@ -48,38 +46,30 @@ var artistsListAlbums = cli.Command{
 	Name:  "list-albums",
 	Usage: "Get Spotify catalog information about an artist's albums.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "include-groups",
-			Usage: "A comma-separated list of keywords that will be used to filter the response. If not supplied, all album types will be returned. <br/>\nValid values are:<br/>- `album`<br/>- `single`<br/>- `appears_on`<br/>- `compilation`<br/>For example: `include_groups=album,single`.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "include_groups",
-			},
+		&requestflag.Flag[string]{
+			Name:      "include-groups",
+			Usage:     "A comma-separated list of keywords that will be used to filter the response. If not supplied, all album types will be returned. <br/>\nValid values are:<br/>- `album`<br/>- `single`<br/>- `appears_on`<br/>- `compilation`<br/>For example: `include_groups=album,single`.\n",
+			QueryPath: "include_groups",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringFlag{
-			Name:  "market",
-			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "market",
-			},
+		&requestflag.Flag[string]{
+			Name:      "market",
+			Usage:     "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			QueryPath: "market",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleArtistsListAlbums,
@@ -90,7 +80,7 @@ var artistsListRelatedArtists = cli.Command{
 	Name:  "list-related-artists",
 	Usage: "Get Spotify catalog information about artists similar to a given artist.\nSimilarity is based on analysis of the Spotify community's listening history.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
@@ -103,16 +93,14 @@ var artistsTopTracks = cli.Command{
 	Name:  "top-tracks",
 	Usage: "Get Spotify catalog information about an artist's top tracks by country.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "market",
-			Usage: "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "market",
-			},
+		&requestflag.Flag[string]{
+			Name:      "market",
+			Usage:     "An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n  If a country code is specified, only content that is available in that market will be returned.<br/>\n  If a valid user access token is specified in the request header, the country associated with\n  the user account will take priority over this parameter.<br/>\n  _**Note**: If neither market or user country are provided, the content is considered unavailable for the client._<br/>\n  Users can view the country that is associated with their account in the [account settings](https://www.spotify.com/account/overview/).\n",
+			QueryPath: "market",
 		},
 	},
 	Action:          handleArtistsTopTracks,
@@ -141,7 +129,7 @@ func handleArtistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Artists.Get(ctx, requestflag.CommandRequestValue[string](cmd, "id"), options...)
+	_, err = client.Artists.Get(ctx, cmd.Value("id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -213,7 +201,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 		options = append(options, option.WithResponseBodyInto(&res))
 		_, err = client.Artists.ListAlbums(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "id"),
+			cmd.Value("id").(string),
 			params,
 			options...,
 		)
@@ -225,7 +213,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 	} else {
 		iter := client.Artists.ListAlbumsAutoPaging(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "id"),
+			cmd.Value("id").(string),
 			params,
 			options...,
 		)
@@ -264,7 +252,7 @@ func handleArtistsListRelatedArtists(ctx context.Context, cmd *cli.Command) erro
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Artists.ListRelatedArtists(ctx, requestflag.CommandRequestValue[string](cmd, "id"), options...)
+	_, err = client.Artists.ListRelatedArtists(ctx, cmd.Value("id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -301,7 +289,7 @@ func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Artists.TopTracks(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "id"),
+		cmd.Value("id").(string),
 		params,
 		options...,
 	)

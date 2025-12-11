@@ -19,16 +19,14 @@ var playlistsFollowersCheck = cli.Command{
 	Name:  "check",
 	Usage: "Check to see if the current user is following a specified playlist.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "**Deprecated** A single item list containing current user's [Spotify Username](/documentation/web-api/concepts/spotify-uris-ids). Maximum: 1 id.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "**Deprecated** A single item list containing current user's [Spotify Username](/documentation/web-api/concepts/spotify-uris-ids). Maximum: 1 id.\n",
+			QueryPath: "ids",
 		},
 	},
 	Action:          handlePlaylistsFollowersCheck,
@@ -39,16 +37,14 @@ var playlistsFollowersFollow = cli.Command{
 	Name:  "follow",
 	Usage: "Add the current user as a follower of a playlist.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&requestflag.BoolFlag{
-			Name:  "public",
-			Usage: "Defaults to `true`. If `true` the playlist will be included in user's public playlists (added to profile), if `false` it will remain private. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "public",
-			},
+		&requestflag.Flag[bool]{
+			Name:     "public",
+			Usage:    "Defaults to `true`. If `true` the playlist will be included in user's public playlists (added to profile), if `false` it will remain private. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
+			BodyPath: "public",
 		},
 	},
 	Action:          handlePlaylistsFollowersFollow,
@@ -59,7 +55,7 @@ var playlistsFollowersUnfollow = cli.Command{
 	Name:  "unfollow",
 	Usage: "Remove the current user as a follower of a playlist.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
@@ -94,7 +90,7 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Followers.Check(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
+		cmd.Value("playlist-id").(string),
 		params,
 		options...,
 	)
@@ -132,7 +128,7 @@ func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error
 
 	return client.Playlists.Followers.Follow(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
+		cmd.Value("playlist-id").(string),
 		params,
 		options...,
 	)
@@ -158,5 +154,5 @@ func handlePlaylistsFollowersUnfollow(ctx context.Context, cmd *cli.Command) err
 		return err
 	}
 
-	return client.Playlists.Followers.Unfollow(ctx, requestflag.CommandRequestValue[string](cmd, "playlist-id"), options...)
+	return client.Playlists.Followers.Unfollow(ctx, cmd.Value("playlist-id").(string), options...)
 }

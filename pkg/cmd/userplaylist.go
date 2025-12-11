@@ -19,37 +19,29 @@ var usersPlaylistsCreate = cli.Command{
 	Name:  "create",
 	Usage: "Create a playlist for a Spotify user. (The playlist will be empty until you\n[add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each\nuser is generally limited to a maximum of 11000 playlists.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "user-id",
 			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "name",
-			Usage: "The name for the new playlist, for example `\"Your Coolest Playlist\"`. This name does not need to be unique; a user may have several playlists with the same name.\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "name",
-			},
+		&requestflag.Flag[string]{
+			Name:     "name",
+			Usage:    "The name for the new playlist, for example `\"Your Coolest Playlist\"`. This name does not need to be unique; a user may have several playlists with the same name.\n",
+			BodyPath: "name",
 		},
-		&requestflag.BoolFlag{
-			Name:  "collaborative",
-			Usage: "Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a collaborative playlist you must also set `public` to `false`. To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](/documentation/web-api/concepts/scopes/#list-of-scopes)._\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "collaborative",
-			},
+		&requestflag.Flag[bool]{
+			Name:     "collaborative",
+			Usage:    "Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a collaborative playlist you must also set `public` to `false`. To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](/documentation/web-api/concepts/scopes/#list-of-scopes)._\n",
+			BodyPath: "collaborative",
 		},
-		&requestflag.StringFlag{
-			Name:  "description",
-			Usage: "value for playlist description as displayed in Spotify Clients and in the Web API.\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "description",
-			},
+		&requestflag.Flag[string]{
+			Name:     "description",
+			Usage:    "value for playlist description as displayed in Spotify Clients and in the Web API.\n",
+			BodyPath: "description",
 		},
-		&requestflag.BoolFlag{
-			Name:  "public",
-			Usage: "Defaults to `true`. The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/web-api/concepts/scopes/#list-of-scopes). For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "public",
-			},
+		&requestflag.Flag[bool]{
+			Name:     "public",
+			Usage:    "Defaults to `true`. The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/web-api/concepts/scopes/#list-of-scopes). For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
+			BodyPath: "public",
 		},
 	},
 	Action:          handleUsersPlaylistsCreate,
@@ -60,24 +52,20 @@ var usersPlaylistsList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of the playlists owned or followed by a Spotify user.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "user-id",
 			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first playlist to return. Default:\n0 (the first object). Maximum offset: 100.000\\. Use with `limit` to get the\nnext set of playlists.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first playlist to return. Default:\n0 (the first object). Maximum offset: 100.000\\. Use with `limit` to get the\nnext set of playlists.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleUsersPlaylistsList,
@@ -110,7 +98,7 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Users.Playlists.New(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "user-id"),
+		cmd.Value("user-id").(string),
 		params,
 		options...,
 	)
@@ -153,7 +141,7 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 		options = append(options, option.WithResponseBodyInto(&res))
 		_, err = client.Users.Playlists.List(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "user-id"),
+			cmd.Value("user-id").(string),
 			params,
 			options...,
 		)
@@ -165,7 +153,7 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 	} else {
 		iter := client.Users.Playlists.ListAutoPaging(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "user-id"),
+			cmd.Value("user-id").(string),
 			params,
 			options...,
 		)

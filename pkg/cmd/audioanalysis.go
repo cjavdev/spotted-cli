@@ -19,7 +19,7 @@ var audioAnalysisRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get a low-level audio analysis for a track in the Spotify catalog. The audio\nanalysis describes the track’s structure and musical content, including rhythm,\npitch, and timbre.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the track.\n",
 		},
@@ -50,7 +50,7 @@ func handleAudioAnalysisRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.AudioAnalysis.Get(ctx, requestflag.CommandRequestValue[string](cmd, "id"), options...)
+	_, err = client.AudioAnalysis.Get(ctx, cmd.Value("id").(string), options...)
 	if err != nil {
 		return err
 	}
