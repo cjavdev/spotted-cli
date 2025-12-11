@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1 (2025-12-11)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/cjavdev/spotted-cli/compare/v0.5.0...v0.5.1)
+
 ## 0.5.0 (2025-12-11)
 
 Full Changelog: [v0.4.1...v0.5.0](https://github.com/cjavdev/spotted-cli/compare/v0.4.1...v0.5.0)
