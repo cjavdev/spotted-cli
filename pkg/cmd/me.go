@@ -5,7 +5,9 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
+	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
@@ -23,21 +25,29 @@ var meRetrieve = cli.Command{
 func handleMeRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	var res []byte
-	_, err := client.Me.Get(
-		ctx,
-		option.WithMiddleware(debugMiddleware(cmd.Bool("debug"))),
-		option.WithResponseBodyInto(&res),
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
 	)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Me.Get(ctx, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("me retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "me retrieve", obj, format, transform)
 }
