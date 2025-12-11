@@ -19,7 +19,7 @@ var usersRetrieveProfile = cli.Command{
 	Name:  "retrieve-profile",
 	Usage: "Get public profile information about a Spotify user.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "user-id",
 			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
 		},
@@ -50,7 +50,7 @@ func handleUsersRetrieveProfile(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Users.GetProfile(ctx, requestflag.CommandRequestValue[string](cmd, "user-id"), options...)
+	_, err = client.Users.GetProfile(ctx, cmd.Value("user-id").(string), options...)
 	if err != nil {
 		return err
 	}

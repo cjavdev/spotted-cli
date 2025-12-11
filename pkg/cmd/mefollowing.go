@@ -19,27 +19,21 @@ var meFollowingBulkRetrieve = cli.Command{
 	Name:  "bulk-retrieve",
 	Usage: "Get the current user's followed artists.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "type",
-			Usage: "The ID type: currently only `artist` is supported.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "type",
-			},
+		&requestflag.Flag[string]{
+			Name:      "type",
+			Usage:     "The ID type: currently only `artist` is supported.\n",
+			QueryPath: "type",
 		},
-		&requestflag.StringFlag{
-			Name:  "after",
-			Usage: "The last artist ID retrieved from the previous request.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "after",
-			},
+		&requestflag.Flag[string]{
+			Name:      "after",
+			Usage:     "The last artist ID retrieved from the previous request.\n",
+			QueryPath: "after",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
 	},
 	Action:          handleMeFollowingBulkRetrieve,
@@ -50,19 +44,15 @@ var meFollowingCheck = cli.Command{
 	Name:  "check",
 	Usage: "Check to see if the current user is following one or more artists or other\nSpotify users.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the artist or the user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) to check. For example: `ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q`. A maximum of 50 IDs can be sent in one request.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the artist or the user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) to check. For example: `ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q`. A maximum of 50 IDs can be sent in one request.\n",
+			QueryPath: "ids",
 		},
-		&requestflag.StringFlag{
-			Name:  "type",
-			Usage: "The ID type: either `artist` or `user`.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "type",
-			},
+		&requestflag.Flag[string]{
+			Name:      "type",
+			Usage:     "The ID type: either `artist` or `user`.\n",
+			QueryPath: "type",
 		},
 	},
 	Action:          handleMeFollowingCheck,
@@ -73,12 +63,10 @@ var meFollowingFollow = cli.Command{
 	Name:  "follow",
 	Usage: "Add the current user as a follower of one or more artists or other Spotify\nusers.",
 	Flags: []cli.Flag{
-		&requestflag.StringSliceFlag{
-			Name:  "id",
-			Usage: "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids).\nFor example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "ids",
-			},
+		&requestflag.Flag[[]string]{
+			Name:     "id",
+			Usage:    "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids).\nFor example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
+			BodyPath: "ids",
 		},
 	},
 	Action:          handleMeFollowingFollow,
@@ -89,12 +77,10 @@ var meFollowingUnfollow = cli.Command{
 	Name:  "unfollow",
 	Usage: "Remove the current user as a follower of one or more artists or other Spotify\nusers.",
 	Flags: []cli.Flag{
-		&requestflag.StringSliceFlag{
-			Name:  "id",
-			Usage: "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Config: requestflag.RequestConfig{
-				BodyPath: "ids",
-			},
+		&requestflag.Flag[[]string]{
+			Name:     "id",
+			Usage:    "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
+			BodyPath: "ids",
 		},
 	},
 	Action:          handleMeFollowingUnfollow,

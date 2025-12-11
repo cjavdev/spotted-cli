@@ -19,20 +19,16 @@ var meShowsList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of shows saved in the current Spotify user's library. Optional\nparameters can be used to limit the number of shows returned.",
 	Flags: []cli.Flag{
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleMeShowsList,
@@ -43,12 +39,10 @@ var meShowsCheck = cli.Command{
 	Name:  "check",
 	Usage: "Check if one or more shows is already saved in the current Spotify user's\nlibrary.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the shows. Maximum: 50 IDs.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the shows. Maximum: 50 IDs.\n",
+			QueryPath: "ids",
 		},
 	},
 	Action:          handleMeShowsCheck,
@@ -59,12 +53,10 @@ var meShowsRemove = cli.Command{
 	Name:  "remove",
 	Usage: "Delete one or more shows from current Spotify user's library.",
 	Flags: []cli.Flag{
-		&requestflag.StringSliceFlag{
-			Name:  "id",
-			Usage: "A JSON array of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).  \nA maximum of 50 items can be specified in one request. *Note: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored.*",
-			Config: requestflag.RequestConfig{
-				BodyPath: "ids",
-			},
+		&requestflag.Flag[[]string]{
+			Name:     "id",
+			Usage:    "A JSON array of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).  \nA maximum of 50 items can be specified in one request. *Note: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored.*",
+			BodyPath: "ids",
 		},
 	},
 	Action:          handleMeShowsRemove,
@@ -75,12 +67,10 @@ var meShowsSave = cli.Command{
 	Name:  "save",
 	Usage: "Save one or more shows to current Spotify user's library.",
 	Flags: []cli.Flag{
-		&requestflag.StringSliceFlag{
-			Name:  "id",
-			Usage: "A JSON array of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).  \nA maximum of 50 items can be specified in one request. *Note: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored.*",
-			Config: requestflag.RequestConfig{
-				BodyPath: "ids",
-			},
+		&requestflag.Flag[[]string]{
+			Name:     "id",
+			Usage:    "A JSON array of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).  \nA maximum of 50 items can be specified in one request. *Note: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored.*",
+			BodyPath: "ids",
 		},
 	},
 	Action:          handleMeShowsSave,

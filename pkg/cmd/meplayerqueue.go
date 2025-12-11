@@ -19,19 +19,15 @@ var mePlayerQueueAdd = cli.Command{
 	Name:  "add",
 	Usage: "Add an item to be played next in the user's current playback queue. This API\nonly works for users who have Spotify Premium. The order of execution is not\nguaranteed when you use this API with other Player API endpoints.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "uri",
-			Usage: "The uri of the item to add to the queue. Must be a track or an episode uri.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "uri",
-			},
+		&requestflag.Flag[string]{
+			Name:      "uri",
+			Usage:     "The uri of the item to add to the queue. Must be a track or an episode uri.\n",
+			QueryPath: "uri",
 		},
-		&requestflag.StringFlag{
-			Name:  "device-id",
-			Usage: "The id of the device this command is targeting. If\nnot supplied, the user's currently active device is the target.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "device_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "device-id",
+			Usage:     "The id of the device this command is targeting. If\nnot supplied, the user's currently active device is the target.\n",
+			QueryPath: "device_id",
 		},
 	},
 	Action:          handleMePlayerQueueAdd,

@@ -19,20 +19,16 @@ var meAudiobooksList = cli.Command{
 	Name:  "list",
 	Usage: "Get a list of the audiobooks saved in the current Spotify user's 'Your Music'\nlibrary.",
 	Flags: []cli.Flag{
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.IntFlag{
-			Name:  "offset",
-			Usage: "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "offset",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			QueryPath: "offset",
 		},
 	},
 	Action:          handleMeAudiobooksList,
@@ -43,12 +39,10 @@ var meAudiobooksCheck = cli.Command{
 	Name:  "check",
 	Usage: "Check if one or more audiobooks are already saved in the current Spotify user's\nlibrary.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
+			QueryPath: "ids",
 		},
 	},
 	Action:          handleMeAudiobooksCheck,
@@ -59,12 +53,10 @@ var meAudiobooksRemove = cli.Command{
 	Name:  "remove",
 	Usage: "Remove one or more audiobooks from the Spotify user's library.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
+			QueryPath: "ids",
 		},
 	},
 	Action:          handleMeAudiobooksRemove,
@@ -75,12 +67,10 @@ var meAudiobooksSave = cli.Command{
 	Name:  "save",
 	Usage: "Save one or more audiobooks to the current Spotify user's library.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "ids",
-			Usage: "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Config: requestflag.RequestConfig{
-				QueryPath: "ids",
-			},
+		&requestflag.Flag[string]{
+			Name:      "ids",
+			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
+			QueryPath: "ids",
 		},
 	},
 	Action:          handleMeAudiobooksSave,

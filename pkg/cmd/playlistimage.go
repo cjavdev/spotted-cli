@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
@@ -20,16 +19,14 @@ var playlistsImagesUpdate = cli.Command{
 	Name:  "update",
 	Usage: "Replace the image used to represent a specific playlist.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
-		&requestflag.StringFlag{
-			Name:  "body",
-			Usage: "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
-			Config: requestflag.RequestConfig{
-				BodyPath: "body",
-			},
+		&requestflag.Flag[string]{
+			Name:     "body",
+			Usage:    "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
+			BodyRoot: true,
 		},
 	},
 	Action:          handlePlaylistsImagesUpdate,
@@ -40,7 +37,7 @@ var playlistsImagesList = cli.Command{
 	Name:  "list",
 	Usage: "Get the current image associated with a specific playlist.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "playlist-id",
 			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
 		},
@@ -77,8 +74,8 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Playlists.Images.Update(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "playlist-id"),
-		requestflag.CommandRequestValue[io.Reader](cmd, "body"),
+		cmd.Value("playlist-id").(string),
+		cmd.Value("body").(string),
 		options...,
 	)
 	if err != nil {
@@ -113,7 +110,7 @@ func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Playlists.Images.List(ctx, requestflag.CommandRequestValue[string](cmd, "playlist-id"), options...)
+	_, err = client.Playlists.Images.List(ctx, cmd.Value("playlist-id").(string), options...)
 	if err != nil {
 		return err
 	}
