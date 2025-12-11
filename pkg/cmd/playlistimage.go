@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -75,7 +76,7 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 	_, err = client.Playlists.Images.Update(
 		ctx,
 		cmd.Value("playlist-id").(string),
-		cmd.Value("body").(string),
+		strings.NewReader(cmd.Value("body").(string)),
 		options...,
 	)
 	if err != nil {
