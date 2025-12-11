@@ -9,7 +9,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ### Installing with Homebrew
 
 ```sh
-brew tap cjavdev/spotted https://github.com/cjavdev/spotted
+brew tap cjavdev/spotted-cli https://github.com/cjavdev/spotted-cli
 brew install spotted
 ```
 
