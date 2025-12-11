@@ -82,7 +82,7 @@ homebrew_casks:
   - name: spotted
     repository:
       owner: cjavdev
-      name: spotted
+      name: spotted-cli
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
 
     license: Apache-2.0
