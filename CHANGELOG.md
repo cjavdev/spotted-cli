@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.1 (2025-12-12)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/cjavdev/spotted-cli/compare/v0.8.0...v0.8.1)
+
+### Chores
+
+* **internal:** codegen related update ([7e1dd1e](https://github.com/cjavdev/spotted-cli/commit/7e1dd1e2728ab33b3c8aa2e6fa359b75f86fc04a))
+* **internal:** codegen related update ([832de77](https://github.com/cjavdev/spotted-cli/commit/832de77730afd0f802cae3f363792b44cff78991))
+
 ## 0.8.0 (2025-12-11)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/cjavdev/spotted-cli/compare/v0.7.0...v0.8.0)
