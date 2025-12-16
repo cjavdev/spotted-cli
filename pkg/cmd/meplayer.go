@@ -209,6 +209,11 @@ var mePlayerStartPlayback = cli.Command{
 			Usage:    "Indicates from what position to start playback. Must be a positive number. Passing in a position that is greater than the length of the track will cause the player to start playing the next song.\n",
 			BodyPath: "position_ms",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "published",
+			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
+			BodyPath: "published",
+		},
 		&requestflag.Flag[[]string]{
 			Name:     "uris",
 			Usage:    "Optional. A JSON array of the Spotify track URIs to play.\nFor example: `{\"uris\": [\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]}`\n",
@@ -251,6 +256,11 @@ var mePlayerTransfer = cli.Command{
 			Name:     "play",
 			Usage:    "**true**: ensure playback happens on new device.<br/>**false** or not provided: keep the current playback state.\n",
 			BodyPath: "play",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "published",
+			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
+			BodyPath: "published",
 		},
 	},
 	Action:          handleMePlayerTransfer,
