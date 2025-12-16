@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.1 (2025-12-16)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/cjavdev/spotted-cli/compare/v0.8.0...v0.8.1)
+
+### Bug Fixes
+
+* fixed manpage generation ([f816e6c](https://github.com/cjavdev/spotted-cli/commit/f816e6c651f73c19c3b0a2a040e3b1aef1916156))
+
+
+### Chores
+
+* **internal:** codegen related update ([7e1dd1e](https://github.com/cjavdev/spotted-cli/commit/7e1dd1e2728ab33b3c8aa2e6fa359b75f86fc04a))
+* **internal:** codegen related update ([832de77](https://github.com/cjavdev/spotted-cli/commit/832de77730afd0f802cae3f363792b44cff78991))
+* use `stretchr/testify` assertion helpers in tests ([95b3dc4](https://github.com/cjavdev/spotted-cli/commit/95b3dc48a21e897ab08a2e01cbc6530c371e2d93))
+
 ## 0.8.0 (2025-12-11)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/cjavdev/spotted-cli/compare/v0.7.0...v0.8.0)
