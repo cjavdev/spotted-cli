@@ -80,7 +80,7 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
+		EmptyBody,
 	)
 	if err != nil {
 		return err
@@ -148,7 +148,7 @@ func handlePlaylistsFollowersUnfollow(ctx context.Context, cmd *cli.Command) err
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
+		EmptyBody,
 	)
 	if err != nil {
 		return err

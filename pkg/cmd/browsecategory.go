@@ -98,7 +98,7 @@ func handleBrowseCategoriesRetrieve(ctx context.Context, cmd *cli.Command) error
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
+		EmptyBody,
 	)
 	if err != nil {
 		return err
@@ -135,7 +135,7 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
+		EmptyBody,
 	)
 	if err != nil {
 		return err
@@ -170,7 +170,7 @@ func handleBrowseCategoriesGetPlaylists(ctx context.Context, cmd *cli.Command) e
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
+		EmptyBody,
 	)
 	if err != nil {
 		return err
