@@ -104,6 +104,7 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeFollowingBulkGetParams{}
 
 	options, err := flagOptions(
@@ -111,6 +112,7 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -136,6 +138,7 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeFollowingCheckParams{}
 
 	options, err := flagOptions(
@@ -143,6 +146,7 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -168,6 +172,7 @@ func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeFollowingFollowParams{}
 
 	options, err := flagOptions(
@@ -175,6 +180,7 @@ func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err
@@ -190,6 +196,7 @@ func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeFollowingUnfollowParams{}
 
 	options, err := flagOptions(
@@ -197,6 +204,7 @@ func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err

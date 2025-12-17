@@ -84,6 +84,7 @@ func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeAudiobookListParams{}
 
 	options, err := flagOptions(
@@ -91,6 +92,7 @@ func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -129,6 +131,7 @@ func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeAudiobookCheckParams{}
 
 	options, err := flagOptions(
@@ -136,6 +139,7 @@ func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -161,6 +165,7 @@ func handleMeAudiobooksRemove(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeAudiobookRemoveParams{}
 
 	options, err := flagOptions(
@@ -168,6 +173,7 @@ func handleMeAudiobooksRemove(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -183,6 +189,7 @@ func handleMeAudiobooksSave(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeAudiobookSaveParams{}
 
 	options, err := flagOptions(
@@ -190,6 +197,7 @@ func handleMeAudiobooksSave(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
