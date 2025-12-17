@@ -23,6 +23,7 @@ func init() {
 	Command = &cli.Command{
 		Name:    "spotted",
 		Usage:   "CLI for the spotted API",
+		Suggest: true,
 		Version: Version,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
