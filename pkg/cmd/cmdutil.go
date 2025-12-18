@@ -12,7 +12,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/cjavdev/spotted-cli/pkg/jsonview"
+	"github.com/cjavdev/spotted-cli/internal/jsonview"
 	"github.com/cjavdev/spotted-go/option"
 
 	"github.com/itchyny/json2yaml"
