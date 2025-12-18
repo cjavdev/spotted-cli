@@ -84,7 +84,8 @@ homebrew_casks:
       owner: cjavdev
       name: homebrew-spotted-cli
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-
+    homepage: https://spotted.stldocs.com/
+    description: Unofficial CLI for the Spotify API
     license: Apache-2.0
     binary: "spotted"
     completions:
