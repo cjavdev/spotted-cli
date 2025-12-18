@@ -162,6 +162,7 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.PlaylistTrackUpdateParams{}
 
 	options, err := flagOptions(
@@ -169,6 +170,7 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err
@@ -202,6 +204,7 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.PlaylistTrackListParams{}
 
 	options, err := flagOptions(
@@ -209,6 +212,7 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -260,6 +264,7 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.PlaylistTrackAddParams{}
 
 	options, err := flagOptions(
@@ -267,6 +272,7 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err
@@ -300,6 +306,7 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.PlaylistTrackRemoveParams{}
 
 	options, err := flagOptions(
@@ -307,6 +314,7 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err
