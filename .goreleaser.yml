@@ -78,6 +78,22 @@ nfpms:
     contents:
       - src: man/man1/*.1.gz
         dst: /usr/share/man/man1/
+homebrew_casks:
+  - name: spotted
+    repository:
+      owner: cjavdev
+      name: homebrew-spotted-cli
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+
+    license: Apache-2.0
+    binary: "spotted"
+    completions:
+      bash: "completions/spotted.bash"
+      zsh: "completions/spotted.zsh"
+      fish: "completions/spotted.fish"
+    manpages:
+    - man/man1/spotted.1.gz
+
 notarize:
   macos:
     - enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'
