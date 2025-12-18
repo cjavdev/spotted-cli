@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
+	"github.com/cjavdev/spotted-cli/internal/binaryparam"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
@@ -61,11 +62,19 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
+	bodyReader, stdinInUse, err := binaryparam.FileOrStdin(os.Stdin, cmd.Value("body").(string))
+	if err != nil {
+		return fmt.Errorf("Failed on param '%s': %w", "body", err)
+	}
+	defer bodyReader.Close()
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		stdinInUse,
 	)
 	if err != nil {
 		return err
@@ -99,11 +108,13 @@ func handlePlaylistsImagesList(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err

@@ -62,6 +62,7 @@ func handleSearchQuery(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.SearchQueryParams{}
 
 	options, err := flagOptions(
@@ -69,6 +70,7 @@ func handleSearchQuery(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err

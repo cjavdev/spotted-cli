@@ -104,6 +104,7 @@ func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeTrackListParams{}
 
 	options, err := flagOptions(
@@ -111,6 +112,7 @@ func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -149,6 +151,7 @@ func handleMeTracksCheck(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeTrackCheckParams{}
 
 	options, err := flagOptions(
@@ -156,6 +159,7 @@ func handleMeTracksCheck(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		EmptyBody,
+		false,
 	)
 	if err != nil {
 		return err
@@ -181,6 +185,7 @@ func handleMeTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeTrackRemoveParams{}
 
 	options, err := flagOptions(
@@ -188,6 +193,7 @@ func handleMeTracksRemove(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err
@@ -203,6 +209,7 @@ func handleMeTracksSave(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
 	params := spotted.MeTrackSaveParams{}
 
 	options, err := flagOptions(
@@ -210,6 +217,7 @@ func handleMeTracksSave(ctx context.Context, cmd *cli.Command) error {
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
 		ApplicationJSON,
+		false,
 	)
 	if err != nil {
 		return err
