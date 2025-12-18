@@ -145,17 +145,30 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Browse.Categories.List(ctx, params, options...)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "browse:categories list", obj, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Browse.Categories.List(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "browse:categories list", obj, format, transform)
+	} else {
+		iter := client.Browse.Categories.ListAutoPaging(ctx, params, options...)
+		return streamOutput("browse:categories list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "browse:categories list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleBrowseCategoriesGetPlaylists(ctx context.Context, cmd *cli.Command) error {
