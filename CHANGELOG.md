@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.13.0 (2025-12-18)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/cjavdev/spotted-cli/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* add better suggests when commands don't match ([5f1abc6](https://github.com/cjavdev/spotted-cli/commit/5f1abc6590f472879c5833980ef8a2150fbbb04e))
+* **api:** add homebrew ([973cbaf](https://github.com/cjavdev/spotted-cli/commit/973cbaf05f32367a94b5b291fb77a7b28df25c76))
+* **api:** manual updates ([e563367](https://github.com/cjavdev/spotted-cli/commit/e5633677002ed28094ac708eb90f2f2e4c53ea73))
+* **api:** manual updates ([33eabbb](https://github.com/cjavdev/spotted-cli/commit/33eabbb2840b68ce2ec56771f9b82d8a2413edf7))
+* **api:** manual updates ([fcf573d](https://github.com/cjavdev/spotted-cli/commit/fcf573d8e10f8a1079f15eb64871a798bc682db0))
+* **cli:** binary request bodies ([bca4fc5](https://github.com/cjavdev/spotted-cli/commit/bca4fc5dc7605490922ce658db1cf5891e9cbc9d))
+
+
+### Bug Fixes
+
+* **cli:** fix compilation on Windows ([08bedee](https://github.com/cjavdev/spotted-cli/commit/08bedeea2cf52363d45f134b64e88ecf2635d6b8))
+* **cli:** remove `*.exe` files from customer SDK changes ([c1d4338](https://github.com/cjavdev/spotted-cli/commit/c1d4338422cab1bf98b9220b614f3433844de877))
+* ignore .exe files ([d278880](https://github.com/cjavdev/spotted-cli/commit/d278880c2c40fbee9113d0dea8920ca41634f341))
+
+
+### Chores
+
+* **cli:** add `*.exe` files back to `.gitignore` ([963f040](https://github.com/cjavdev/spotted-cli/commit/963f040f78e2ecdc3f6bd2d1d07e1eb532e053dc))
+* **cli:** move `jsonview` subpackage to `internal` ([5d80e05](https://github.com/cjavdev/spotted-cli/commit/5d80e0500ea53f6ac1cd71b65cc8042157234e45))
+* **cli:** run pre-codegen tests on Windows ([eaf39fd](https://github.com/cjavdev/spotted-cli/commit/eaf39fd66244efcfa6b623ea0b5db89e15617eb1))
+* **cli:** temporarily remove `*.exe` from `.gitignore` ([4a251b4](https://github.com/cjavdev/spotted-cli/commit/4a251b4eabec6b5c0080237ddc0610fb554d5488))
+* **internal:** codegen related update ([9d891ed](https://github.com/cjavdev/spotted-cli/commit/9d891ed6c049312a347a80d121e6cd2219975080))
+* **internal:** codegen related update ([ddebab8](https://github.com/cjavdev/spotted-cli/commit/ddebab8a973c738ea083a51587e3333ac9d84a19))
+* **internal:** codegen related update ([c723a0b](https://github.com/cjavdev/spotted-cli/commit/c723a0b6e1f5a79925feed36063ba15508f2f3df))
+* update SDK settings ([218e019](https://github.com/cjavdev/spotted-cli/commit/218e0190c79eec8af9a2a16f1c9f4df726484088))
+
 ## 0.12.0 (2025-12-16)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/cjavdev/spotted-cli/compare/v0.11.0...v0.12.0)
