@@ -73,7 +73,7 @@ func handlePlaylistsImagesUpdate(ctx context.Context, cmd *cli.Command) error {
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
+		ApplicationOctetStream,
 		stdinInUse,
 	)
 	if err != nil {
