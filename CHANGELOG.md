@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.0 (2025-12-19)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/cjavdev/spotted-cli/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** remove authorization code oauth flow ([4fc118f](https://github.com/cjavdev/spotted-cli/commit/4fc118fc3bc7492fb7649b3c172c6c559d951513))
+
 ## 0.14.0 (2025-12-19)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/cjavdev/spotted-cli/compare/v0.13.0...v0.14.0)
