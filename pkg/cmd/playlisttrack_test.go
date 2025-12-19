@@ -55,7 +55,7 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 		t,
 		"playlists:tracks", "remove",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-		"--track", "{uri: uri}\n",
+		"--track", "{uri: uri}",
 		"--published",
 		"--snapshot-id", "snapshot_id",
 	)
