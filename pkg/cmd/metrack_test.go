@@ -45,6 +45,6 @@ func TestMeTracksSave(t *testing.T) {
 		"me:tracks", "save",
 		"--id", "string",
 		"--published",
-		"--timestamped-id", "{id: id, added_at: '2019-12-27T18:11:19.117Z'}\n",
+		"--timestamped-id", "{id: id, added_at: '2019-12-27T18:11:19.117Z'}",
 	)
 }
