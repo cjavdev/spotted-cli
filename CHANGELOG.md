@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.14.0 (2025-12-19)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/cjavdev/spotted-cli/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* added mock server tests ([195d0eb](https://github.com/cjavdev/spotted-cli/commit/195d0eb0bbb40b818d6e8f0c760d52af1c3656a0))
+
+
+### Bug Fixes
+
+* fix generated flag types and value wrapping ([ee91d66](https://github.com/cjavdev/spotted-cli/commit/ee91d668dd062b1fa941a37764bd2af1db7f259c))
+
+
+### Chores
+
+* **internal:** codegen related update ([92842ac](https://github.com/cjavdev/spotted-cli/commit/92842ac3b1647731451b21d88da2460d9142c621))
+* **internal:** codegen related update ([f6f1dd7](https://github.com/cjavdev/spotted-cli/commit/f6f1dd7df9cd7840f4d46a6b6eb73602007717a3))
+
 ## 0.13.0 (2025-12-18)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/cjavdev/spotted-cli/compare/v0.12.0...v0.13.0)
