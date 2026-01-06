@@ -1,6 +1,6 @@
 # Spotted CLI
 
-The official CLI for the [Spotted REST API](https://spotted.stldocs.com).
+The official CLI for the [Spotted REST API](https://spotted.stldocs.com?docs).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
