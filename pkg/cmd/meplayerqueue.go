@@ -22,6 +22,7 @@ var mePlayerQueueAdd = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "uri",
 			Usage:     "The uri of the item to add to the queue. Must be a track or an episode uri.\n",
+			Required:  true,
 			QueryPath: "uri",
 		},
 		&requestflag.Flag[string]{

@@ -107,6 +107,7 @@ var mePlayerSeekToPosition = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "position-ms",
 			Usage:     "The position in milliseconds to seek to. Must be a\npositive number. Passing in a position that is greater than the length of\nthe track will cause the player to start playing the next song.\n",
+			Required:  true,
 			QueryPath: "position_ms",
 		},
 		&requestflag.Flag[string]{
@@ -126,6 +127,7 @@ var mePlayerSetRepeatMode = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "state",
 			Usage:     "**track**, **context** or **off**.<br/>\n**track** will repeat the current track.<br/>\n**context** will repeat the current context.<br/>\n**off** will turn repeat off.\n",
+			Required:  true,
 			QueryPath: "state",
 		},
 		&requestflag.Flag[string]{
@@ -145,6 +147,7 @@ var mePlayerSetVolume = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "volume-percent",
 			Usage:     "The volume to set. Must be a value from 0 to 100 inclusive.\n",
+			Required:  true,
 			QueryPath: "volume_percent",
 		},
 		&requestflag.Flag[string]{
@@ -231,6 +234,7 @@ var mePlayerToggleShuffle = cli.Command{
 		&requestflag.Flag[bool]{
 			Name:      "state",
 			Usage:     "**true** : Shuffle user's playback.<br/>\n**false** : Do not shuffle user's playback.\n",
+			Required:  true,
 			QueryPath: "state",
 		},
 		&requestflag.Flag[string]{
@@ -250,6 +254,7 @@ var mePlayerTransfer = cli.Command{
 		&requestflag.Flag[[]string]{
 			Name:     "device-id",
 			Usage:    "A JSON array containing the ID of the device on which playback should be started/transferred.<br/>For example:`{device_ids:[\"74ASZWbe4lXaubB36ztrGX\"]}`<br/>_**Note**: Although an array is accepted, only a single device_id is currently supported. Supplying more than one will return `400 Bad Request`_\n",
+			Required: true,
 			BodyPath: "device_ids",
 		},
 		&requestflag.Flag[bool]{

@@ -20,8 +20,9 @@ var playlistsTracksUpdate = cli.Command{
 	Usage: "Either reorder or replace items in a playlist depending on the request's\nparameters. To reorder items, include `range_start`, `insert_before`,\n`range_length` and `snapshot_id` in the request's body. To replace items,\ninclude `uris` as either a query parameter or in the request's body. Replacing\nitems in a playlist will overwrite its existing items. This operation can be\nused for replacing or clearing items in a playlist. <br/> **Note**: Replace and\nreorder are mutually exclusive operations which share the same endpoint, but\nhave different parameters. These operations can't be applied together in a\nsingle request.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:     "insert-before",
@@ -62,8 +63,9 @@ var playlistsTracksList = cli.Command{
 	Usage: "Get full details of the items of a playlist owned by a Spotify user.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "additional-types",
@@ -101,8 +103,9 @@ var playlistsTracksAdd = cli.Command{
 	Usage: "Add one or more items to a user's playlist.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:     "position",
@@ -129,12 +132,14 @@ var playlistsTracksRemove = cli.Command{
 	Usage: "Remove one or more items from a user's playlist.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[[]map[string]string]{
 			Name:     "track",
 			Usage:    "An array of objects containing [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids) of the tracks or episodes to remove.\nFor example: `{ \"tracks\": [{ \"uri\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\" },{ \"uri\": \"spotify:track:1301WleyT98MSxVHPZCA6M\" }] }`. A maximum of 100 objects can be sent at once.\n",
+			Required: true,
 			BodyPath: "tracks",
 		},
 		&requestflag.Flag[bool]{

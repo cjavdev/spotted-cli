@@ -22,6 +22,7 @@ var meFollowingBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "type",
 			Usage:     "The ID type: currently only `artist` is supported.\n",
+			Required:  true,
 			QueryPath: "type",
 		},
 		&requestflag.Flag[string]{
@@ -47,11 +48,13 @@ var meFollowingCheck = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the artist or the user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) to check. For example: `ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q`. A maximum of 50 IDs can be sent in one request.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 		&requestflag.Flag[string]{
 			Name:      "type",
 			Usage:     "The ID type: either `artist` or `user`.\n",
+			Required:  true,
 			QueryPath: "type",
 		},
 	},
@@ -66,6 +69,7 @@ var meFollowingFollow = cli.Command{
 		&requestflag.Flag[[]string]{
 			Name:     "id",
 			Usage:    "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids).\nFor example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
+			Required: true,
 			BodyPath: "ids",
 		},
 		&requestflag.Flag[bool]{

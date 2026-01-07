@@ -20,8 +20,9 @@ var playlistsFollowersCheck = cli.Command{
 	Usage: "Check to see if the current user is following a specified playlist.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -38,8 +39,9 @@ var playlistsFollowersFollow = cli.Command{
 	Usage: "Add the current user as a follower of a playlist.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[bool]{
 			Name:     "published",
@@ -56,8 +58,9 @@ var playlistsFollowersUnfollow = cli.Command{
 	Usage: "Remove the current user as a follower of a playlist.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 	},
 	Action:          handlePlaylistsFollowersUnfollow,
