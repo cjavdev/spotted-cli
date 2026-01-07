@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.1 (2026-01-07)
+
+Full Changelog: [v0.18.0...v0.18.1](https://github.com/cjavdev/spotted-cli/compare/v0.18.0...v0.18.1)
+
+### Bug Fixes
+
+* fixed placeholders for date/time arguments ([b4e1d85](https://github.com/cjavdev/spotted-cli/commit/b4e1d85445a2e5b3f9dab46a1d04779cf38c1e91))
+
 ## 0.18.0 (2026-01-06)
 
 Full Changelog: [v0.17.0...v0.18.0](https://github.com/cjavdev/spotted-cli/compare/v0.17.0...v0.18.0)
