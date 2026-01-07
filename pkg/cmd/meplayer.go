@@ -406,16 +406,7 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 		return ShowJSON(os.Stdout, "me:player list-recently-played", obj, format, transform)
 	} else {
 		iter := client.Me.Player.ListRecentlyPlayedAutoPaging(ctx, params, options...)
-		return streamOutput("me:player list-recently-played", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:player list-recently-played", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:player list-recently-played", iter, format, transform)
 	}
 }
 

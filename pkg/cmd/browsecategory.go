@@ -160,16 +160,7 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "browse:categories list", obj, format, transform)
 	} else {
 		iter := client.Browse.Categories.ListAutoPaging(ctx, params, options...)
-		return streamOutput("browse:categories list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "browse:categories list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "browse:categories list", iter, format, transform)
 	}
 }
 
