@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.2 (2026-01-07)
+
+Full Changelog: [v0.18.1...v0.18.2](https://github.com/cjavdev/spotted-cli/compare/v0.18.1...v0.18.2)
+
+### Bug Fixes
+
+* check required arguments ([f99c326](https://github.com/cjavdev/spotted-cli/commit/f99c3264e09196311ed9446d7451320376d5f79b))
+
 ## 0.18.1 (2026-01-07)
 
 Full Changelog: [v0.18.0...v0.18.1](https://github.com/cjavdev/spotted-cli/compare/v0.18.0...v0.18.1)
