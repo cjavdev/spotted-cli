@@ -101,16 +101,7 @@ func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:top list-top-artists", obj, format, transform)
 	} else {
 		iter := client.Me.Top.ListTopArtistsAutoPaging(ctx, params, options...)
-		return streamOutput("me:top list-top-artists", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:top list-top-artists", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:top list-top-artists", iter, format, transform)
 	}
 }
 
@@ -148,15 +139,6 @@ func handleMeTopListTopTracks(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:top list-top-tracks", obj, format, transform)
 	} else {
 		iter := client.Me.Top.ListTopTracksAutoPaging(ctx, params, options...)
-		return streamOutput("me:top list-top-tracks", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:top list-top-tracks", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:top list-top-tracks", iter, format, transform)
 	}
 }

@@ -207,15 +207,6 @@ func handleAlbumsListTracks(ctx context.Context, cmd *cli.Command) error {
 			params,
 			options...,
 		)
-		return streamOutput("albums list-tracks", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "albums list-tracks", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "albums list-tracks", iter, format, transform)
 	}
 }
