@@ -20,8 +20,9 @@ var showsRetrieve = cli.Command{
 	Usage: "Get Spotify catalog information for a single show identified by its unique\nSpotify ID.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -40,6 +41,7 @@ var showsBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the shows. Maximum: 50 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 		&requestflag.Flag[string]{
@@ -57,8 +59,9 @@ var showsListEpisodes = cli.Command{
 	Usage: "Get Spotify catalog information about an show’s episodes. Optional parameters\ncan be used to limit the number of episodes returned.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",

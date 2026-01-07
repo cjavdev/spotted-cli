@@ -20,8 +20,9 @@ var tracksRetrieve = cli.Command{
 	Usage: "Get Spotify catalog information for a single track identified by its unique\nSpotify ID.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the track.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the track.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -40,6 +41,7 @@ var tracksBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=4iV5W9uYEdYUVa79Axb7Rh,1301WleyT98MSxVHPZCA6M`. Maximum: 50 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 		&requestflag.Flag[string]{

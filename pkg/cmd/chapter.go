@@ -20,8 +20,9 @@ var chaptersRetrieve = cli.Command{
 	Usage: "Get Spotify catalog information for a single audiobook chapter. Chapters are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the chapter.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the chapter.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -40,6 +41,7 @@ var chaptersBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=0IsXVP0JmcB2adSE338GkK,3ZXb8FKZGU0EHALYX6uCzU`. Maximum: 50 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 		&requestflag.Flag[string]{

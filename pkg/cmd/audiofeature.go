@@ -20,8 +20,9 @@ var audioFeaturesRetrieve = cli.Command{
 	Usage: "Get audio feature information for a single track identified by its unique\nSpotify ID.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
+			Required: true,
 		},
 	},
 	Action:          handleAudioFeaturesRetrieve,
@@ -35,6 +36,7 @@ var audioFeaturesBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids)\nfor the tracks. Maximum: 100 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 	},

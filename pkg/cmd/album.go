@@ -20,8 +20,9 @@ var albumsRetrieve = cli.Command{
 	Usage: "Get Spotify catalog information for a single album.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the album.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the album.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -40,6 +41,7 @@ var albumsBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the albums. Maximum: 20 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 		&requestflag.Flag[string]{
@@ -57,8 +59,9 @@ var albumsListTracks = cli.Command{
 	Usage: "Get Spotify catalog information about an album’s tracks. Optional parameters can\nbe used to limit the number of tracks returned.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the album.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the album.\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
