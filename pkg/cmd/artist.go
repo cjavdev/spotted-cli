@@ -20,8 +20,9 @@ var artistsRetrieve = cli.Command{
 	Usage: "Get Spotify catalog information for a single artist identified by their unique\nSpotify ID.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Required: true,
 		},
 	},
 	Action:          handleArtistsRetrieve,
@@ -35,6 +36,7 @@ var artistsBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the artists. Maximum: 50 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 	},
@@ -47,8 +49,9 @@ var artistsListAlbums = cli.Command{
 	Usage: "Get Spotify catalog information about an artist's albums.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "include-groups",
@@ -81,8 +84,9 @@ var artistsListRelatedArtists = cli.Command{
 	Usage: "Get Spotify catalog information about artists similar to a given artist.\nSimilarity is based on analysis of the Spotify community's listening history.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Required: true,
 		},
 	},
 	Action:          handleArtistsListRelatedArtists,
@@ -94,8 +98,9 @@ var artistsTopTracks = cli.Command{
 	Usage: "Get Spotify catalog information about an artist's top tracks by country.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",

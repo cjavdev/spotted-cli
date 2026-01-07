@@ -47,6 +47,7 @@ var meEpisodesCheck = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the episodes. Maximum: 50 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 	},
@@ -80,6 +81,7 @@ var meEpisodesSave = cli.Command{
 		&requestflag.Flag[[]string]{
 			Name:     "id",
 			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). <br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
+			Required: true,
 			BodyPath: "ids",
 		},
 		&requestflag.Flag[bool]{

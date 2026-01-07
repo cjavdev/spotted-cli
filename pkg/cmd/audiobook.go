@@ -20,8 +20,9 @@ var audiobooksRetrieve = cli.Command{
 	Usage: "Get Spotify catalog information for a single audiobook. Audiobooks are only\navailable within the US, UK, Canada, Ireland, New Zealand and Australia markets.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -40,6 +41,7 @@ var audiobooksBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 		&requestflag.Flag[string]{
@@ -57,8 +59,9 @@ var audiobooksListChapters = cli.Command{
 	Usage: "Get Spotify catalog information about an audiobook's chapters. Audiobooks are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
+			Name:     "id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",

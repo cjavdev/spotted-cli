@@ -20,8 +20,9 @@ var usersRetrieveProfile = cli.Command{
 	Usage: "Get public profile information about a Spotify user.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "user-id",
-			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Name:     "user-id",
+			Usage:    "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Required: true,
 		},
 	},
 	Action:          handleUsersRetrieveProfile,

@@ -20,12 +20,14 @@ var usersPlaylistsCreate = cli.Command{
 	Usage: "Create a playlist for a Spotify user. (The playlist will be empty until you\n[add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each\nuser is generally limited to a maximum of 11000 playlists.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "user-id",
-			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Name:     "user-id",
+			Usage:    "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:     "name",
 			Usage:    "The name for the new playlist, for example `\"Your Coolest Playlist\"`. This name does not need to be unique; a user may have several playlists with the same name.\n",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[bool]{
@@ -53,8 +55,9 @@ var usersPlaylistsList = cli.Command{
 	Usage: "Get a list of the playlists owned or followed by a Spotify user.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "user-id",
-			Usage: "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Name:     "user-id",
+			Usage:    "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",

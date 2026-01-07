@@ -47,6 +47,7 @@ var meAlbumsCheck = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "ids",
 			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids) for the albums. Maximum: 20 IDs.\n",
+			Required:  true,
 			QueryPath: "ids",
 		},
 	},

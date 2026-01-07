@@ -20,8 +20,9 @@ var browseCategoriesRetrieve = cli.Command{
 	Usage: "Get a single category used to tag items in Spotify (on, for example, the Spotify\nplayer’s “Browse” tab).",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "category-id",
-			Usage: "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
+			Name:     "category-id",
+			Usage:    "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "locale",
@@ -63,8 +64,9 @@ var browseCategoriesGetPlaylists = cli.Command{
 	Usage: "Get a list of Spotify playlists tagged with a particular category.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "category-id",
-			Usage: "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
+			Name:     "category-id",
+			Usage:    "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",

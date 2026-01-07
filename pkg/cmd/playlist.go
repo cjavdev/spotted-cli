@@ -20,8 +20,9 @@ var playlistsRetrieve = cli.Command{
 	Usage: "Get a playlist owned by a Spotify user.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:      "additional-types",
@@ -48,8 +49,9 @@ var playlistsUpdate = cli.Command{
 	Usage: "Change a playlist's name and public/private state. (The user must, of course,\nown the playlist.)",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "playlist-id",
-			Usage: "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Name:     "playlist-id",
+			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required: true,
 		},
 		&requestflag.Flag[bool]{
 			Name:     "collaborative",
