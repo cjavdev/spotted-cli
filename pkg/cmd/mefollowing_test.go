@@ -35,7 +35,7 @@ func TestMeFollowingFollow(t *testing.T) {
 		t,
 		"me:following", "follow",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }
 
@@ -45,6 +45,6 @@ func TestMeFollowingUnfollow(t *testing.T) {
 		t,
 		"me:following", "unfollow",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }

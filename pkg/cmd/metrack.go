@@ -74,7 +74,7 @@ var meTracksRemove = cli.Command{
 	HideHelpCommand: true,
 }
 
-var meTracksSave = cli.Command{
+var meTracksSave = requestflag.WithInnerFlags(cli.Command{
 	Name:  "save",
 	Usage: "Save one or more tracks to the current user's 'Your Music' library.",
 	Flags: []cli.Flag{
@@ -97,7 +97,20 @@ var meTracksSave = cli.Command{
 	},
 	Action:          handleMeTracksSave,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timestamped-id": {
+		&requestflag.InnerFlag[string]{
+			Name:       "timestamped-id.id",
+			Usage:      "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
+			InnerField: "id",
+		},
+		&requestflag.InnerFlag[requestflag.DateTimeValue]{
+			Name:       "timestamped-id.added-at",
+			Usage:      "The timestamp when the track was added to the library. Use ISO 8601 format with UTC timezone (e.g., `2023-01-15T14:30:00Z`). You can specify past timestamps to insert tracks at specific positions in the library's chronological order. The API uses minute-level granularity for ordering, though the timestamp supports millisecond precision.\n",
+			InnerField: "added_at",
+		},
+	},
+})
 
 func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)

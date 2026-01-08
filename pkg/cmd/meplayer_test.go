@@ -113,7 +113,7 @@ func TestMePlayerStartPlayback(t *testing.T) {
 		"--context-uri", "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
 		"--offset", "{position: bar}",
 		"--position-ms", "0",
-		"--published",
+		"--published=true",
 		"--uris", "string",
 	)
 }
@@ -123,7 +123,7 @@ func TestMePlayerToggleShuffle(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "toggle-shuffle",
-		"--state",
+		"--state=true",
 		"--device-id", "0d1841b0976bae2a3a310dd74c0f3df354899bc8",
 	)
 }
@@ -134,7 +134,7 @@ func TestMePlayerTransfer(t *testing.T) {
 		t,
 		"me:player", "transfer",
 		"--device-id", "74ASZWbe4lXaubB36ztrGX",
-		"--play",
-		"--published",
+		"--play=true",
+		"--published=true",
 	)
 }

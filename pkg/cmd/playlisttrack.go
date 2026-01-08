@@ -127,7 +127,7 @@ var playlistsTracksAdd = cli.Command{
 	HideHelpCommand: true,
 }
 
-var playlistsTracksRemove = cli.Command{
+var playlistsTracksRemove = requestflag.WithInnerFlags(cli.Command{
 	Name:  "remove",
 	Usage: "Remove one or more items from a user's playlist.",
 	Flags: []cli.Flag{
@@ -155,7 +155,15 @@ var playlistsTracksRemove = cli.Command{
 	},
 	Action:          handlePlaylistsTracksRemove,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"track": {
+		&requestflag.InnerFlag[string]{
+			Name:       "track.uri",
+			Usage:      "Spotify URI",
+			InnerField: "uri",
+		},
+	},
+})
 
 func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)

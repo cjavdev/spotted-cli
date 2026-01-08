@@ -26,9 +26,9 @@ func TestPlaylistsUpdate(t *testing.T) {
 		t,
 		"playlists", "update",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-		"--collaborative",
+		"--collaborative=true",
 		"--description", "Updated playlist description",
 		"--name", "Updated Playlist Name",
-		"--published",
+		"--published=true",
 	)
 }

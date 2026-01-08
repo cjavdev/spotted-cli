@@ -34,7 +34,7 @@ func TestMeAlbumsRemove(t *testing.T) {
 		t,
 		"me:albums", "remove",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }
 
@@ -44,6 +44,6 @@ func TestMeAlbumsSave(t *testing.T) {
 		t,
 		"me:albums", "save",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }

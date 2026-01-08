@@ -24,7 +24,7 @@ func TestPlaylistsFollowersFollow(t *testing.T) {
 		t,
 		"playlists:followers", "follow",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-		"--published",
+		"--published=true",
 	)
 }
 
