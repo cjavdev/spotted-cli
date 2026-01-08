@@ -33,7 +33,7 @@ func TestMeShowsRemove(t *testing.T) {
 		t,
 		"me:shows", "remove",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }
 
@@ -43,6 +43,6 @@ func TestMeShowsSave(t *testing.T) {
 		t,
 		"me:shows", "save",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }

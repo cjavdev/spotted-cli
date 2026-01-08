@@ -15,9 +15,9 @@ func TestUsersPlaylistsCreate(t *testing.T) {
 		"users:playlists", "create",
 		"--user-id", "smedjan",
 		"--name", "New Playlist",
-		"--collaborative",
+		"--collaborative=true",
 		"--description", "New playlist description",
-		"--published",
+		"--published=true",
 	)
 }
 

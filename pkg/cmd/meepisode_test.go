@@ -34,7 +34,7 @@ func TestMeEpisodesRemove(t *testing.T) {
 		t,
 		"me:episodes", "remove",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }
 
@@ -44,6 +44,6 @@ func TestMeEpisodesSave(t *testing.T) {
 		t,
 		"me:episodes", "save",
 		"--id", "string",
-		"--published",
+		"--published=true",
 	)
 }
