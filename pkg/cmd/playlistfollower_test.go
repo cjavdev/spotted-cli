@@ -17,22 +17,3 @@ func TestPlaylistsFollowersCheck(t *testing.T) {
 		"--ids", "jmperezperez",
 	)
 }
-
-func TestPlaylistsFollowersFollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"playlists:followers", "follow",
-		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-		"--published=true",
-	)
-}
-
-func TestPlaylistsFollowersUnfollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"playlists:followers", "unfollow",
-		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-	)
-}

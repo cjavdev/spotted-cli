@@ -19,16 +19,3 @@ func TestPlaylistsRetrieve(t *testing.T) {
 		"--market", "ES",
 	)
 }
-
-func TestPlaylistsUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"playlists", "update",
-		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-		"--collaborative=true",
-		"--description", "Updated playlist description",
-		"--name", "Updated Playlist Name",
-		"--published=true",
-	)
-}

@@ -34,39 +34,6 @@ var playlistsFollowersCheck = cli.Command{
 	HideHelpCommand: true,
 }
 
-var playlistsFollowersFollow = cli.Command{
-	Name:  "follow",
-	Usage: "Add the current user as a follower of a playlist.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handlePlaylistsFollowersFollow,
-	HideHelpCommand: true,
-}
-
-var playlistsFollowersUnfollow = cli.Command{
-	Name:  "unfollow",
-	Usage: "Remove the current user as a follower of a playlist.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
-		},
-	},
-	Action:          handlePlaylistsFollowersUnfollow,
-	HideHelpCommand: true,
-}
-
 func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -107,61 +74,4 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "playlists:followers check", obj, format, transform)
-}
-
-func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
-		cmd.Set("playlist-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.PlaylistFollowerFollowParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Playlists.Followers.Follow(
-		ctx,
-		cmd.Value("playlist-id").(string),
-		params,
-		options...,
-	)
-}
-
-func handlePlaylistsFollowersUnfollow(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
-		cmd.Set("playlist-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Playlists.Followers.Unfollow(ctx, cmd.Value("playlist-id").(string), options...)
 }

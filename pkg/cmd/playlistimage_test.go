@@ -8,16 +8,6 @@ import (
 	"github.com/cjavdev/spotted-cli/internal/mocktest"
 )
 
-func TestPlaylistsImagesUpdate(t *testing.T) {
-	t.Skip("Prism doesn't support application/binary responses")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"playlists:images", "update",
-		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-		"--body", mocktest.TestFile(t, ""),
-	)
-}
-
 func TestPlaylistsImagesList(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
