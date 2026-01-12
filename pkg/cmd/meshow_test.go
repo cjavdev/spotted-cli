@@ -26,23 +26,3 @@ func TestMeShowsCheck(t *testing.T) {
 		"--ids", "5CfCWKI5pZ28U0uOzXkDHe,5as3aKmN2k11yfDDDSrvaZ",
 	)
 }
-
-func TestMeShowsRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:shows", "remove",
-		"--id", "string",
-		"--published=true",
-	)
-}
-
-func TestMeShowsSave(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:shows", "save",
-		"--id", "string",
-		"--published=true",
-	)
-}

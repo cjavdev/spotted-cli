@@ -50,36 +50,6 @@ var meAudiobooksCheck = cli.Command{
 	HideHelpCommand: true,
 }
 
-var meAudiobooksRemove = cli.Command{
-	Name:  "remove",
-	Usage: "Remove one or more audiobooks from the Spotify user's library.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:      "ids",
-			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Required:  true,
-			QueryPath: "ids",
-		},
-	},
-	Action:          handleMeAudiobooksRemove,
-	HideHelpCommand: true,
-}
-
-var meAudiobooksSave = cli.Command{
-	Name:  "save",
-	Usage: "Save one or more audiobooks to the current Spotify user's library.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:      "ids",
-			Usage:     "A comma-separated list of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `ids=18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ`. Maximum: 50 IDs.\n",
-			Required:  true,
-			QueryPath: "ids",
-		},
-	},
-	Action:          handleMeAudiobooksSave,
-	HideHelpCommand: true,
-}
-
 func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -150,52 +120,4 @@ func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "me:audiobooks check", obj, format, transform)
-}
-
-func handleMeAudiobooksRemove(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeAudiobookRemoveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Audiobooks.Remove(ctx, params, options...)
-}
-
-func handleMeAudiobooksSave(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeAudiobookSaveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Audiobooks.Save(ctx, params, options...)
 }

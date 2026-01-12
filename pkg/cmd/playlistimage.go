@@ -9,33 +9,12 @@ import (
 	"strings"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
-	"github.com/cjavdev/spotted-cli/internal/binaryparam"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	"github.com/cjavdev/spotted-go"
 	"github.com/cjavdev/spotted-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
-
-var playlistsImagesUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Replace the image used to represent a specific playlist.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
-		},
-		&requestflag.Flag[string]{
-			Name:     "body",
-			Usage:    "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
-			Required: true,
-			BodyRoot: true,
-		},
-	},
-	Action:          handlePlaylistsImagesUpdate,
-	HideHelpCommand: true,
-}
 
 var playlistsImagesList = cli.Command{
 	Name:  "list",
