@@ -16,8 +16,9 @@ import (
 )
 
 var recommendationsGet = cli.Command{
-	Name:  "get",
-	Usage: "Recommendations are generated based on the available information for a given\nseed entity and matched against similar artists and tracks. If there is\nsufficient information about the provided seeds, a list of tracks will be\nreturned together with pool size details.",
+	Name:    "get",
+	Usage:   "Recommendations are generated based on the available information for a given\nseed entity and matched against similar artists and tracks. If there is\nsufficient information about the provided seeds, a list of tracks will be\nreturned together with pool size details.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -263,6 +264,7 @@ var recommendationsGet = cli.Command{
 var recommendationsListAvailableGenreSeeds = cli.Command{
 	Name:            "list-available-genre-seeds",
 	Usage:           "Retrieve a list of available genres seed parameter values for\n[recommendations](/documentation/web-api/reference/get-recommendations).",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleRecommendationsListAvailableGenreSeeds,
 	HideHelpCommand: true,

@@ -16,8 +16,9 @@ import (
 )
 
 var browseCategoriesRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get a single category used to tag items in Spotify (on, for example, the Spotify\nplayer’s “Browse” tab).",
+	Name:    "retrieve",
+	Usage:   "Get a single category used to tag items in Spotify (on, for example, the Spotify\nplayer’s “Browse” tab).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "category-id",
@@ -35,8 +36,9 @@ var browseCategoriesRetrieve = cli.Command{
 }
 
 var browseCategoriesList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of categories used to tag items in Spotify (on, for example, the\nSpotify player’s “Browse” tab).",
+	Name:    "list",
+	Usage:   "Get a list of categories used to tag items in Spotify (on, for example, the\nSpotify player’s “Browse” tab).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -60,8 +62,9 @@ var browseCategoriesList = cli.Command{
 }
 
 var browseCategoriesGetPlaylists = cli.Command{
-	Name:  "get-playlists",
-	Usage: "Get a list of Spotify playlists tagged with a particular category.",
+	Name:    "get-playlists",
+	Usage:   "Get a list of Spotify playlists tagged with a particular category.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "category-id",

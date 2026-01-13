@@ -16,8 +16,9 @@ import (
 )
 
 var meShowsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of shows saved in the current Spotify user's library. Optional\nparameters can be used to limit the number of shows returned.",
+	Name:    "list",
+	Usage:   "Get a list of shows saved in the current Spotify user's library. Optional\nparameters can be used to limit the number of shows returned.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -36,8 +37,9 @@ var meShowsList = cli.Command{
 }
 
 var meShowsCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check if one or more shows is already saved in the current Spotify user's\nlibrary.",
+	Name:    "check",
+	Usage:   "Check if one or more shows is already saved in the current Spotify user's\nlibrary.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

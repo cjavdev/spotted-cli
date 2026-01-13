@@ -16,8 +16,9 @@ import (
 )
 
 var usersRetrieveProfile = cli.Command{
-	Name:  "retrieve-profile",
-	Usage: "Get public profile information about a Spotify user.",
+	Name:    "retrieve-profile",
+	Usage:   "Get public profile information about a Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "user-id",

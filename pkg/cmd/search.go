@@ -16,8 +16,9 @@ import (
 )
 
 var searchQuery = cli.Command{
-	Name:  "query",
-	Usage: "Get Spotify catalog information about albums, artists, playlists, tracks, shows,\nepisodes or audiobooks that match a keyword string. Audiobooks are only\navailable within the US, UK, Canada, Ireland, New Zealand and Australia markets.",
+	Name:    "query",
+	Usage:   "Get Spotify catalog information about albums, artists, playlists, tracks, shows,\nepisodes or audiobooks that match a keyword string. Audiobooks are only\navailable within the US, UK, Canada, Ireland, New Zealand and Australia markets.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "q",

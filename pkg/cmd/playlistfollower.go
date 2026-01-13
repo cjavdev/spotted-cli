@@ -16,8 +16,9 @@ import (
 )
 
 var playlistsFollowersCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check to see if the current user is following a specified playlist.",
+	Name:    "check",
+	Usage:   "Check to see if the current user is following a specified playlist.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",

@@ -16,8 +16,9 @@ import (
 )
 
 var audiobooksRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get Spotify catalog information for a single audiobook. Audiobooks are only\navailable within the US, UK, Canada, Ireland, New Zealand and Australia markets.",
+	Name:    "retrieve",
+	Usage:   "Get Spotify catalog information for a single audiobook. Audiobooks are only\navailable within the US, UK, Canada, Ireland, New Zealand and Australia markets.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -35,8 +36,9 @@ var audiobooksRetrieve = cli.Command{
 }
 
 var audiobooksBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get Spotify catalog information for several audiobooks identified by their\nSpotify IDs. Audiobooks are only available within the US, UK, Canada, Ireland,\nNew Zealand and Australia markets.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get Spotify catalog information for several audiobooks identified by their\nSpotify IDs. Audiobooks are only available within the US, UK, Canada, Ireland,\nNew Zealand and Australia markets.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -55,8 +57,9 @@ var audiobooksBulkRetrieve = cli.Command{
 }
 
 var audiobooksListChapters = cli.Command{
-	Name:  "list-chapters",
-	Usage: "Get Spotify catalog information about an audiobook's chapters. Audiobooks are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
+	Name:    "list-chapters",
+	Usage:   "Get Spotify catalog information about an audiobook's chapters. Audiobooks are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
