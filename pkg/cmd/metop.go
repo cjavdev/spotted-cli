@@ -16,8 +16,9 @@ import (
 )
 
 var meTopListTopArtists = cli.Command{
-	Name:  "list-top-artists",
-	Usage: "Get the current user's top artists based on calculated affinity.",
+	Name:    "list-top-artists",
+	Usage:   "Get the current user's top artists based on calculated affinity.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -42,8 +43,9 @@ var meTopListTopArtists = cli.Command{
 }
 
 var meTopListTopTracks = cli.Command{
-	Name:  "list-top-tracks",
-	Usage: "Get the current user's top tracks based on calculated affinity.",
+	Name:    "list-top-tracks",
+	Usage:   "Get the current user's top tracks based on calculated affinity.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",

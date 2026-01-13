@@ -16,8 +16,9 @@ import (
 )
 
 var meAlbumsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the albums saved in the current Spotify user's 'Your Music'\nlibrary.",
+	Name:    "list",
+	Usage:   "Get a list of the albums saved in the current Spotify user's 'Your Music'\nlibrary.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -41,8 +42,9 @@ var meAlbumsList = cli.Command{
 }
 
 var meAlbumsCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check if one or more albums is already saved in the current Spotify user's 'Your\nMusic' library.",
+	Name:    "check",
+	Usage:   "Check if one or more albums is already saved in the current Spotify user's 'Your\nMusic' library.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

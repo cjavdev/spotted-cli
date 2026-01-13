@@ -16,8 +16,9 @@ import (
 )
 
 var audioFeaturesRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get audio feature information for a single track identified by its unique\nSpotify ID.",
+	Name:    "retrieve",
+	Usage:   "Get audio feature information for a single track identified by its unique\nSpotify ID.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -30,8 +31,9 @@ var audioFeaturesRetrieve = cli.Command{
 }
 
 var audioFeaturesBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get audio features for multiple tracks based on their Spotify IDs.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get audio features for multiple tracks based on their Spotify IDs.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

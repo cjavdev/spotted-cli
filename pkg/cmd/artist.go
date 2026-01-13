@@ -16,8 +16,9 @@ import (
 )
 
 var artistsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get Spotify catalog information for a single artist identified by their unique\nSpotify ID.",
+	Name:    "retrieve",
+	Usage:   "Get Spotify catalog information for a single artist identified by their unique\nSpotify ID.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -30,8 +31,9 @@ var artistsRetrieve = cli.Command{
 }
 
 var artistsBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get Spotify catalog information for several artists based on their Spotify IDs.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get Spotify catalog information for several artists based on their Spotify IDs.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -45,8 +47,9 @@ var artistsBulkRetrieve = cli.Command{
 }
 
 var artistsListAlbums = cli.Command{
-	Name:  "list-albums",
-	Usage: "Get Spotify catalog information about an artist's albums.",
+	Name:    "list-albums",
+	Usage:   "Get Spotify catalog information about an artist's albums.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -80,8 +83,9 @@ var artistsListAlbums = cli.Command{
 }
 
 var artistsListRelatedArtists = cli.Command{
-	Name:  "list-related-artists",
-	Usage: "Get Spotify catalog information about artists similar to a given artist.\nSimilarity is based on analysis of the Spotify community's listening history.",
+	Name:    "list-related-artists",
+	Usage:   "Get Spotify catalog information about artists similar to a given artist.\nSimilarity is based on analysis of the Spotify community's listening history.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -94,8 +98,9 @@ var artistsListRelatedArtists = cli.Command{
 }
 
 var artistsTopTracks = cli.Command{
-	Name:  "top-tracks",
-	Usage: "Get Spotify catalog information about an artist's top tracks by country.",
+	Name:    "top-tracks",
+	Usage:   "Get Spotify catalog information about an artist's top tracks by country.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",

@@ -16,8 +16,9 @@ import (
 )
 
 var playlistsImagesList = cli.Command{
-	Name:  "list",
-	Usage: "Get the current image associated with a specific playlist.",
+	Name:    "list",
+	Usage:   "Get the current image associated with a specific playlist.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",

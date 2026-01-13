@@ -16,8 +16,9 @@ import (
 )
 
 var tracksRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get Spotify catalog information for a single track identified by its unique\nSpotify ID.",
+	Name:    "retrieve",
+	Usage:   "Get Spotify catalog information for a single track identified by its unique\nSpotify ID.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -35,8 +36,9 @@ var tracksRetrieve = cli.Command{
 }
 
 var tracksBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get Spotify catalog information for multiple tracks based on their Spotify IDs.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get Spotify catalog information for multiple tracks based on their Spotify IDs.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

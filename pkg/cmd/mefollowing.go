@@ -16,8 +16,9 @@ import (
 )
 
 var meFollowingBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get the current user's followed artists.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get the current user's followed artists.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "type",
@@ -42,8 +43,9 @@ var meFollowingBulkRetrieve = cli.Command{
 }
 
 var meFollowingCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check to see if the current user is following one or more artists or other\nSpotify users.",
+	Name:    "check",
+	Usage:   "Check to see if the current user is following one or more artists or other\nSpotify users.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

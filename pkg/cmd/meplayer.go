@@ -16,8 +16,9 @@ import (
 )
 
 var mePlayerGetCurrentlyPlaying = cli.Command{
-	Name:  "get-currently-playing",
-	Usage: "Get the object currently being played on the user's Spotify account.",
+	Name:    "get-currently-playing",
+	Usage:   "Get the object currently being played on the user's Spotify account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "additional-types",
@@ -37,14 +38,16 @@ var mePlayerGetCurrentlyPlaying = cli.Command{
 var mePlayerGetDevices = cli.Command{
 	Name:            "get-devices",
 	Usage:           "Get information about a user’s available Spotify Connect devices. Some device\nmodels are not supported and will not be listed in the API response.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleMePlayerGetDevices,
 	HideHelpCommand: true,
 }
 
 var mePlayerGetState = cli.Command{
-	Name:  "get-state",
-	Usage: "Get information about the user’s current playback state, including track or\nepisode, progress, and active device.",
+	Name:    "get-state",
+	Usage:   "Get information about the user’s current playback state, including track or\nepisode, progress, and active device.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "additional-types",
@@ -62,8 +65,9 @@ var mePlayerGetState = cli.Command{
 }
 
 var mePlayerListRecentlyPlayed = cli.Command{
-	Name:  "list-recently-played",
-	Usage: "Get tracks from the current user's recently played tracks. _**Note**: Currently\ndoesn't support podcast episodes._",
+	Name:    "list-recently-played",
+	Usage:   "Get tracks from the current user's recently played tracks. _**Note**: Currently\ndoesn't support podcast episodes._",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "after",

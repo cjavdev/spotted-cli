@@ -17,6 +17,7 @@ import (
 var mePlayerQueueGet = cli.Command{
 	Name:            "get",
 	Usage:           "Get the list of objects that make up the user's queue.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleMePlayerQueueGet,
 	HideHelpCommand: true,

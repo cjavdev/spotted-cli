@@ -16,8 +16,9 @@ import (
 )
 
 var meEpisodesList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the episodes saved in the current Spotify user's library.<br/>\nThis API endpoint is in **beta** and could change without warning. Please share\nany feedback that you have, or issues that you discover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).",
+	Name:    "list",
+	Usage:   "Get a list of the episodes saved in the current Spotify user's library.<br/>\nThis API endpoint is in **beta** and could change without warning. Please share\nany feedback that you have, or issues that you discover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -41,8 +42,9 @@ var meEpisodesList = cli.Command{
 }
 
 var meEpisodesCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check if one or more episodes is already saved in the current Spotify user's\n'Your Episodes' library.<br/> This API endpoint is in **beta** and could change\nwithout warning. Please share any feedback that you have, or issues that you\ndiscover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer)..",
+	Name:    "check",
+	Usage:   "Check if one or more episodes is already saved in the current Spotify user's\n'Your Episodes' library.<br/> This API endpoint is in **beta** and could change\nwithout warning. Please share any feedback that you have, or issues that you\ndiscover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer)..",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

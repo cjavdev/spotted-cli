@@ -17,6 +17,7 @@ import (
 var marketsList = cli.Command{
 	Name:            "list",
 	Usage:           "Get the list of markets where Spotify is available.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleMarketsList,
 	HideHelpCommand: true,

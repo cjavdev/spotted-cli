@@ -16,8 +16,9 @@ import (
 )
 
 var playlistsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get a playlist owned by a Spotify user.",
+	Name:    "retrieve",
+	Usage:   "Get a playlist owned by a Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",

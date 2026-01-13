@@ -16,8 +16,9 @@ import (
 )
 
 var mePlaylistsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the playlists owned or followed by the current Spotify user.",
+	Name:    "list",
+	Usage:   "Get a list of the playlists owned or followed by the current Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
