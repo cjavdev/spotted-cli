@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.19.0 (2026-01-14)
+
+Full Changelog: [v0.18.2...v0.19.0](https://github.com/cjavdev/spotted-cli/compare/v0.18.2...v0.19.0)
+
+### Features
+
+* added support for --foo.baz inner field flags ([803dba1](https://github.com/cjavdev/spotted-cli/commit/803dba10bcefdfe3c5959a27ac5c4a3868b8a647))
+* enable CI tests ([73c9fd3](https://github.com/cjavdev/spotted-cli/commit/73c9fd350d89410875d5f2b65bd75d8d526a1101))
+* enable suggestion for mistyped commands and flags ([ae0f6b2](https://github.com/cjavdev/spotted-cli/commit/ae0f6b2218c85e51b5af2989a416a47ecb3f44ac))
+* improved behavior for exploring paginated/streamed endpoints ([88ce484](https://github.com/cjavdev/spotted-cli/commit/88ce484bcd3b7210016bc3f3a76347f23217db06))
+
+
+### Bug Fixes
+
+* **client:** do not use pager for short paginated responses ([54a2007](https://github.com/cjavdev/spotted-cli/commit/54a20075a96c179d9397655dd2796b9e58c46f49))
+* fix for paginated output not writing to pager correctly ([0d32db3](https://github.com/cjavdev/spotted-cli/commit/0d32db3ef4e5e9a1243fda2c65d582d928f6b61e))
+* remove unsupported methods ([de3ca69](https://github.com/cjavdev/spotted-cli/commit/de3ca69393e73e38e1b8adc16c99e4c9c1c99f19))
+
+
+### Chores
+
+* **internal:** codegen related update ([b11ded9](https://github.com/cjavdev/spotted-cli/commit/b11ded9253714c2f6461cb5cb2248f6e3f0e7334))
+* **internal:** codegen related update ([9084f02](https://github.com/cjavdev/spotted-cli/commit/9084f02a1112d0cc3c771d0abf7549ef29b77401))
+* **internal:** codegen related update ([30f1ba7](https://github.com/cjavdev/spotted-cli/commit/30f1ba73daccf1e29e8a34ccf2b48481a8b49a24))
+* **internal:** codegen related update ([55e6c74](https://github.com/cjavdev/spotted-cli/commit/55e6c7488411d8f0734405b3bbf34ed9dff4fc86))
+* update Go SDK version ([25f3662](https://github.com/cjavdev/spotted-cli/commit/25f36621437fe6cc17ba763c1964fa69a96885c1))
+
 ## 0.18.2 (2026-01-07)
 
 Full Changelog: [v0.18.1...v0.18.2](https://github.com/cjavdev/spotted-cli/compare/v0.18.1...v0.18.2)
