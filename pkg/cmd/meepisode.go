@@ -16,8 +16,9 @@ import (
 )
 
 var meEpisodesList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the episodes saved in the current Spotify user's library.<br/>\nThis API endpoint is in **beta** and could change without warning. Please share\nany feedback that you have, or issues that you discover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).",
+	Name:    "list",
+	Usage:   "Get a list of the episodes saved in the current Spotify user's library.<br/>\nThis API endpoint is in **beta** and could change without warning. Please share\nany feedback that you have, or issues that you discover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -41,8 +42,9 @@ var meEpisodesList = cli.Command{
 }
 
 var meEpisodesCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check if one or more episodes is already saved in the current Spotify user's\n'Your Episodes' library.<br/> This API endpoint is in **beta** and could change\nwithout warning. Please share any feedback that you have, or issues that you\ndiscover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer)..",
+	Name:    "check",
+	Usage:   "Check if one or more episodes is already saved in the current Spotify user's\n'Your Episodes' library.<br/> This API endpoint is in **beta** and could change\nwithout warning. Please share any feedback that you have, or issues that you\ndiscover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer)..",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -52,45 +54,6 @@ var meEpisodesCheck = cli.Command{
 		},
 	},
 	Action:          handleMeEpisodesCheck,
-	HideHelpCommand: true,
-}
-
-var meEpisodesRemove = cli.Command{
-	Name:  "remove",
-	Usage: "Remove one or more episodes from the current user's library.<br/> This API\nendpoint is in **beta** and could change without warning. Please share any\nfeedback that you have, or issues that you discover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). <br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeEpisodesRemove,
-	HideHelpCommand: true,
-}
-
-var meEpisodesSave = cli.Command{
-	Name:  "save",
-	Usage: "Save one or more episodes to the current user's library.<br/> This API endpoint\nis in **beta** and could change without warning. Please share any feedback that\nyou have, or issues that you discover, in our\n[developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). <br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Required: true,
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeEpisodesSave,
 	HideHelpCommand: true,
 }
 
@@ -128,16 +91,7 @@ func handleMeEpisodesList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:episodes list", obj, format, transform)
 	} else {
 		iter := client.Me.Episodes.ListAutoPaging(ctx, params, options...)
-		return streamOutput("me:episodes list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:episodes list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:episodes list", iter, format, transform)
 	}
 }
 
@@ -173,52 +127,4 @@ func handleMeEpisodesCheck(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "me:episodes check", obj, format, transform)
-}
-
-func handleMeEpisodesRemove(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeEpisodeRemoveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Episodes.Remove(ctx, params, options...)
-}
-
-func handleMeEpisodesSave(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeEpisodeSaveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Episodes.Save(ctx, params, options...)
 }

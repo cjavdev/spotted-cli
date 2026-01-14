@@ -16,8 +16,9 @@ import (
 )
 
 var playlistsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get a playlist owned by a Spotify user.",
+	Name:    "retrieve",
+	Usage:   "Get a playlist owned by a Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",
@@ -41,40 +42,6 @@ var playlistsRetrieve = cli.Command{
 		},
 	},
 	Action:          handlePlaylistsRetrieve,
-	HideHelpCommand: true,
-}
-
-var playlistsUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Change a playlist's name and public/private state. (The user must, of course,\nown the playlist.)",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
-		},
-		&requestflag.Flag[bool]{
-			Name:     "collaborative",
-			Usage:    "If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. <br/>\n_**Note**: You can only set `collaborative` to `true` on non-public playlists._\n",
-			BodyPath: "collaborative",
-		},
-		&requestflag.Flag[string]{
-			Name:     "description",
-			Usage:    "Value for playlist description as displayed in Spotify Clients and in the Web API.\n",
-			BodyPath: "description",
-		},
-		&requestflag.Flag[string]{
-			Name:     "name",
-			Usage:    "The new name for the playlist, for example `\"My New Playlist Title\"`\n",
-			BodyPath: "name",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handlePlaylistsUpdate,
 	HideHelpCommand: true,
 }
 
@@ -118,36 +85,4 @@ func handlePlaylistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "playlists retrieve", obj, format, transform)
-}
-
-func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("playlist-id") && len(unusedArgs) > 0 {
-		cmd.Set("playlist-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.PlaylistUpdateParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Playlists.Update(
-		ctx,
-		cmd.Value("playlist-id").(string),
-		params,
-		options...,
-	)
 }

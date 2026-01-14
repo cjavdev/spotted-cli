@@ -28,23 +28,3 @@ func TestMeFollowingCheck(t *testing.T) {
 		"--type", "artist",
 	)
 }
-
-func TestMeFollowingFollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:following", "follow",
-		"--id", "string",
-		"--published",
-	)
-}
-
-func TestMeFollowingUnfollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:following", "unfollow",
-		"--id", "string",
-		"--published",
-	)
-}

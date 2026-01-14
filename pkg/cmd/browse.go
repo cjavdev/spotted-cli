@@ -16,8 +16,9 @@ import (
 )
 
 var browseGetFeaturedPlaylists = cli.Command{
-	Name:  "get-featured-playlists",
-	Usage: "Get a list of Spotify featured playlists (shown, for example, on a Spotify\nplayer's 'Browse' tab).",
+	Name:    "get-featured-playlists",
+	Usage:   "Get a list of Spotify featured playlists (shown, for example, on a Spotify\nplayer's 'Browse' tab).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -41,8 +42,9 @@ var browseGetFeaturedPlaylists = cli.Command{
 }
 
 var browseGetNewReleases = cli.Command{
-	Name:  "get-new-releases",
-	Usage: "Get a list of new album releases featured in Spotify (shown, for example, on a\nSpotify player’s “Browse” tab).",
+	Name:    "get-new-releases",
+	Usage:   "Get a list of new album releases featured in Spotify (shown, for example, on a\nSpotify player’s “Browse” tab).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",

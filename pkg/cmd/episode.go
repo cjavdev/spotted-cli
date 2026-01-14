@@ -16,8 +16,9 @@ import (
 )
 
 var episodesRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get Spotify catalog information for a single episode identified by its unique\nSpotify ID.",
+	Name:    "retrieve",
+	Usage:   "Get Spotify catalog information for a single episode identified by its unique\nSpotify ID.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -35,8 +36,9 @@ var episodesRetrieve = cli.Command{
 }
 
 var episodesBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get Spotify catalog information for several episodes based on their Spotify IDs.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get Spotify catalog information for several episodes based on their Spotify IDs.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

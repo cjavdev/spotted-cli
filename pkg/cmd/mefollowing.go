@@ -16,8 +16,9 @@ import (
 )
 
 var meFollowingBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get the current user's followed artists.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get the current user's followed artists.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "type",
@@ -42,8 +43,9 @@ var meFollowingBulkRetrieve = cli.Command{
 }
 
 var meFollowingCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check to see if the current user is following one or more artists or other\nSpotify users.",
+	Name:    "check",
+	Usage:   "Check to see if the current user is following one or more artists or other\nSpotify users.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -59,45 +61,6 @@ var meFollowingCheck = cli.Command{
 		},
 	},
 	Action:          handleMeFollowingCheck,
-	HideHelpCommand: true,
-}
-
-var meFollowingFollow = cli.Command{
-	Name:  "follow",
-	Usage: "Add the current user as a follower of one or more artists or other Spotify\nusers.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids).\nFor example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			Required: true,
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeFollowingFollow,
-	HideHelpCommand: true,
-}
-
-var meFollowingUnfollow = cli.Command{
-	Name:  "unfollow",
-	Usage: "Remove the current user as a follower of one or more artists or other Spotify\nusers.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the artist or user [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeFollowingUnfollow,
 	HideHelpCommand: true,
 }
 
@@ -167,52 +130,4 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "me:following check", obj, format, transform)
-}
-
-func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeFollowingFollowParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Following.Follow(ctx, params, options...)
-}
-
-func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeFollowingUnfollowParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Following.Unfollow(ctx, params, options...)
 }

@@ -16,8 +16,9 @@ import (
 )
 
 var meShowsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of shows saved in the current Spotify user's library. Optional\nparameters can be used to limit the number of shows returned.",
+	Name:    "list",
+	Usage:   "Get a list of shows saved in the current Spotify user's library. Optional\nparameters can be used to limit the number of shows returned.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -36,8 +37,9 @@ var meShowsList = cli.Command{
 }
 
 var meShowsCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check if one or more shows is already saved in the current Spotify user's\nlibrary.",
+	Name:    "check",
+	Usage:   "Check if one or more shows is already saved in the current Spotify user's\nlibrary.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -47,44 +49,6 @@ var meShowsCheck = cli.Command{
 		},
 	},
 	Action:          handleMeShowsCheck,
-	HideHelpCommand: true,
-}
-
-var meShowsRemove = cli.Command{
-	Name:  "remove",
-	Usage: "Delete one or more shows from current Spotify user's library.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).  \nA maximum of 50 items can be specified in one request. *Note: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored.*",
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeShowsRemove,
-	HideHelpCommand: true,
-}
-
-var meShowsSave = cli.Command{
-	Name:  "save",
-	Usage: "Save one or more shows to current Spotify user's library.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).  \nA maximum of 50 items can be specified in one request. *Note: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored.*",
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeShowsSave,
 	HideHelpCommand: true,
 }
 
@@ -122,16 +86,7 @@ func handleMeShowsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:shows list", obj, format, transform)
 	} else {
 		iter := client.Me.Shows.ListAutoPaging(ctx, params, options...)
-		return streamOutput("me:shows list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:shows list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:shows list", iter, format, transform)
 	}
 }
 
@@ -167,52 +122,4 @@ func handleMeShowsCheck(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "me:shows check", obj, format, transform)
-}
-
-func handleMeShowsRemove(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeShowRemoveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Shows.Remove(ctx, params, options...)
-}
-
-func handleMeShowsSave(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeShowSaveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Shows.Save(ctx, params, options...)
 }

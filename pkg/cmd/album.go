@@ -16,8 +16,9 @@ import (
 )
 
 var albumsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get Spotify catalog information for a single album.",
+	Name:    "retrieve",
+	Usage:   "Get Spotify catalog information for a single album.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -35,8 +36,9 @@ var albumsRetrieve = cli.Command{
 }
 
 var albumsBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get Spotify catalog information for multiple albums identified by their Spotify\nIDs.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get Spotify catalog information for multiple albums identified by their Spotify\nIDs.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -55,8 +57,9 @@ var albumsBulkRetrieve = cli.Command{
 }
 
 var albumsListTracks = cli.Command{
-	Name:  "list-tracks",
-	Usage: "Get Spotify catalog information about an album’s tracks. Optional parameters can\nbe used to limit the number of tracks returned.",
+	Name:    "list-tracks",
+	Usage:   "Get Spotify catalog information about an album’s tracks. Optional parameters can\nbe used to limit the number of tracks returned.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -207,15 +210,6 @@ func handleAlbumsListTracks(ctx context.Context, cmd *cli.Command) error {
 			params,
 			options...,
 		)
-		return streamOutput("albums list-tracks", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "albums list-tracks", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "albums list-tracks", iter, format, transform)
 	}
 }

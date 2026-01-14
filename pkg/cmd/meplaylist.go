@@ -16,8 +16,9 @@ import (
 )
 
 var mePlaylistsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the playlists owned or followed by the current Spotify user.",
+	Name:    "list",
+	Usage:   "Get a list of the playlists owned or followed by the current Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -69,15 +70,6 @@ func handleMePlaylistsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:playlists list", obj, format, transform)
 	} else {
 		iter := client.Me.Playlists.ListAutoPaging(ctx, params, options...)
-		return streamOutput("me:playlists list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:playlists list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:playlists list", iter, format, transform)
 	}
 }

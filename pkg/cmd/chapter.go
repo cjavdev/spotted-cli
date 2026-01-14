@@ -16,8 +16,9 @@ import (
 )
 
 var chaptersRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get Spotify catalog information for a single audiobook chapter. Chapters are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
+	Name:    "retrieve",
+	Usage:   "Get Spotify catalog information for a single audiobook chapter. Chapters are\nonly available within the US, UK, Canada, Ireland, New Zealand and Australia\nmarkets.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
@@ -35,8 +36,9 @@ var chaptersRetrieve = cli.Command{
 }
 
 var chaptersBulkRetrieve = cli.Command{
-	Name:  "bulk-retrieve",
-	Usage: "Get Spotify catalog information for several audiobook chapters identified by\ntheir Spotify IDs. Chapters are only available within the US, UK, Canada,\nIreland, New Zealand and Australia markets.",
+	Name:    "bulk-retrieve",
+	Usage:   "Get Spotify catalog information for several audiobook chapters identified by\ntheir Spotify IDs. Chapters are only available within the US, UK, Canada,\nIreland, New Zealand and Australia markets.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",

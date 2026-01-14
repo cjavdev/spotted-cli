@@ -27,23 +27,3 @@ func TestMeEpisodesCheck(t *testing.T) {
 		"--ids", "77o6BIVlYM3msb4MMIL1jH,0Q86acNRm6V9GYx55SXKwf",
 	)
 }
-
-func TestMeEpisodesRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:episodes", "remove",
-		"--id", "string",
-		"--published",
-	)
-}
-
-func TestMeEpisodesSave(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:episodes", "save",
-		"--id", "string",
-		"--published",
-	)
-}

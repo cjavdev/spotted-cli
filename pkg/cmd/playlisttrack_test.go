@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/cjavdev/spotted-cli/internal/mocktest"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 )
 
 func TestPlaylistsTracksUpdate(t *testing.T) {
@@ -15,7 +16,7 @@ func TestPlaylistsTracksUpdate(t *testing.T) {
 		"playlists:tracks", "update",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--insert-before", "3",
-		"--published",
+		"--published=true",
 		"--range-length", "2",
 		"--range-start", "1",
 		"--snapshot-id", "snapshot_id",
@@ -44,7 +45,7 @@ func TestPlaylistsTracksAdd(t *testing.T) {
 		"playlists:tracks", "add",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--position", "0",
-		"--published",
+		"--published=true",
 		"--uris", "string",
 	)
 }
@@ -56,7 +57,20 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 		"playlists:tracks", "remove",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--track", "{uri: uri}",
-		"--published",
+		"--published=true",
+		"--snapshot-id", "snapshot_id",
+	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(playlistsTracksRemove)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"playlists:tracks", "remove",
+		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
+		"--track.uri", "uri",
+		"--published=true",
 		"--snapshot-id", "snapshot_id",
 	)
 }

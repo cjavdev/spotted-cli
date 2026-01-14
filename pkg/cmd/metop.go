@@ -16,8 +16,9 @@ import (
 )
 
 var meTopListTopArtists = cli.Command{
-	Name:  "list-top-artists",
-	Usage: "Get the current user's top artists based on calculated affinity.",
+	Name:    "list-top-artists",
+	Usage:   "Get the current user's top artists based on calculated affinity.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -42,8 +43,9 @@ var meTopListTopArtists = cli.Command{
 }
 
 var meTopListTopTracks = cli.Command{
-	Name:  "list-top-tracks",
-	Usage: "Get the current user's top tracks based on calculated affinity.",
+	Name:    "list-top-tracks",
+	Usage:   "Get the current user's top tracks based on calculated affinity.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -101,16 +103,7 @@ func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:top list-top-artists", obj, format, transform)
 	} else {
 		iter := client.Me.Top.ListTopArtistsAutoPaging(ctx, params, options...)
-		return streamOutput("me:top list-top-artists", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:top list-top-artists", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:top list-top-artists", iter, format, transform)
 	}
 }
 
@@ -148,15 +141,6 @@ func handleMeTopListTopTracks(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:top list-top-tracks", obj, format, transform)
 	} else {
 		iter := client.Me.Top.ListTopTracksAutoPaging(ctx, params, options...)
-		return streamOutput("me:top list-top-tracks", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:top list-top-tracks", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:top list-top-tracks", iter, format, transform)
 	}
 }

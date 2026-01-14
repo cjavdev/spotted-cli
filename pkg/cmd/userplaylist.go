@@ -16,8 +16,9 @@ import (
 )
 
 var usersPlaylistsCreate = cli.Command{
-	Name:  "create",
-	Usage: "Create a playlist for a Spotify user. (The playlist will be empty until you\n[add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each\nuser is generally limited to a maximum of 11000 playlists.",
+	Name:    "create",
+	Usage:   "Create a playlist for a Spotify user. (The playlist will be empty until you\n[add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each\nuser is generally limited to a maximum of 11000 playlists.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "user-id",
@@ -51,8 +52,9 @@ var usersPlaylistsCreate = cli.Command{
 }
 
 var usersPlaylistsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the playlists owned or followed by a Spotify user.",
+	Name:    "list",
+	Usage:   "Get a list of the playlists owned or followed by a Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "user-id",
@@ -164,15 +166,6 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 			params,
 			options...,
 		)
-		return streamOutput("users:playlists list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "users:playlists list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "users:playlists list", iter, format, transform)
 	}
 }

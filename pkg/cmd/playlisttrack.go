@@ -16,8 +16,9 @@ import (
 )
 
 var playlistsTracksUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Either reorder or replace items in a playlist depending on the request's\nparameters. To reorder items, include `range_start`, `insert_before`,\n`range_length` and `snapshot_id` in the request's body. To replace items,\ninclude `uris` as either a query parameter or in the request's body. Replacing\nitems in a playlist will overwrite its existing items. This operation can be\nused for replacing or clearing items in a playlist. <br/> **Note**: Replace and\nreorder are mutually exclusive operations which share the same endpoint, but\nhave different parameters. These operations can't be applied together in a\nsingle request.",
+	Name:    "update",
+	Usage:   "Either reorder or replace items in a playlist depending on the request's\nparameters. To reorder items, include `range_start`, `insert_before`,\n`range_length` and `snapshot_id` in the request's body. To replace items,\ninclude `uris` as either a query parameter or in the request's body. Replacing\nitems in a playlist will overwrite its existing items. This operation can be\nused for replacing or clearing items in a playlist. <br/> **Note**: Replace and\nreorder are mutually exclusive operations which share the same endpoint, but\nhave different parameters. These operations can't be applied together in a\nsingle request.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",
@@ -59,8 +60,9 @@ var playlistsTracksUpdate = cli.Command{
 }
 
 var playlistsTracksList = cli.Command{
-	Name:  "list",
-	Usage: "Get full details of the items of a playlist owned by a Spotify user.",
+	Name:    "list",
+	Usage:   "Get full details of the items of a playlist owned by a Spotify user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",
@@ -99,8 +101,9 @@ var playlistsTracksList = cli.Command{
 }
 
 var playlistsTracksAdd = cli.Command{
-	Name:  "add",
-	Usage: "Add one or more items to a user's playlist.",
+	Name:    "add",
+	Usage:   "Add one or more items to a user's playlist.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",
@@ -127,9 +130,10 @@ var playlistsTracksAdd = cli.Command{
 	HideHelpCommand: true,
 }
 
-var playlistsTracksRemove = cli.Command{
-	Name:  "remove",
-	Usage: "Remove one or more items from a user's playlist.",
+var playlistsTracksRemove = requestflag.WithInnerFlags(cli.Command{
+	Name:    "remove",
+	Usage:   "Remove one or more items from a user's playlist.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "playlist-id",
@@ -155,7 +159,15 @@ var playlistsTracksRemove = cli.Command{
 	},
 	Action:          handlePlaylistsTracksRemove,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"track": {
+		&requestflag.InnerFlag[string]{
+			Name:       "track.uri",
+			Usage:      "Spotify URI",
+			InnerField: "uri",
+		},
+	},
+})
 
 func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
@@ -246,16 +258,7 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 			params,
 			options...,
 		)
-		return streamOutput("playlists:tracks list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "playlists:tracks list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "playlists:tracks list", iter, format, transform)
 	}
 }
 

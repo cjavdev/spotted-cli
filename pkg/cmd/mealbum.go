@@ -16,8 +16,9 @@ import (
 )
 
 var meAlbumsList = cli.Command{
-	Name:  "list",
-	Usage: "Get a list of the albums saved in the current Spotify user's 'Your Music'\nlibrary.",
+	Name:    "list",
+	Usage:   "Get a list of the albums saved in the current Spotify user's 'Your Music'\nlibrary.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -41,8 +42,9 @@ var meAlbumsList = cli.Command{
 }
 
 var meAlbumsCheck = cli.Command{
-	Name:  "check",
-	Usage: "Check if one or more albums is already saved in the current Spotify user's 'Your\nMusic' library.",
+	Name:    "check",
+	Usage:   "Check if one or more albums is already saved in the current Spotify user's 'Your\nMusic' library.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -52,44 +54,6 @@ var meAlbumsCheck = cli.Command{
 		},
 	},
 	Action:          handleMeAlbumsCheck,
-	HideHelpCommand: true,
-}
-
-var meAlbumsRemove = cli.Command{
-	Name:  "remove",
-	Usage: "Remove one or more albums from the current user's 'Your Music' library.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeAlbumsRemove,
-	HideHelpCommand: true,
-}
-
-var meAlbumsSave = cli.Command{
-	Name:  "save",
-	Usage: "Save one or more albums to the current user's 'Your Music' library.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[[]string]{
-			Name:     "id",
-			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
-			BodyPath: "ids",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "published",
-			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
-			BodyPath: "published",
-		},
-	},
-	Action:          handleMeAlbumsSave,
 	HideHelpCommand: true,
 }
 
@@ -127,16 +91,7 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:albums list", obj, format, transform)
 	} else {
 		iter := client.Me.Albums.ListAutoPaging(ctx, params, options...)
-		return streamOutput("me:albums list", func(w *os.File) error {
-			for iter.Next() {
-				item := iter.Current()
-				obj := gjson.Parse(item.RawJSON())
-				if err := ShowJSON(w, "me:albums list", obj, format, transform); err != nil {
-					return err
-				}
-			}
-			return iter.Err()
-		})
+		return ShowJSONIterator(os.Stdout, "me:albums list", iter, format, transform)
 	}
 }
 
@@ -172,52 +127,4 @@ func handleMeAlbumsCheck(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "me:albums check", obj, format, transform)
-}
-
-func handleMeAlbumsRemove(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeAlbumRemoveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Albums.Remove(ctx, params, options...)
-}
-
-func handleMeAlbumsSave(ctx context.Context, cmd *cli.Command) error {
-	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := spotted.MeAlbumSaveParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Me.Albums.Save(ctx, params, options...)
 }

@@ -17,6 +17,7 @@ import (
 var meRetrieve = cli.Command{
 	Name:            "retrieve",
 	Usage:           "Get detailed profile information about the current user (including the current\nuser's username).",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleMeRetrieve,
 	HideHelpCommand: true,

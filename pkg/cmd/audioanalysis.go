@@ -16,8 +16,9 @@ import (
 )
 
 var audioAnalysisRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Get a low-level audio analysis for a track in the Spotify catalog. The audio\nanalysis describes the track’s structure and musical content, including rhythm,\npitch, and timbre.",
+	Name:    "retrieve",
+	Usage:   "Get a low-level audio analysis for a track in the Spotify catalog. The audio\nanalysis describes the track’s structure and musical content, including rhythm,\npitch, and timbre.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",

@@ -70,6 +70,7 @@ func init() {
 			{
 				Name:     "albums",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&albumsRetrieve,
 					&albumsBulkRetrieve,
@@ -79,6 +80,7 @@ func init() {
 			{
 				Name:     "artists",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&artistsRetrieve,
 					&artistsBulkRetrieve,
@@ -90,6 +92,7 @@ func init() {
 			{
 				Name:     "shows",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&showsRetrieve,
 					&showsBulkRetrieve,
@@ -99,6 +102,7 @@ func init() {
 			{
 				Name:     "episodes",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&episodesRetrieve,
 					&episodesBulkRetrieve,
@@ -107,6 +111,7 @@ func init() {
 			{
 				Name:     "audiobooks",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&audiobooksRetrieve,
 					&audiobooksBulkRetrieve,
@@ -116,6 +121,7 @@ func init() {
 			{
 				Name:     "me",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meRetrieve,
 				},
@@ -123,6 +129,7 @@ func init() {
 			{
 				Name:     "me:audiobooks",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meAudiobooksList,
 					&meAudiobooksCheck,
@@ -131,6 +138,7 @@ func init() {
 			{
 				Name:     "me:playlists",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&mePlaylistsList,
 				},
@@ -138,6 +146,7 @@ func init() {
 			{
 				Name:     "me:top",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meTopListTopArtists,
 					&meTopListTopTracks,
@@ -146,6 +155,7 @@ func init() {
 			{
 				Name:     "me:albums",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meAlbumsList,
 					&meAlbumsCheck,
@@ -154,6 +164,7 @@ func init() {
 			{
 				Name:     "me:tracks",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meTracksList,
 					&meTracksCheck,
@@ -162,6 +173,7 @@ func init() {
 			{
 				Name:     "me:episodes",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meEpisodesList,
 					&meEpisodesCheck,
@@ -170,6 +182,7 @@ func init() {
 			{
 				Name:     "me:shows",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meShowsList,
 					&meShowsCheck,
@@ -178,6 +191,7 @@ func init() {
 			{
 				Name:     "me:following",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&meFollowingBulkRetrieve,
 					&meFollowingCheck,
@@ -186,6 +200,7 @@ func init() {
 			{
 				Name:     "me:player",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&mePlayerGetCurrentlyPlaying,
 					&mePlayerGetDevices,
@@ -196,6 +211,7 @@ func init() {
 			{
 				Name:     "me:player:queue",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&mePlayerQueueGet,
 				},
@@ -203,6 +219,7 @@ func init() {
 			{
 				Name:     "chapters",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&chaptersRetrieve,
 					&chaptersBulkRetrieve,
@@ -211,6 +228,7 @@ func init() {
 			{
 				Name:     "tracks",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&tracksRetrieve,
 					&tracksBulkRetrieve,
@@ -219,6 +237,7 @@ func init() {
 			{
 				Name:     "search",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&searchQuery,
 				},
@@ -226,6 +245,7 @@ func init() {
 			{
 				Name:     "playlists",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&playlistsRetrieve,
 				},
@@ -233,6 +253,7 @@ func init() {
 			{
 				Name:     "playlists:tracks",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&playlistsTracksUpdate,
 					&playlistsTracksList,
@@ -243,6 +264,7 @@ func init() {
 			{
 				Name:     "playlists:followers",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&playlistsFollowersCheck,
 				},
@@ -250,6 +272,7 @@ func init() {
 			{
 				Name:     "playlists:images",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&playlistsImagesList,
 				},
@@ -257,6 +280,7 @@ func init() {
 			{
 				Name:     "users",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersRetrieveProfile,
 				},
@@ -264,6 +288,7 @@ func init() {
 			{
 				Name:     "users:playlists",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersPlaylistsCreate,
 					&usersPlaylistsList,
@@ -272,6 +297,7 @@ func init() {
 			{
 				Name:     "browse",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&browseGetFeaturedPlaylists,
 					&browseGetNewReleases,
@@ -280,6 +306,7 @@ func init() {
 			{
 				Name:     "browse:categories",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&browseCategoriesRetrieve,
 					&browseCategoriesList,
@@ -289,6 +316,7 @@ func init() {
 			{
 				Name:     "audio-features",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&audioFeaturesRetrieve,
 					&audioFeaturesBulkRetrieve,
@@ -297,6 +325,7 @@ func init() {
 			{
 				Name:     "audio-analysis",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&audioAnalysisRetrieve,
 				},
@@ -304,6 +333,7 @@ func init() {
 			{
 				Name:     "recommendations",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&recommendationsGet,
 					&recommendationsListAvailableGenreSeeds,
@@ -312,6 +342,7 @@ func init() {
 			{
 				Name:     "markets",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&marketsList,
 				},
