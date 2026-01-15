@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.22.2 (2026-01-15)
+
+Full Changelog: [v0.22.1...v0.22.2](https://github.com/cjavdev/spotted-cli/compare/v0.22.1...v0.22.2)
+
+### Bug Fixes
+
+* fix terminal height issues causing test failures ([698d4be](https://github.com/cjavdev/spotted-cli/commit/698d4beaf4d690e035bc9dffaf6d36193bfa967c))
+* prevent flag duplication ([fd0471e](https://github.com/cjavdev/spotted-cli/commit/fd0471e105d4dfd9500a095c79215589a12c068a))
+
 ## 0.22.1 (2026-01-15)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/cjavdev/spotted-cli/compare/v0.22.0...v0.22.1)
