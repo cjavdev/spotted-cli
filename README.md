@@ -4,6 +4,8 @@ The official CLI for the [Spotted REST API](https://spotted.cjav.dev).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
+<!-- x-release-please-start-version -->
+
 ## Installation
 
 ### Installing with Homebrew
@@ -15,21 +17,17 @@ brew install spotted
 
 ### Installing with Go
 
-<!-- x-release-please-start-version -->
-
 ```sh
 go install 'github.com/cjavdev/spotted-cli/cmd/spotted@latest'
 ```
 
+<!-- x-release-please-end -->
+
 ### Running Locally
 
-<!-- x-release-please-start-version -->
-
 ```sh
-go run cmd/spotted/main.go
+./scripts/run args...
 ```
-
-<!-- x-release-please-end -->
 
 ## Usage
 
@@ -41,12 +39,19 @@ spotted [resource] [command] [flags]
 
 ```sh
 spotted albums retrieve \
-  --id 4aawyAB9vmqN3uQ7FjRGTy
+  --id 4aawyAB9vmqN3uQ7FjRGTy \
+  --market ES
 ```
 
 For details about specific commands, use the `--help` flag.
 
 ## Global Flags
 
+- `--help` - Show command line usage
 - `--debug` - Enable debug logging (includes HTTP request/response details)
 - `--version`, `-v` - Show the CLI version
+- `--base-url` - Use a custom API backend URL
+- `--format` - Change the output format (`auto`, `explore`, `json`, `jsonl`, `pretty`, `raw`, `yaml`)
+- `--format-error` - Change the output format for errors (`auto`, `explore`, `json`, `jsonl`, `pretty`, `raw`, `yaml`)
+- `--transform` - Transform the data output using [GJSON syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)
+- `--transform-error` - Transform the error output using [GJSON syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)
