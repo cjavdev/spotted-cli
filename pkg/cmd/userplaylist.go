@@ -70,6 +70,7 @@ var usersPlaylistsList = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "offset",
 			Usage:     "The index of the first playlist to return. Default:\n0 (the first object). Maximum offset: 100.000\\. Use with `limit` to get the\nnext set of playlists.\n",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},

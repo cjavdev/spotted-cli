@@ -93,6 +93,7 @@ var playlistsTracksList = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "offset",
 			Usage:     "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.\n",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
