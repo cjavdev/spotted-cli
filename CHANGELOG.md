@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.20.0 (2026-01-14)
+
+Full Changelog: [v0.19.0...v0.20.0](https://github.com/cjavdev/spotted-cli/compare/v0.19.0...v0.20.0)
+
+### Features
+
+* **api:** manual updates ([77b9547](https://github.com/cjavdev/spotted-cli/commit/77b954711f0cc039cb8dbfaf5db43dbdc1b6c4ac))
+
+
+### Chores
+
+* remove custom code ([21fbe0f](https://github.com/cjavdev/spotted-cli/commit/21fbe0f00af493d6922a59298f80558d70c423a0))
+
 ## 0.19.0 (2026-01-14)
 
 Full Changelog: [v0.18.2...v0.19.0](https://github.com/cjavdev/spotted-cli/compare/v0.18.2...v0.19.0)
