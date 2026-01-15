@@ -51,6 +51,7 @@ var searchQuery = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "offset",
 			Usage:     "The index of the first result to return. Use\nwith limit to get the next page of search results.\n",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
