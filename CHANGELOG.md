@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.22.3 (2026-01-15)
+
+Full Changelog: [v0.22.2...v0.22.3](https://github.com/cjavdev/spotted-cli/compare/v0.22.2...v0.22.3)
+
+### Bug Fixes
+
+* overly broad redaction of Authorization ([6d43491](https://github.com/cjavdev/spotted-cli/commit/6d4349195c883fb5b95dd38e863b7044b41d7f0c))
+
+
+### Chores
+
+* update internal comment ([6d43491](https://github.com/cjavdev/spotted-cli/commit/6d4349195c883fb5b95dd38e863b7044b41d7f0c))
+
 ## 0.22.2 (2026-01-15)
 
 Full Changelog: [v0.22.1...v0.22.2](https://github.com/cjavdev/spotted-cli/compare/v0.22.1...v0.22.2)
