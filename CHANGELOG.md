@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.22.1 (2026-01-15)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/cjavdev/spotted-cli/compare/v0.22.0...v0.22.1)
+
+### Bug Fixes
+
+* avoid consuming request bodies when printing redacted outputs ([81dbcbe](https://github.com/cjavdev/spotted-cli/commit/81dbcbe50b61b2ba65167921d94b5714e284c9b5))
+* flag defaults ([6127fdd](https://github.com/cjavdev/spotted-cli/commit/6127fddaf5a5a9a5cbd33eebb34a778b705602bc))
+* flag types ([1e37dd6](https://github.com/cjavdev/spotted-cli/commit/1e37dd65cad6305daf2c3530682f55b8b165fbed))
+
+
+### Chores
+
+* **internal:** codegen related update ([a9b04ea](https://github.com/cjavdev/spotted-cli/commit/a9b04ea170aa24bd713ff2829397db6bde85aa7e))
+* updated README.md with more flag information ([024243f](https://github.com/cjavdev/spotted-cli/commit/024243f20538a4d6af3db0a751d81bf21cf9054b))
+
 ## 0.22.0 (2026-01-15)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/cjavdev/spotted-cli/compare/v0.21.0...v0.22.0)
