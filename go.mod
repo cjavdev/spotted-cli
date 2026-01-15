@@ -7,7 +7,7 @@ require (
 	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/x/term v0.2.1
-	github.com/cjavdev/spotted-go v0.0.0
+	github.com/cjavdev/spotted-go v0.18.0
 	github.com/goccy/go-yaml v1.18.0
 	github.com/itchyny/json2yaml v0.1.4
 	github.com/muesli/reflow v0.3.0
@@ -44,5 +44,3 @@ require (
 	golang.org/x/text v0.3.8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/cjavdev/spotted-go => github.com/stainless-sdks/spotted-go v0.0.0-20260115000945-323995de43f3
