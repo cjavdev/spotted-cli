@@ -1,6 +1,6 @@
 # Spotted CLI
 
-The official CLI for the [Spotted REST API](https://spotted.cjav.dev).
+The unofficial CLI for the [Spotify Web API](https://spotted.cjav.dev).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
