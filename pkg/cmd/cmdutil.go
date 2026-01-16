@@ -41,6 +41,11 @@ func getDefaultRequestOptions(cmd *cli.Command) []option.RequestOption {
 		opts = append(opts, option.WithBaseURL(baseURL))
 	}
 
+	// Load access token from environment variable or credentials file
+	if token := GetAccessToken(); token != "" {
+		opts = append(opts, option.WithAccessToken(token))
+	}
+
 	return opts
 }
 

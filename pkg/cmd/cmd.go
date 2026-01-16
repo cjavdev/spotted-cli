@@ -67,6 +67,9 @@ func init() {
 			},
 		},
 		Commands: []*cli.Command{
+			&loginCommand,
+			&logoutCommand,
+			&whoamiCommand,
 			{
 				Name:     "albums",
 				Category: "API RESOURCE",
