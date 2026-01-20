@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.23.1 (2026-01-17)
+
+Full Changelog: [v0.23.0...v0.23.1](https://github.com/cjavdev/spotted-cli/compare/v0.23.0...v0.23.1)
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([4749fa2](https://github.com/cjavdev/spotted-cli/commit/4749fa24a063763c52eab4e5771b35460253a83e))
+
 ## 0.23.0 (2026-01-16)
 
 Full Changelog: [v0.22.3...v0.23.0](https://github.com/cjavdev/spotted-cli/compare/v0.22.3...v0.23.0)
