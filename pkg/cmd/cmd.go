@@ -134,6 +134,8 @@ func init() {
 				Commands: []*cli.Command{
 					&meAudiobooksList,
 					&meAudiobooksCheck,
+					&meAudiobooksRemove,
+					&meAudiobooksSave,
 				},
 			},
 			{
@@ -160,6 +162,8 @@ func init() {
 				Commands: []*cli.Command{
 					&meAlbumsList,
 					&meAlbumsCheck,
+					&meAlbumsRemove,
+					&meAlbumsSave,
 				},
 			},
 			{
@@ -169,6 +173,8 @@ func init() {
 				Commands: []*cli.Command{
 					&meTracksList,
 					&meTracksCheck,
+					&meTracksRemove,
+					&meTracksSave,
 				},
 			},
 			{
@@ -178,6 +184,8 @@ func init() {
 				Commands: []*cli.Command{
 					&meEpisodesList,
 					&meEpisodesCheck,
+					&meEpisodesRemove,
+					&meEpisodesSave,
 				},
 			},
 			{
@@ -187,6 +195,8 @@ func init() {
 				Commands: []*cli.Command{
 					&meShowsList,
 					&meShowsCheck,
+					&meShowsRemove,
+					&meShowsSave,
 				},
 			},
 			{
@@ -196,6 +206,8 @@ func init() {
 				Commands: []*cli.Command{
 					&meFollowingBulkRetrieve,
 					&meFollowingCheck,
+					&meFollowingFollow,
+					&meFollowingUnfollow,
 				},
 			},
 			{
@@ -207,6 +219,15 @@ func init() {
 					&mePlayerGetDevices,
 					&mePlayerGetState,
 					&mePlayerListRecentlyPlayed,
+					&mePlayerPausePlayback,
+					&mePlayerSeekToPosition,
+					&mePlayerSetRepeatMode,
+					&mePlayerSetVolume,
+					&mePlayerSkipNext,
+					&mePlayerSkipPrevious,
+					&mePlayerStartPlayback,
+					&mePlayerToggleShuffle,
+					&mePlayerTransfer,
 				},
 			},
 			{
@@ -214,6 +235,7 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&mePlayerQueueAdd,
 					&mePlayerQueueGet,
 				},
 			},
@@ -249,6 +271,7 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&playlistsRetrieve,
+					&playlistsUpdate,
 				},
 			},
 			{
@@ -268,6 +291,8 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&playlistsFollowersCheck,
+					&playlistsFollowersFollow,
+					&playlistsFollowersUnfollow,
 				},
 			},
 			{

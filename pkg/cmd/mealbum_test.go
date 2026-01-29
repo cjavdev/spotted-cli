@@ -27,3 +27,23 @@ func TestMeAlbumsCheck(t *testing.T) {
 		"--ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc",
 	)
 }
+
+func TestMeAlbumsRemove(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"me:albums", "remove",
+		"--id", "string",
+		"--published=true",
+	)
+}
+
+func TestMeAlbumsSave(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"me:albums", "save",
+		"--id", "string",
+		"--published=true",
+	)
+}

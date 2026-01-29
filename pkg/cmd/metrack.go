@@ -58,6 +58,65 @@ var meTracksCheck = cli.Command{
 	HideHelpCommand: true,
 }
 
+var meTracksRemove = cli.Command{
+	Name:    "remove",
+	Usage:   "Remove one or more tracks from the current user's 'Your Music' library.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[[]string]{
+			Name:     "id",
+			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\n",
+			BodyPath: "ids",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "published",
+			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
+			BodyPath: "published",
+		},
+	},
+	Action:          handleMeTracksRemove,
+	HideHelpCommand: true,
+}
+
+var meTracksSave = requestflag.WithInnerFlags(cli.Command{
+	Name:    "save",
+	Usage:   "Save one or more tracks to the current user's 'Your Music' library.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[[]string]{
+			Name:     "id",
+			Usage:    "A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For example: `[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `timestamped_ids` is present in the body, any IDs listed in the query parameters (deprecated) or the `ids` field in the body will be ignored._\n",
+			Required: true,
+			BodyPath: "ids",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "published",
+			Usage:    "The playlist's public/private status (if it should be added to the user's profile or not): `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](/documentation/web-api/concepts/playlists)\n",
+			BodyPath: "published",
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "timestamped-id",
+			Usage:    "A JSON array of objects containing track IDs with their corresponding timestamps. Each object must include a track ID and an `added_at` timestamp. This allows you to specify when tracks were added to maintain a specific chronological order in the user's library.<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `timestamped_ids` is present in the body, any IDs listed in the query parameters (deprecated) or the `ids` field in the body will be ignored._\n",
+			BodyPath: "timestamped_ids",
+		},
+	},
+	Action:          handleMeTracksSave,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"timestamped-id": {
+		&requestflag.InnerFlag[string]{
+			Name:       "timestamped-id.id",
+			Usage:      "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
+			InnerField: "id",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "timestamped-id.added-at",
+			Usage:      "The timestamp when the track was added to the library. Use ISO 8601 format with UTC timezone (e.g., `2023-01-15T14:30:00Z`). You can specify past timestamps to insert tracks at specific positions in the library's chronological order. The API uses minute-level granularity for ordering, though the timestamp supports millisecond precision.\n",
+			InnerField: "added_at",
+		},
+	},
+})
+
 func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -128,4 +187,52 @@ func handleMeTracksCheck(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "me:tracks check", obj, format, transform)
+}
+
+func handleMeTracksRemove(ctx context.Context, cmd *cli.Command) error {
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := spotted.MeTrackRemoveParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Me.Tracks.Remove(ctx, params, options...)
+}
+
+func handleMeTracksSave(ctx context.Context, cmd *cli.Command) error {
+	client := spotted.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := spotted.MeTrackSaveParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Me.Tracks.Save(ctx, params, options...)
 }
