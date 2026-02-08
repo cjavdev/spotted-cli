@@ -63,8 +63,8 @@ var artistsListAlbums = cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Usage:     "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\n",
-			Default:   20,
+			Usage:     "The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 10.\n",
+			Default:   5,
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{

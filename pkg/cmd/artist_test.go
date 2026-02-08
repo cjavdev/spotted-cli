@@ -33,7 +33,7 @@ func TestArtistsListAlbums(t *testing.T) {
 		"artists", "list-albums",
 		"--id", "0TnOYISbd1XYRBk9myaseg",
 		"--include-groups", "single,appears_on",
-		"--limit", "10",
+		"--limit", "5",
 		"--market", "ES",
 		"--offset", "5",
 	)

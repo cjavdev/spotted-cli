@@ -17,7 +17,7 @@ import (
 
 var usersPlaylistsCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Create a playlist for a Spotify user. (The playlist will be empty until you\n[add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each\nuser is generally limited to a maximum of 11000 playlists.",
+	Usage:   "**Deprecated**: Use\n[Create Playlist](/documentation/web-api/reference/create-playlist) instead.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
