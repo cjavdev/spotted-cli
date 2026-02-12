@@ -17,7 +17,7 @@ import (
 
 var playlistsTracksUpdate = cli.Command{
 	Name:    "update",
-	Usage:   "Either reorder or replace items in a playlist depending on the request's\nparameters. To reorder items, include `range_start`, `insert_before`,\n`range_length` and `snapshot_id` in the request's body. To replace items,\ninclude `uris` as either a query parameter or in the request's body. Replacing\nitems in a playlist will overwrite its existing items. This operation can be\nused for replacing or clearing items in a playlist. <br/> **Note**: Replace and\nreorder are mutually exclusive operations which share the same endpoint, but\nhave different parameters. These operations can't be applied together in a\nsingle request.",
+	Usage:   "**Deprecated:** Use\n[Update Playlist Items](/documentation/web-api/reference/reorder-or-replace-playlists-items)\ninstead.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -61,7 +61,7 @@ var playlistsTracksUpdate = cli.Command{
 
 var playlistsTracksList = cli.Command{
 	Name:    "list",
-	Usage:   "Get full details of the items of a playlist owned by a Spotify user.",
+	Usage:   "**Deprecated:** Use\n[Get Playlist Items](/documentation/web-api/reference/get-playlists-items)\ninstead.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -103,7 +103,7 @@ var playlistsTracksList = cli.Command{
 
 var playlistsTracksAdd = cli.Command{
 	Name:    "add",
-	Usage:   "Add one or more items to a user's playlist.",
+	Usage:   "**Deprecated:** Use\n[Add Items to Playlist](/documentation/web-api/reference/add-items-to-playlist)\ninstead.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -133,7 +133,7 @@ var playlistsTracksAdd = cli.Command{
 
 var playlistsTracksRemove = requestflag.WithInnerFlags(cli.Command{
 	Name:    "remove",
-	Usage:   "Remove one or more items from a user's playlist.",
+	Usage:   "**Deprecated:** Use\n[Remove Playlist Items](/documentation/web-api/reference/remove-items-playlist)\ninstead.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
