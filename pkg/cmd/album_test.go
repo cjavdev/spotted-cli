@@ -9,7 +9,7 @@ import (
 )
 
 func TestAlbumsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"albums", "retrieve",
@@ -19,7 +19,7 @@ func TestAlbumsRetrieve(t *testing.T) {
 }
 
 func TestAlbumsBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"albums", "bulk-retrieve",
@@ -29,7 +29,7 @@ func TestAlbumsBulkRetrieve(t *testing.T) {
 }
 
 func TestAlbumsListTracks(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"albums", "list-tracks",

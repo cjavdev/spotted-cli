@@ -10,7 +10,7 @@ import (
 )
 
 func TestPlaylistsTracksUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "update",
@@ -25,7 +25,7 @@ func TestPlaylistsTracksUpdate(t *testing.T) {
 }
 
 func TestPlaylistsTracksList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "list",
@@ -39,7 +39,7 @@ func TestPlaylistsTracksList(t *testing.T) {
 }
 
 func TestPlaylistsTracksAdd(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "add",
@@ -51,7 +51,7 @@ func TestPlaylistsTracksAdd(t *testing.T) {
 }
 
 func TestPlaylistsTracksRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "remove",

@@ -9,7 +9,7 @@ import (
 )
 
 func TestAudiobooksRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"audiobooks", "retrieve",
@@ -19,7 +19,7 @@ func TestAudiobooksRetrieve(t *testing.T) {
 }
 
 func TestAudiobooksBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"audiobooks", "bulk-retrieve",
@@ -29,7 +29,7 @@ func TestAudiobooksBulkRetrieve(t *testing.T) {
 }
 
 func TestAudiobooksListChapters(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"audiobooks", "list-chapters",

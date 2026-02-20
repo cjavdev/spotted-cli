@@ -9,7 +9,7 @@ import (
 )
 
 func TestMePlayerQueueAdd(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player:queue", "add",
@@ -19,7 +19,7 @@ func TestMePlayerQueueAdd(t *testing.T) {
 }
 
 func TestMePlayerQueueGet(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player:queue", "get",

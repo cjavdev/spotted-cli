@@ -9,7 +9,7 @@ import (
 )
 
 func TestPlaylistsFollowersCheck(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:followers", "check",
@@ -19,7 +19,7 @@ func TestPlaylistsFollowersCheck(t *testing.T) {
 }
 
 func TestPlaylistsFollowersFollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:followers", "follow",
@@ -29,7 +29,7 @@ func TestPlaylistsFollowersFollow(t *testing.T) {
 }
 
 func TestPlaylistsFollowersUnfollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:followers", "unfollow",

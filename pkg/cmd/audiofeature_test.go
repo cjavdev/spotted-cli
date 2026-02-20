@@ -9,7 +9,7 @@ import (
 )
 
 func TestAudioFeaturesRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"audio-features", "retrieve",
@@ -18,7 +18,7 @@ func TestAudioFeaturesRetrieve(t *testing.T) {
 }
 
 func TestAudioFeaturesBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"audio-features", "bulk-retrieve",

@@ -9,7 +9,7 @@ import (
 )
 
 func TestMeTopListTopArtists(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:top", "list-top-artists",
@@ -20,7 +20,7 @@ func TestMeTopListTopArtists(t *testing.T) {
 }
 
 func TestMeTopListTopTracks(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:top", "list-top-tracks",

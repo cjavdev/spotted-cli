@@ -10,7 +10,7 @@ import (
 )
 
 func TestMeTracksList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "list",
@@ -21,7 +21,7 @@ func TestMeTracksList(t *testing.T) {
 }
 
 func TestMeTracksCheck(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "check",
@@ -30,7 +30,7 @@ func TestMeTracksCheck(t *testing.T) {
 }
 
 func TestMeTracksRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "remove",
@@ -40,7 +40,7 @@ func TestMeTracksRemove(t *testing.T) {
 }
 
 func TestMeTracksSave(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "save",

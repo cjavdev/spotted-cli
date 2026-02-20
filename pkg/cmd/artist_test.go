@@ -9,7 +9,7 @@ import (
 )
 
 func TestArtistsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"artists", "retrieve",
@@ -18,7 +18,7 @@ func TestArtistsRetrieve(t *testing.T) {
 }
 
 func TestArtistsBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"artists", "bulk-retrieve",
@@ -27,7 +27,7 @@ func TestArtistsBulkRetrieve(t *testing.T) {
 }
 
 func TestArtistsListAlbums(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"artists", "list-albums",
@@ -40,7 +40,7 @@ func TestArtistsListAlbums(t *testing.T) {
 }
 
 func TestArtistsListRelatedArtists(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"artists", "list-related-artists",
@@ -49,7 +49,7 @@ func TestArtistsListRelatedArtists(t *testing.T) {
 }
 
 func TestArtistsTopTracks(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"artists", "top-tracks",

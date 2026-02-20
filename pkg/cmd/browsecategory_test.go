@@ -9,7 +9,7 @@ import (
 )
 
 func TestBrowseCategoriesRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse:categories", "retrieve",
@@ -19,7 +19,7 @@ func TestBrowseCategoriesRetrieve(t *testing.T) {
 }
 
 func TestBrowseCategoriesList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse:categories", "list",
@@ -30,7 +30,7 @@ func TestBrowseCategoriesList(t *testing.T) {
 }
 
 func TestBrowseCategoriesGetPlaylists(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse:categories", "get-playlists",

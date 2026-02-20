@@ -9,7 +9,7 @@ import (
 )
 
 func TestRecommendationsGet(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"recommendations", "get",
@@ -64,7 +64,7 @@ func TestRecommendationsGet(t *testing.T) {
 }
 
 func TestRecommendationsListAvailableGenreSeeds(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"recommendations", "list-available-genre-seeds",

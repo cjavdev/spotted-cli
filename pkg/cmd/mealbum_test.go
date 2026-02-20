@@ -9,7 +9,7 @@ import (
 )
 
 func TestMeAlbumsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:albums", "list",
@@ -20,7 +20,7 @@ func TestMeAlbumsList(t *testing.T) {
 }
 
 func TestMeAlbumsCheck(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:albums", "check",
@@ -29,7 +29,7 @@ func TestMeAlbumsCheck(t *testing.T) {
 }
 
 func TestMeAlbumsRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:albums", "remove",
@@ -39,7 +39,7 @@ func TestMeAlbumsRemove(t *testing.T) {
 }
 
 func TestMeAlbumsSave(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:albums", "save",

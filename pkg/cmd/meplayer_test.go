@@ -9,7 +9,7 @@ import (
 )
 
 func TestMePlayerGetCurrentlyPlaying(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "get-currently-playing",
@@ -19,7 +19,7 @@ func TestMePlayerGetCurrentlyPlaying(t *testing.T) {
 }
 
 func TestMePlayerGetDevices(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "get-devices",
@@ -27,7 +27,7 @@ func TestMePlayerGetDevices(t *testing.T) {
 }
 
 func TestMePlayerGetState(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "get-state",
@@ -37,7 +37,7 @@ func TestMePlayerGetState(t *testing.T) {
 }
 
 func TestMePlayerListRecentlyPlayed(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "list-recently-played",
@@ -48,7 +48,7 @@ func TestMePlayerListRecentlyPlayed(t *testing.T) {
 }
 
 func TestMePlayerPausePlayback(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "pause-playback",
@@ -57,7 +57,7 @@ func TestMePlayerPausePlayback(t *testing.T) {
 }
 
 func TestMePlayerSeekToPosition(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "seek-to-position",
@@ -67,7 +67,7 @@ func TestMePlayerSeekToPosition(t *testing.T) {
 }
 
 func TestMePlayerSetRepeatMode(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "set-repeat-mode",
@@ -77,7 +77,7 @@ func TestMePlayerSetRepeatMode(t *testing.T) {
 }
 
 func TestMePlayerSetVolume(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "set-volume",
@@ -87,7 +87,7 @@ func TestMePlayerSetVolume(t *testing.T) {
 }
 
 func TestMePlayerSkipNext(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "skip-next",
@@ -96,7 +96,7 @@ func TestMePlayerSkipNext(t *testing.T) {
 }
 
 func TestMePlayerSkipPrevious(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "skip-previous",
@@ -105,7 +105,7 @@ func TestMePlayerSkipPrevious(t *testing.T) {
 }
 
 func TestMePlayerStartPlayback(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "start-playback",
@@ -119,7 +119,7 @@ func TestMePlayerStartPlayback(t *testing.T) {
 }
 
 func TestMePlayerToggleShuffle(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "toggle-shuffle",
@@ -129,7 +129,7 @@ func TestMePlayerToggleShuffle(t *testing.T) {
 }
 
 func TestMePlayerTransfer(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:player", "transfer",

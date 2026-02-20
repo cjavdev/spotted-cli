@@ -9,7 +9,7 @@ import (
 )
 
 func TestMeFollowingBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:following", "bulk-retrieve",
@@ -20,7 +20,7 @@ func TestMeFollowingBulkRetrieve(t *testing.T) {
 }
 
 func TestMeFollowingCheck(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:following", "check",
@@ -30,7 +30,7 @@ func TestMeFollowingCheck(t *testing.T) {
 }
 
 func TestMeFollowingFollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:following", "follow",
@@ -40,7 +40,7 @@ func TestMeFollowingFollow(t *testing.T) {
 }
 
 func TestMeFollowingUnfollow(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:following", "unfollow",

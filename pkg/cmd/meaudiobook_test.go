@@ -9,7 +9,7 @@ import (
 )
 
 func TestMeAudiobooksList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "list",
@@ -19,7 +19,7 @@ func TestMeAudiobooksList(t *testing.T) {
 }
 
 func TestMeAudiobooksCheck(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "check",
@@ -28,7 +28,7 @@ func TestMeAudiobooksCheck(t *testing.T) {
 }
 
 func TestMeAudiobooksRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "remove",
@@ -37,7 +37,7 @@ func TestMeAudiobooksRemove(t *testing.T) {
 }
 
 func TestMeAudiobooksSave(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "save",

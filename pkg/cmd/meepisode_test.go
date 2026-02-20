@@ -9,7 +9,7 @@ import (
 )
 
 func TestMeEpisodesList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:episodes", "list",
@@ -20,7 +20,7 @@ func TestMeEpisodesList(t *testing.T) {
 }
 
 func TestMeEpisodesCheck(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:episodes", "check",
@@ -29,7 +29,7 @@ func TestMeEpisodesCheck(t *testing.T) {
 }
 
 func TestMeEpisodesRemove(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:episodes", "remove",
@@ -39,7 +39,7 @@ func TestMeEpisodesRemove(t *testing.T) {
 }
 
 func TestMeEpisodesSave(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:episodes", "save",

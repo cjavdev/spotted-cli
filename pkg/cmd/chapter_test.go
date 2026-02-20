@@ -9,7 +9,7 @@ import (
 )
 
 func TestChaptersRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"chapters", "retrieve",
@@ -19,7 +19,7 @@ func TestChaptersRetrieve(t *testing.T) {
 }
 
 func TestChaptersBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"chapters", "bulk-retrieve",

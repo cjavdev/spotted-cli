@@ -9,7 +9,7 @@ import (
 )
 
 func TestEpisodesRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"episodes", "retrieve",
@@ -19,7 +19,7 @@ func TestEpisodesRetrieve(t *testing.T) {
 }
 
 func TestEpisodesBulkRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"episodes", "bulk-retrieve",

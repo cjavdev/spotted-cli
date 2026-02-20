@@ -9,7 +9,7 @@ import (
 )
 
 func TestBrowseGetFeaturedPlaylists(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse", "get-featured-playlists",
@@ -20,7 +20,7 @@ func TestBrowseGetFeaturedPlaylists(t *testing.T) {
 }
 
 func TestBrowseGetNewReleases(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse", "get-new-releases",
