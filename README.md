@@ -11,8 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ### Installing with Homebrew
 
 ```sh
-brew tap cjavdev/spotted-cli
-brew install spotted
+brew install cjavdev/spotted-cli/spotted
 ```
 
 ### Installing with Go
