@@ -13,6 +13,7 @@ func TestMeAudiobooksList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "list",
+		"--access-token", "string",
 		"--limit", "10",
 		"--offset", "5",
 	)
@@ -23,6 +24,7 @@ func TestMeAudiobooksCheck(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "check",
+		"--access-token", "string",
 		"--ids", "18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ,7iHfbu1YPACw6oZPAFJtqe",
 	)
 }
@@ -32,6 +34,7 @@ func TestMeAudiobooksRemove(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "remove",
+		"--access-token", "string",
 		"--ids", "18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ,7iHfbu1YPACw6oZPAFJtqe",
 	)
 }
@@ -41,6 +44,7 @@ func TestMeAudiobooksSave(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:audiobooks", "save",
+		"--access-token", "string",
 		"--ids", "18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ,7iHfbu1YPACw6oZPAFJtqe",
 	)
 }

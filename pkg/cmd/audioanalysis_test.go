@@ -13,6 +13,7 @@ func TestAudioAnalysisRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"audio-analysis", "retrieve",
+		"--access-token", "string",
 		"--id", "11dFghVXANMlKmJXsNCbNl",
 	)
 }

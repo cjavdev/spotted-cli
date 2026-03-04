@@ -13,6 +13,7 @@ func TestPlaylistsRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists", "retrieve",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--additional-types", "additional_types",
 		"--fields", "items(added_by.id,track(name,href,album(name,href)))",
@@ -25,6 +26,7 @@ func TestPlaylistsUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists", "update",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--collaborative=true",
 		"--description", "Updated playlist description",

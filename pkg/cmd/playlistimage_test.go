@@ -13,6 +13,7 @@ func TestPlaylistsImagesList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:images", "list",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 	)
 }

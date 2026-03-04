@@ -13,6 +13,7 @@ func TestRecommendationsGet(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"recommendations", "get",
+		"--access-token", "string",
 		"--limit", "10",
 		"--market", "ES",
 		"--max-acousticness", "0",
@@ -68,5 +69,6 @@ func TestRecommendationsListAvailableGenreSeeds(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"recommendations", "list-available-genre-seeds",
+		"--access-token", "string",
 	)
 }

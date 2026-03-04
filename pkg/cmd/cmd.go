@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/cjavdev/spotted-cli/internal/autocomplete"
+	"github.com/cjavdev/spotted-cli/internal/requestflag"
 	docs "github.com/urfave/cli-docs/v3"
 	"github.com/urfave/cli/v3"
 )
@@ -65,6 +66,10 @@ func init() {
 			&cli.StringFlag{
 				Name:  "transform-error",
 				Usage: "The GJSON transformation for errors.",
+			},
+			&requestflag.Flag[string]{
+				Name:    "access-token",
+				Sources: cli.EnvVars("SPOTIFY_ACCESS_TOKEN"),
 			},
 		},
 		Commands: []*cli.Command{

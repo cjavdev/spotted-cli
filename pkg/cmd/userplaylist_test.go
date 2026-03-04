@@ -13,6 +13,7 @@ func TestUsersPlaylistsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:playlists", "create",
+		"--access-token", "string",
 		"--user-id", "smedjan",
 		"--name", "New Playlist",
 		"--collaborative=true",
@@ -26,6 +27,7 @@ func TestUsersPlaylistsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:playlists", "list",
+		"--access-token", "string",
 		"--user-id", "smedjan",
 		"--limit", "10",
 		"--offset", "5",

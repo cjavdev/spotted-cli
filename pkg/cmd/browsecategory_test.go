@@ -13,6 +13,7 @@ func TestBrowseCategoriesRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse:categories", "retrieve",
+		"--access-token", "string",
 		"--category-id", "dinner",
 		"--locale", "sv_SE",
 	)
@@ -23,6 +24,7 @@ func TestBrowseCategoriesList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse:categories", "list",
+		"--access-token", "string",
 		"--limit", "10",
 		"--locale", "sv_SE",
 		"--offset", "5",
@@ -34,6 +36,7 @@ func TestBrowseCategoriesGetPlaylists(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"browse:categories", "get-playlists",
+		"--access-token", "string",
 		"--category-id", "dinner",
 		"--limit", "10",
 		"--offset", "5",

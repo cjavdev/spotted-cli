@@ -13,6 +13,7 @@ func TestSearchQuery(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search", "query",
+		"--access-token", "string",
 		"--q", "remaster%20track:Doxy%20artist:Miles%20Davis",
 		"--type", "album",
 		"--include-external", "audio",

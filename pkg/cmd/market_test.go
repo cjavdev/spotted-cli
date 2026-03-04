@@ -13,5 +13,6 @@ func TestMarketsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"markets", "list",
+		"--access-token", "string",
 	)
 }

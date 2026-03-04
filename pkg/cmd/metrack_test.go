@@ -14,6 +14,7 @@ func TestMeTracksList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "list",
+		"--access-token", "string",
 		"--limit", "10",
 		"--market", "ES",
 		"--offset", "5",
@@ -25,6 +26,7 @@ func TestMeTracksCheck(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "check",
+		"--access-token", "string",
 		"--ids", "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B",
 	)
 }
@@ -34,6 +36,7 @@ func TestMeTracksRemove(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "remove",
+		"--access-token", "string",
 		"--id", "string",
 		"--published=true",
 	)
@@ -44,6 +47,7 @@ func TestMeTracksSave(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "save",
+		"--access-token", "string",
 		"--id", "string",
 		"--published=true",
 		"--timestamped-id", "{id: id, added_at: '2019-12-27T18:11:19.117Z'}",

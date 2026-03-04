@@ -13,6 +13,7 @@ func TestMePlaylistsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:playlists", "list",
+		"--access-token", "string",
 		"--limit", "10",
 		"--offset", "5",
 	)

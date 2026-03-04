@@ -13,5 +13,6 @@ func TestMeRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me", "retrieve",
+		"--access-token", "string",
 	)
 }

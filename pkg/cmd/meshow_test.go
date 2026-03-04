@@ -13,6 +13,7 @@ func TestMeShowsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:shows", "list",
+		"--access-token", "string",
 		"--limit", "10",
 		"--offset", "5",
 	)
@@ -23,6 +24,7 @@ func TestMeShowsCheck(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:shows", "check",
+		"--access-token", "string",
 		"--ids", "5CfCWKI5pZ28U0uOzXkDHe,5as3aKmN2k11yfDDDSrvaZ",
 	)
 }
@@ -32,6 +34,7 @@ func TestMeShowsRemove(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:shows", "remove",
+		"--access-token", "string",
 		"--id", "string",
 		"--published=true",
 	)
@@ -42,6 +45,7 @@ func TestMeShowsSave(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:shows", "save",
+		"--access-token", "string",
 		"--id", "string",
 		"--published=true",
 	)

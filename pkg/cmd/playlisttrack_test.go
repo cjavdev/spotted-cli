@@ -14,6 +14,7 @@ func TestPlaylistsTracksUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "update",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--insert-before", "3",
 		"--published=true",
@@ -29,6 +30,7 @@ func TestPlaylistsTracksList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "list",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--additional-types", "additional_types",
 		"--fields", "items(added_by.id,track(name,href,album(name,href)))",
@@ -43,6 +45,7 @@ func TestPlaylistsTracksAdd(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "add",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--position", "0",
 		"--published=true",
@@ -55,6 +58,7 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "remove",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--track", "{uri: uri}",
 		"--published=true",

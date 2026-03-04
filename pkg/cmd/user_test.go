@@ -13,6 +13,7 @@ func TestUsersRetrieveProfile(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users", "retrieve-profile",
+		"--access-token", "string",
 		"--user-id", "smedjan",
 	)
 }

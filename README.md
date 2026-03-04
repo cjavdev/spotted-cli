@@ -55,14 +55,21 @@ spotted [resource] <command> [flags...]
 
 ```sh
 spotted albums retrieve \
-  --id 4aawyAB9vmqN3uQ7FjRGTy \
-  --market ES
+  --access-token 'My Access Token' \
+  --id 4aawyAB9vmqN3uQ7FjRGTy
 ```
 
 For details about specific commands, use the `--help` flag.
 
-### Global Flags
+### Environment variables
 
+| Environment variable   | Required |
+| ---------------------- | -------- |
+| `SPOTIFY_ACCESS_TOKEN` | yes      |
+
+### Global flags
+
+- `--access-token` (can also be set with `SPOTIFY_ACCESS_TOKEN` env var)
 - `--help` - Show command line usage
 - `--debug` - Enable debug logging (includes HTTP request/response details)
 - `--version`, `-v` - Show the CLI version
