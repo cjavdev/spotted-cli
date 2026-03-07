@@ -14,6 +14,7 @@ func TestMeAlbumsList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:albums", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--market", "ES",
 			"--offset", "5",

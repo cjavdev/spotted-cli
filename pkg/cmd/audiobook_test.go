@@ -38,6 +38,7 @@ func TestAudiobooksListChapters(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "audiobooks", "list-chapters",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--id", "7iHfbu1YPACw6oZPAFJtqe",
 			"--limit", "10",
 			"--market", "ES",

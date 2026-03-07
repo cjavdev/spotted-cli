@@ -38,6 +38,10 @@ var meTopListTopArtists = cli.Command{
 			Default:   "medium_term",
 			QueryPath: "time_range",
 		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
+		},
 	},
 	Action:          handleMeTopListTopArtists,
 	HideHelpCommand: true,
@@ -65,6 +69,10 @@ var meTopListTopTracks = cli.Command{
 			Usage:     "Over what time frame the affinities are computed. Valid values: `long_term` (calculated from ~1 year of data and including all new data as it becomes available), `medium_term` (approximately last 6 months), `short_term` (approximately last 4 weeks). Default: `medium_term`\n",
 			Default:   "medium_term",
 			QueryPath: "time_range",
+		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
 		},
 	},
 	Action:          handleMeTopListTopTracks,
@@ -105,7 +113,11 @@ func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:top list-top-artists", obj, format, transform)
 	} else {
 		iter := client.Me.Top.ListTopArtistsAutoPaging(ctx, params, options...)
-		return ShowJSONIterator(os.Stdout, "me:top list-top-artists", iter, format, transform)
+		maxItems := int64(-1)
+		if cmd.IsSet("max-items") {
+			maxItems = cmd.Value("max-items").(int64)
+		}
+		return ShowJSONIterator(os.Stdout, "me:top list-top-artists", iter, format, transform, maxItems)
 	}
 }
 
@@ -143,6 +155,10 @@ func handleMeTopListTopTracks(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(os.Stdout, "me:top list-top-tracks", obj, format, transform)
 	} else {
 		iter := client.Me.Top.ListTopTracksAutoPaging(ctx, params, options...)
-		return ShowJSONIterator(os.Stdout, "me:top list-top-tracks", iter, format, transform)
+		maxItems := int64(-1)
+		if cmd.IsSet("max-items") {
+			maxItems = cmd.Value("max-items").(int64)
+		}
+		return ShowJSONIterator(os.Stdout, "me:top list-top-tracks", iter, format, transform, maxItems)
 	}
 }

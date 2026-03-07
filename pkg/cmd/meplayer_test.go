@@ -48,6 +48,7 @@ func TestMePlayerListRecentlyPlayed(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:player", "list-recently-played",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--after", "1484811043508",
 			"--before", "0",
 			"--limit", "10",

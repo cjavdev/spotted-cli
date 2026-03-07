@@ -14,6 +14,7 @@ func TestMeEpisodesList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:episodes", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--market", "ES",
 			"--offset", "5",

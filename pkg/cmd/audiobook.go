@@ -83,6 +83,10 @@ var audiobooksListChapters = cli.Command{
 			Default:   0,
 			QueryPath: "offset",
 		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
+		},
 	},
 	Action:          handleAudiobooksListChapters,
 	HideHelpCommand: true,
@@ -211,6 +215,10 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 			params,
 			options...,
 		)
-		return ShowJSONIterator(os.Stdout, "audiobooks list-chapters", iter, format, transform)
+		maxItems := int64(-1)
+		if cmd.IsSet("max-items") {
+			maxItems = cmd.Value("max-items").(int64)
+		}
+		return ShowJSONIterator(os.Stdout, "audiobooks list-chapters", iter, format, transform, maxItems)
 	}
 }

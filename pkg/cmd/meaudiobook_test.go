@@ -14,6 +14,7 @@ func TestMeAudiobooksList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:audiobooks", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",
 		)

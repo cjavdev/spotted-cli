@@ -36,6 +36,7 @@ func TestArtistsListAlbums(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "artists", "list-albums",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--id", "0TnOYISbd1XYRBk9myaseg",
 			"--include-groups", "single,appears_on",
 			"--limit", "5",

@@ -26,6 +26,7 @@ func TestBrowseCategoriesList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "browse:categories", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--locale", "sv_SE",
 			"--offset", "5",

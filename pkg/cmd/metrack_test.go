@@ -15,6 +15,7 @@ func TestMeTracksList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:tracks", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--market", "ES",
 			"--offset", "5",

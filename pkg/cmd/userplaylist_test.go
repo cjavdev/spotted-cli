@@ -43,6 +43,7 @@ func TestUsersPlaylistsList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "users:playlists", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--user-id", "smedjan",
 			"--limit", "10",
 			"--offset", "5",

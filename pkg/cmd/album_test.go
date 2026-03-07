@@ -38,6 +38,7 @@ func TestAlbumsListTracks(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "albums", "list-tracks",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--id", "4aawyAB9vmqN3uQ7FjRGTy",
 			"--limit", "10",
 			"--market", "ES",

@@ -49,6 +49,7 @@ func TestPlaylistsTracksList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "playlists:tracks", "list",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--additional-types", "additional_types",
 			"--fields", "items(added_by.id,track(name,href,album(name,href)))",

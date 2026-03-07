@@ -14,6 +14,7 @@ func TestMeTopListTopArtists(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:top", "list-top-artists",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",
 			"--time-range", "medium_term",
@@ -27,6 +28,7 @@ func TestMeTopListTopTracks(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "me:top", "list-top-tracks",
 			"--access-token", "string",
+			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",
 			"--time-range", "medium_term",

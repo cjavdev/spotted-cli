@@ -85,6 +85,10 @@ var mePlayerListRecentlyPlayed = cli.Command{
 			Default:   20,
 			QueryPath: "limit",
 		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
+		},
 	},
 	Action:          handleMePlayerListRecentlyPlayed,
 	HideHelpCommand: true,
@@ -419,7 +423,11 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 		return ShowJSON(os.Stdout, "me:player list-recently-played", obj, format, transform)
 	} else {
 		iter := client.Me.Player.ListRecentlyPlayedAutoPaging(ctx, params, options...)
-		return ShowJSONIterator(os.Stdout, "me:player list-recently-played", iter, format, transform)
+		maxItems := int64(-1)
+		if cmd.IsSet("max-items") {
+			maxItems = cmd.Value("max-items").(int64)
+		}
+		return ShowJSONIterator(os.Stdout, "me:player list-recently-played", iter, format, transform, maxItems)
 	}
 }
 
