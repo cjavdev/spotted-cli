@@ -10,11 +10,12 @@ import (
 
 func TestMePlaylistsList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:playlists", "list",
-		"--access-token", "string",
-		"--limit", "10",
-		"--offset", "5",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "me:playlists", "list",
+			"--access-token", "string",
+			"--limit", "10",
+			"--offset", "5",
+		)
+	})
 }

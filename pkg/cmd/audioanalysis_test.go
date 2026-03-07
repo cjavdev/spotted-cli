@@ -10,10 +10,11 @@ import (
 
 func TestAudioAnalysisRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"audio-analysis", "retrieve",
-		"--access-token", "string",
-		"--id", "11dFghVXANMlKmJXsNCbNl",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "audio-analysis", "retrieve",
+			"--access-token", "string",
+			"--id", "11dFghVXANMlKmJXsNCbNl",
+		)
+	})
 }

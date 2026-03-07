@@ -10,9 +10,10 @@ import (
 
 func TestMarketsList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"markets", "list",
-		"--access-token", "string",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "markets", "list",
+			"--access-token", "string",
+		)
+	})
 }

@@ -10,24 +10,26 @@ import (
 
 func TestMeTopListTopArtists(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:top", "list-top-artists",
-		"--access-token", "string",
-		"--limit", "10",
-		"--offset", "5",
-		"--time-range", "medium_term",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "me:top", "list-top-artists",
+			"--access-token", "string",
+			"--limit", "10",
+			"--offset", "5",
+			"--time-range", "medium_term",
+		)
+	})
 }
 
 func TestMeTopListTopTracks(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"me:top", "list-top-tracks",
-		"--access-token", "string",
-		"--limit", "10",
-		"--offset", "5",
-		"--time-range", "medium_term",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "me:top", "list-top-tracks",
+			"--access-token", "string",
+			"--limit", "10",
+			"--offset", "5",
+			"--time-range", "medium_term",
+		)
+	})
 }

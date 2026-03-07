@@ -10,10 +10,11 @@ import (
 
 func TestUsersRetrieveProfile(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"users", "retrieve-profile",
-		"--access-token", "string",
-		"--user-id", "smedjan",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "users", "retrieve-profile",
+			"--access-token", "string",
+			"--user-id", "smedjan",
+		)
+	})
 }
