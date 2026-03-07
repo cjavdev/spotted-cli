@@ -72,6 +72,7 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"playlists:tracks", "remove",
+		"--access-token", "string",
 		"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		"--track.uri", "uri",
 		"--published=true",

@@ -60,6 +60,7 @@ func TestMeTracksSave(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"me:tracks", "save",
+		"--access-token", "string",
 		"--id", "string",
 		"--published=true",
 		"--timestamped-id.id", "id",
