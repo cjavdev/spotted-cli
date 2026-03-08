@@ -15,14 +15,14 @@ func TestPlaylistsImagesUpdate(t *testing.T) {
 			t, "playlists:images", "update",
 			"--access-token", "string",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
-			"--body", mocktest.TestFile(t, "..."),
+			"--body", mocktest.TestFile(t, "Example data"),
 			"--output", "/dev/null",
 		)
 	})
 
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
-		pipeData := []byte("...")
+		pipeData := []byte("Example data")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData, "playlists:images", "update",
 			"--access-token", "string",
