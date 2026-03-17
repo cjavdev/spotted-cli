@@ -12,8 +12,9 @@ func TestMePlaylistsList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:playlists", "list",
+			t,
 			"--access-token", "string",
+			"me:playlists", "list",
 			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",

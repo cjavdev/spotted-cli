@@ -12,8 +12,9 @@ func TestMeTopListTopArtists(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:top", "list-top-artists",
+			t,
 			"--access-token", "string",
+			"me:top", "list-top-artists",
 			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",
@@ -26,8 +27,9 @@ func TestMeTopListTopTracks(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:top", "list-top-tracks",
+			t,
 			"--access-token", "string",
+			"me:top", "list-top-tracks",
 			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",

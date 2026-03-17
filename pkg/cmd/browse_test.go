@@ -12,8 +12,9 @@ func TestBrowseGetFeaturedPlaylists(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "browse", "get-featured-playlists",
+			t,
 			"--access-token", "string",
+			"browse", "get-featured-playlists",
 			"--limit", "10",
 			"--locale", "sv_SE",
 			"--offset", "5",
@@ -25,8 +26,9 @@ func TestBrowseGetNewReleases(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "browse", "get-new-releases",
+			t,
 			"--access-token", "string",
+			"browse", "get-new-releases",
 			"--limit", "10",
 			"--offset", "5",
 		)

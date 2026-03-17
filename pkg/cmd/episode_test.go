@@ -12,8 +12,9 @@ func TestEpisodesRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "episodes", "retrieve",
+			t,
 			"--access-token", "string",
+			"episodes", "retrieve",
 			"--id", "512ojhOuo1ktJprKbVcKyQ",
 			"--market", "ES",
 		)
@@ -24,8 +25,9 @@ func TestEpisodesBulkRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "episodes", "bulk-retrieve",
+			t,
 			"--access-token", "string",
+			"episodes", "bulk-retrieve",
 			"--ids", "77o6BIVlYM3msb4MMIL1jH,0Q86acNRm6V9GYx55SXKwf",
 			"--market", "ES",
 		)

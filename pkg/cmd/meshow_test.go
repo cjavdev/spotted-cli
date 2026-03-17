@@ -12,8 +12,9 @@ func TestMeShowsList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:shows", "list",
+			t,
 			"--access-token", "string",
+			"me:shows", "list",
 			"--max-items", "10",
 			"--limit", "10",
 			"--offset", "5",
@@ -25,8 +26,9 @@ func TestMeShowsCheck(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:shows", "check",
+			t,
 			"--access-token", "string",
+			"me:shows", "check",
 			"--ids", "5CfCWKI5pZ28U0uOzXkDHe,5as3aKmN2k11yfDDDSrvaZ",
 		)
 	})
@@ -36,8 +38,9 @@ func TestMeShowsRemove(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:shows", "remove",
+			t,
 			"--access-token", "string",
+			"me:shows", "remove",
 			"--id", "string",
 			"--published=true",
 		)
@@ -50,8 +53,9 @@ func TestMeShowsRemove(t *testing.T) {
 			"  - string\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "me:shows", "remove",
+			t, pipeData,
 			"--access-token", "string",
+			"me:shows", "remove",
 		)
 	})
 }
@@ -60,8 +64,9 @@ func TestMeShowsSave(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:shows", "save",
+			t,
 			"--access-token", "string",
+			"me:shows", "save",
 			"--id", "string",
 			"--published=true",
 		)
@@ -74,8 +79,9 @@ func TestMeShowsSave(t *testing.T) {
 			"  - string\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "me:shows", "save",
+			t, pipeData,
 			"--access-token", "string",
+			"me:shows", "save",
 		)
 	})
 }

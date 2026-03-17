@@ -12,8 +12,9 @@ func TestUsersPlaylistsCreate(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "users:playlists", "create",
+			t,
 			"--access-token", "string",
+			"users:playlists", "create",
 			"--user-id", "smedjan",
 			"--name", "New Playlist",
 			"--collaborative=true",
@@ -30,8 +31,9 @@ func TestUsersPlaylistsCreate(t *testing.T) {
 			"description: New playlist description\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "users:playlists", "create",
+			t, pipeData,
 			"--access-token", "string",
+			"users:playlists", "create",
 			"--user-id", "smedjan",
 		)
 	})
@@ -41,8 +43,9 @@ func TestUsersPlaylistsList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "users:playlists", "list",
+			t,
 			"--access-token", "string",
+			"users:playlists", "list",
 			"--max-items", "10",
 			"--user-id", "smedjan",
 			"--limit", "10",

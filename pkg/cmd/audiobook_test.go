@@ -12,8 +12,9 @@ func TestAudiobooksRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "audiobooks", "retrieve",
+			t,
 			"--access-token", "string",
+			"audiobooks", "retrieve",
 			"--id", "7iHfbu1YPACw6oZPAFJtqe",
 			"--market", "ES",
 		)
@@ -24,8 +25,9 @@ func TestAudiobooksBulkRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "audiobooks", "bulk-retrieve",
+			t,
 			"--access-token", "string",
+			"audiobooks", "bulk-retrieve",
 			"--ids", "18yVqkdbdRvS24c0Ilj2ci,1HGw3J3NxZO1TP1BTtVhpZ,7iHfbu1YPACw6oZPAFJtqe",
 			"--market", "ES",
 		)
@@ -36,8 +38,9 @@ func TestAudiobooksListChapters(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "audiobooks", "list-chapters",
+			t,
 			"--access-token", "string",
+			"audiobooks", "list-chapters",
 			"--max-items", "10",
 			"--id", "7iHfbu1YPACw6oZPAFJtqe",
 			"--limit", "10",

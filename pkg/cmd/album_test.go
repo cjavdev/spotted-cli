@@ -12,8 +12,9 @@ func TestAlbumsRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "albums", "retrieve",
+			t,
 			"--access-token", "string",
+			"albums", "retrieve",
 			"--id", "4aawyAB9vmqN3uQ7FjRGTy",
 			"--market", "ES",
 		)
@@ -24,8 +25,9 @@ func TestAlbumsBulkRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "albums", "bulk-retrieve",
+			t,
 			"--access-token", "string",
+			"albums", "bulk-retrieve",
 			"--ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc",
 			"--market", "ES",
 		)
@@ -36,8 +38,9 @@ func TestAlbumsListTracks(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "albums", "list-tracks",
+			t,
 			"--access-token", "string",
+			"albums", "list-tracks",
 			"--max-items", "10",
 			"--id", "4aawyAB9vmqN3uQ7FjRGTy",
 			"--limit", "10",

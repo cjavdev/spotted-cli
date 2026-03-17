@@ -12,8 +12,9 @@ func TestPlaylistsRetrieve(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists", "retrieve",
+			t,
 			"--access-token", "string",
+			"playlists", "retrieve",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--additional-types", "additional_types",
 			"--fields", "items(added_by.id,track(name,href,album(name,href)))",
@@ -26,8 +27,9 @@ func TestPlaylistsUpdate(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists", "update",
+			t,
 			"--access-token", "string",
+			"playlists", "update",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--collaborative=true",
 			"--description", "Updated playlist description",
@@ -44,8 +46,9 @@ func TestPlaylistsUpdate(t *testing.T) {
 			"name: Updated Playlist Name\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "playlists", "update",
+			t, pipeData,
 			"--access-token", "string",
+			"playlists", "update",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		)
 	})

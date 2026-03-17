@@ -12,8 +12,9 @@ func TestMeAlbumsList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:albums", "list",
+			t,
 			"--access-token", "string",
+			"me:albums", "list",
 			"--max-items", "10",
 			"--limit", "10",
 			"--market", "ES",
@@ -26,8 +27,9 @@ func TestMeAlbumsCheck(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:albums", "check",
+			t,
 			"--access-token", "string",
+			"me:albums", "check",
 			"--ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc",
 		)
 	})
@@ -37,8 +39,9 @@ func TestMeAlbumsRemove(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:albums", "remove",
+			t,
 			"--access-token", "string",
+			"me:albums", "remove",
 			"--id", "string",
 			"--published=true",
 		)
@@ -51,8 +54,9 @@ func TestMeAlbumsRemove(t *testing.T) {
 			"  - string\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "me:albums", "remove",
+			t, pipeData,
 			"--access-token", "string",
+			"me:albums", "remove",
 		)
 	})
 }
@@ -61,8 +65,9 @@ func TestMeAlbumsSave(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:albums", "save",
+			t,
 			"--access-token", "string",
+			"me:albums", "save",
 			"--id", "string",
 			"--published=true",
 		)
@@ -75,8 +80,9 @@ func TestMeAlbumsSave(t *testing.T) {
 			"  - string\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "me:albums", "save",
+			t, pipeData,
 			"--access-token", "string",
+			"me:albums", "save",
 		)
 	})
 }

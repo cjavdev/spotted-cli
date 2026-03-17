@@ -13,8 +13,9 @@ func TestMeTracksList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:tracks", "list",
+			t,
 			"--access-token", "string",
+			"me:tracks", "list",
 			"--max-items", "10",
 			"--limit", "10",
 			"--market", "ES",
@@ -27,8 +28,9 @@ func TestMeTracksCheck(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:tracks", "check",
+			t,
 			"--access-token", "string",
+			"me:tracks", "check",
 			"--ids", "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B",
 		)
 	})
@@ -38,8 +40,9 @@ func TestMeTracksRemove(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:tracks", "remove",
+			t,
 			"--access-token", "string",
+			"me:tracks", "remove",
 			"--id", "string",
 			"--published=true",
 		)
@@ -52,8 +55,9 @@ func TestMeTracksRemove(t *testing.T) {
 			"  - string\n" +
 			"published: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "me:tracks", "remove",
+			t, pipeData,
 			"--access-token", "string",
+			"me:tracks", "remove",
 		)
 	})
 }
@@ -62,8 +66,9 @@ func TestMeTracksSave(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:tracks", "save",
+			t,
 			"--access-token", "string",
+			"me:tracks", "save",
 			"--id", "string",
 			"--published=true",
 			"--timestamped-id", "{id: id, added_at: '2019-12-27T18:11:19.117Z'}",
@@ -76,8 +81,9 @@ func TestMeTracksSave(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "me:tracks", "save",
+			t,
 			"--access-token", "string",
+			"me:tracks", "save",
 			"--id", "string",
 			"--published=true",
 			"--timestamped-id.id", "id",
@@ -95,8 +101,9 @@ func TestMeTracksSave(t *testing.T) {
 			"  - id: id\n" +
 			"    added_at: '2019-12-27T18:11:19.117Z'\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "me:tracks", "save",
+			t, pipeData,
 			"--access-token", "string",
+			"me:tracks", "save",
 		)
 	})
 }

@@ -13,8 +13,9 @@ func TestPlaylistsTracksUpdate(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:tracks", "update",
+			t,
 			"--access-token", "string",
+			"playlists:tracks", "update",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--insert-before", "3",
 			"--published=true",
@@ -36,8 +37,9 @@ func TestPlaylistsTracksUpdate(t *testing.T) {
 			"uris:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "playlists:tracks", "update",
+			t, pipeData,
 			"--access-token", "string",
+			"playlists:tracks", "update",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		)
 	})
@@ -47,8 +49,9 @@ func TestPlaylistsTracksList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:tracks", "list",
+			t,
 			"--access-token", "string",
+			"playlists:tracks", "list",
 			"--max-items", "10",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--additional-types", "additional_types",
@@ -64,8 +67,9 @@ func TestPlaylistsTracksAdd(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:tracks", "add",
+			t,
 			"--access-token", "string",
+			"playlists:tracks", "add",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--position", "0",
 			"--published=true",
@@ -81,8 +85,9 @@ func TestPlaylistsTracksAdd(t *testing.T) {
 			"uris:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "playlists:tracks", "add",
+			t, pipeData,
 			"--access-token", "string",
+			"playlists:tracks", "add",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		)
 	})
@@ -92,8 +97,9 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:tracks", "remove",
+			t,
 			"--access-token", "string",
+			"playlists:tracks", "remove",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--track", "{uri: uri}",
 			"--published=true",
@@ -107,8 +113,9 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:tracks", "remove",
+			t,
 			"--access-token", "string",
+			"playlists:tracks", "remove",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--track.uri", "uri",
 			"--published=true",
@@ -124,8 +131,9 @@ func TestPlaylistsTracksRemove(t *testing.T) {
 			"published: true\n" +
 			"snapshot_id: snapshot_id\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "playlists:tracks", "remove",
+			t, pipeData,
 			"--access-token", "string",
+			"playlists:tracks", "remove",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		)
 	})

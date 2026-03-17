@@ -12,8 +12,9 @@ func TestSearchQuery(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search", "query",
+			t,
 			"--access-token", "string",
+			"search", "query",
 			"--q", "remaster%20track:Doxy%20artist:Miles%20Davis",
 			"--type", "album",
 			"--include-external", "audio",

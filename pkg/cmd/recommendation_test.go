@@ -12,8 +12,9 @@ func TestRecommendationsGet(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "recommendations", "get",
+			t,
 			"--access-token", "string",
+			"recommendations", "get",
 			"--limit", "10",
 			"--market", "ES",
 			"--max-acousticness", "0",
@@ -69,8 +70,9 @@ func TestRecommendationsListAvailableGenreSeeds(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "recommendations", "list-available-genre-seeds",
+			t,
 			"--access-token", "string",
+			"recommendations", "list-available-genre-seeds",
 		)
 	})
 }

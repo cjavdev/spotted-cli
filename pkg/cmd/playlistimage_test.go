@@ -12,8 +12,9 @@ func TestPlaylistsImagesUpdate(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:images", "update",
+			t,
 			"--access-token", "string",
+			"playlists:images", "update",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--body", mocktest.TestFile(t, "Example data"),
 			"--output", "/dev/null",
@@ -24,8 +25,9 @@ func TestPlaylistsImagesUpdate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("Example data")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "playlists:images", "update",
+			t, pipeData,
 			"--access-token", "string",
+			"playlists:images", "update",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 			"--output", "/dev/null",
 		)
@@ -36,8 +38,9 @@ func TestPlaylistsImagesList(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "playlists:images", "list",
+			t,
 			"--access-token", "string",
+			"playlists:images", "list",
 			"--playlist-id", "3cEYpjA9oz9GiPac4AsH4n",
 		)
 	})
