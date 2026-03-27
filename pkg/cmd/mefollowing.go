@@ -23,7 +23,8 @@ var meFollowingBulkRetrieve = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "type",
 			Usage:     "The ID type: currently only `artist` is supported.\n",
-			Required:  true,
+			Default:   "artist",
+			Const:     true,
 			QueryPath: "type",
 		},
 		&requestflag.Flag[string]{
