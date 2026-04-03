@@ -67,10 +67,7 @@ func TestWriteBinaryResponse(t *testing.T) {
 
 func TestCreateDownloadFile(t *testing.T) {
 	t.Run("creates file with filename from header", func(t *testing.T) {
-		tmpDir := t.TempDir()
-		oldWd, _ := os.Getwd()
-		os.Chdir(tmpDir)
-		defer os.Chdir(oldWd)
+		t.Chdir(t.TempDir())
 
 		resp := &http.Response{
 			Header: http.Header{
@@ -96,10 +93,7 @@ func TestCreateDownloadFile(t *testing.T) {
 	})
 
 	t.Run("creates temp file when no header", func(t *testing.T) {
-		tmpDir := t.TempDir()
-		oldWd, _ := os.Getwd()
-		os.Chdir(tmpDir)
-		defer os.Chdir(oldWd)
+		t.Chdir(t.TempDir())
 
 		resp := &http.Response{Header: http.Header{}}
 		file, err := createDownloadFile(resp, []byte("test content"))
@@ -109,10 +103,7 @@ func TestCreateDownloadFile(t *testing.T) {
 	})
 
 	t.Run("prevents directory traversal", func(t *testing.T) {
-		tmpDir := t.TempDir()
-		oldWd, _ := os.Getwd()
-		os.Chdir(tmpDir)
-		defer os.Chdir(oldWd)
+		t.Chdir(t.TempDir())
 
 		resp := &http.Response{
 			Header: http.Header{
@@ -123,5 +114,44 @@ func TestCreateDownloadFile(t *testing.T) {
 		require.NoError(t, err)
 		defer file.Close()
 		assert.Equal(t, "passwd", filepath.Base(file.Name()))
+	})
+}
+
+func TestValidateBaseURL(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ValidHTTPS", func(t *testing.T) {
+		t.Parallel()
+
+		require.NoError(t, ValidateBaseURL("https://api.example.com", "--base-url"))
+	})
+
+	t.Run("ValidHTTP", func(t *testing.T) {
+		t.Parallel()
+
+		require.NoError(t, ValidateBaseURL("http://localhost:8080", "--base-url"))
+	})
+
+	t.Run("Empty", func(t *testing.T) {
+		t.Parallel()
+
+		require.NoError(t, ValidateBaseURL("", "MY_BASE_URL"))
+	})
+
+	t.Run("MissingScheme", func(t *testing.T) {
+		t.Parallel()
+
+		err := ValidateBaseURL("localhost:8080", "MY_BASE_URL")
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "MY_BASE_URL")
+		assert.Contains(t, err.Error(), "missing a scheme")
+	})
+
+	t.Run("HostOnly", func(t *testing.T) {
+		t.Parallel()
+
+		err := ValidateBaseURL("api.example.com", "--base-url")
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "--base-url")
 	})
 }

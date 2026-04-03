@@ -27,10 +27,11 @@ var playlistsImagesUpdate = cli.Command{
 			Required: true,
 		},
 		&requestflag.Flag[string]{
-			Name:     "body",
-			Usage:    "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
-			Required: true,
-			BodyRoot: true,
+			Name:      "body",
+			Usage:     "Base64 encoded JPEG image data, maximum payload size is 256 KB.",
+			Required:  true,
+			BodyRoot:  true,
+			FileInput: true,
 		},
 		&requestflag.Flag[string]{
 			Name:    "output",
