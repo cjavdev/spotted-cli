@@ -77,8 +77,9 @@ func handleAudioFeaturesRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "audio-features retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "audio-features retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -111,6 +112,7 @@ func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "audio-features bulk-retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "audio-features bulk-retrieve", obj, format, explicitFormat, transform)
 }

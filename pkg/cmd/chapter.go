@@ -94,8 +94,9 @@ func handleChaptersRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "chapters retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "chapters retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleChaptersBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -128,6 +129,7 @@ func handleChaptersBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "chapters bulk-retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "chapters bulk-retrieve", obj, format, explicitFormat, transform)
 }

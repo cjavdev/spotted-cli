@@ -120,8 +120,9 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "users:playlists create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "users:playlists create", obj, format, explicitFormat, transform)
 }
 
 func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
@@ -149,6 +150,7 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -163,7 +165,7 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "users:playlists list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "users:playlists list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Users.Playlists.ListAutoPaging(
 			ctx,
@@ -175,6 +177,6 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "users:playlists list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "users:playlists list", iter, format, explicitFormat, transform, maxItems)
 	}
 }

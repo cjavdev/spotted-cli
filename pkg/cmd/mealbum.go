@@ -124,6 +124,7 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -133,14 +134,14 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "me:albums list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "me:albums list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Me.Albums.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "me:albums list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "me:albums list", iter, format, explicitFormat, transform, maxItems)
 	}
 }
 
@@ -174,8 +175,9 @@ func handleMeAlbumsCheck(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "me:albums check", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "me:albums check", obj, format, explicitFormat, transform)
 }
 
 func handleMeAlbumsRemove(ctx context.Context, cmd *cli.Command) error {

@@ -94,8 +94,9 @@ func handleBrowseGetFeaturedPlaylists(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "browse get-featured-playlists", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "browse get-featured-playlists", obj, format, explicitFormat, transform)
 }
 
 func handleBrowseGetNewReleases(ctx context.Context, cmd *cli.Command) error {
@@ -128,6 +129,7 @@ func handleBrowseGetNewReleases(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "browse get-new-releases", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "browse get-new-releases", obj, format, explicitFormat, transform)
 }

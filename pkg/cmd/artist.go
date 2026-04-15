@@ -153,8 +153,9 @@ func handleArtistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "artists retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "artists retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleArtistsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -187,8 +188,9 @@ func handleArtistsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "artists bulk-retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "artists bulk-retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
@@ -216,6 +218,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -230,7 +233,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "artists list-albums", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "artists list-albums", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Artists.ListAlbumsAutoPaging(
 			ctx,
@@ -242,7 +245,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "artists list-albums", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "artists list-albums", iter, format, explicitFormat, transform, maxItems)
 	}
 }
 
@@ -277,8 +280,9 @@ func handleArtistsListRelatedArtists(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "artists list-related-artists", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "artists list-related-artists", obj, format, explicitFormat, transform)
 }
 
 func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
@@ -319,6 +323,7 @@ func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "artists top-tracks", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "artists top-tracks", obj, format, explicitFormat, transform)
 }

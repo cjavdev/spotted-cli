@@ -300,8 +300,9 @@ func handleRecommendationsGet(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "recommendations get", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "recommendations get", obj, format, explicitFormat, transform)
 }
 
 func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.Command) error {
@@ -332,6 +333,7 @@ func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "recommendations list-available-genre-seeds", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "recommendations list-available-genre-seeds", obj, format, explicitFormat, transform)
 }

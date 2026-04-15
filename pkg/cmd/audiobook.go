@@ -130,8 +130,9 @@ func handleAudiobooksRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "audiobooks retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "audiobooks retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleAudiobooksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -164,8 +165,9 @@ func handleAudiobooksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "audiobooks bulk-retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "audiobooks bulk-retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
@@ -193,6 +195,7 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -207,7 +210,7 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "audiobooks list-chapters", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "audiobooks list-chapters", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Audiobooks.ListChaptersAutoPaging(
 			ctx,
@@ -219,6 +222,6 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "audiobooks list-chapters", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "audiobooks list-chapters", iter, format, explicitFormat, transform, maxItems)
 	}
 }

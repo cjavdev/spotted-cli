@@ -119,6 +119,7 @@ func handleMeShowsList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -128,14 +129,14 @@ func handleMeShowsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "me:shows list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "me:shows list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Me.Shows.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "me:shows list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "me:shows list", iter, format, explicitFormat, transform, maxItems)
 	}
 }
 
@@ -169,8 +170,9 @@ func handleMeShowsCheck(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "me:shows check", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "me:shows check", obj, format, explicitFormat, transform)
 }
 
 func handleMeShowsRemove(ctx context.Context, cmd *cli.Command) error {

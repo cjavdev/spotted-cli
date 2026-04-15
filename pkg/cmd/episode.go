@@ -94,8 +94,9 @@ func handleEpisodesRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "episodes retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "episodes retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -128,6 +129,7 @@ func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "episodes bulk-retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "episodes bulk-retrieve", obj, format, explicitFormat, transform)
 }

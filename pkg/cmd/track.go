@@ -94,8 +94,9 @@ func handleTracksRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "tracks retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "tracks retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleTracksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -128,6 +129,7 @@ func handleTracksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "tracks bulk-retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "tracks bulk-retrieve", obj, format, explicitFormat, transform)
 }
