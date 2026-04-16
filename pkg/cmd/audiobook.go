@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -132,7 +131,12 @@ func handleAudiobooksRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "audiobooks retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "audiobooks retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleAudiobooksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -167,7 +171,12 @@ func handleAudiobooksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "audiobooks bulk-retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "audiobooks bulk-retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
@@ -210,7 +219,12 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, os.Stderr, "audiobooks list-chapters", obj, format, explicitFormat, transform)
+		return ShowJSON(obj, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			Title:          "audiobooks list-chapters",
+			Transform:      transform,
+		})
 	} else {
 		iter := client.Audiobooks.ListChaptersAutoPaging(
 			ctx,
@@ -222,6 +236,11 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, os.Stderr, "audiobooks list-chapters", iter, format, explicitFormat, transform, maxItems)
+		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			Title:          "audiobooks list-chapters",
+			Transform:      transform,
+		})
 	}
 }

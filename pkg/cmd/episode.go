@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -96,7 +95,12 @@ func handleEpisodesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "episodes retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "episodes retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -131,5 +135,10 @@ func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "episodes bulk-retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "episodes bulk-retrieve",
+		Transform:      transform,
+	})
 }

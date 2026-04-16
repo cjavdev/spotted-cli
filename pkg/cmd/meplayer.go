@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -321,7 +320,12 @@ func handleMePlayerGetCurrentlyPlaying(ctx context.Context, cmd *cli.Command) er
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "me:player get-currently-playing", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "me:player get-currently-playing",
+		Transform:      transform,
+	})
 }
 
 func handleMePlayerGetDevices(ctx context.Context, cmd *cli.Command) error {
@@ -354,7 +358,12 @@ func handleMePlayerGetDevices(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "me:player get-devices", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "me:player get-devices",
+		Transform:      transform,
+	})
 }
 
 func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
@@ -389,7 +398,12 @@ func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "me:player get-state", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "me:player get-state",
+		Transform:      transform,
+	})
 }
 
 func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) error {
@@ -424,14 +438,24 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, os.Stderr, "me:player list-recently-played", obj, format, explicitFormat, transform)
+		return ShowJSON(obj, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			Title:          "me:player list-recently-played",
+			Transform:      transform,
+		})
 	} else {
 		iter := client.Me.Player.ListRecentlyPlayedAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, os.Stderr, "me:player list-recently-played", iter, format, explicitFormat, transform, maxItems)
+		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			Title:          "me:player list-recently-played",
+			Transform:      transform,
+		})
 	}
 }
 

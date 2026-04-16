@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -214,7 +213,12 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "playlists:tracks update", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "playlists:tracks update",
+		Transform:      transform,
+	})
 }
 
 func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
@@ -257,7 +261,12 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, os.Stderr, "playlists:tracks list", obj, format, explicitFormat, transform)
+		return ShowJSON(obj, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			Title:          "playlists:tracks list",
+			Transform:      transform,
+		})
 	} else {
 		iter := client.Playlists.Tracks.ListAutoPaging(
 			ctx,
@@ -269,7 +278,12 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, os.Stderr, "playlists:tracks list", iter, format, explicitFormat, transform, maxItems)
+		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			Title:          "playlists:tracks list",
+			Transform:      transform,
+		})
 	}
 }
 
@@ -313,7 +327,12 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "playlists:tracks add", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "playlists:tracks add",
+		Transform:      transform,
+	})
 }
 
 func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
@@ -356,5 +375,10 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "playlists:tracks remove", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "playlists:tracks remove",
+		Transform:      transform,
+	})
 }

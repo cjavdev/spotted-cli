@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cjavdev/spotted-cli/internal/apiquery"
 	"github.com/cjavdev/spotted-cli/internal/requestflag"
@@ -302,7 +301,12 @@ func handleRecommendationsGet(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "recommendations get", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "recommendations get",
+		Transform:      transform,
+	})
 }
 
 func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.Command) error {
@@ -335,5 +339,10 @@ func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "recommendations list-available-genre-seeds", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "recommendations list-available-genre-seeds",
+		Transform:      transform,
+	})
 }
