@@ -135,6 +135,7 @@ func handleBrowseCategoriesRetrieve(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "browse:categories retrieve",
 		Transform:      transform,
 	})
@@ -175,6 +176,7 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "browse:categories list",
 			Transform:      transform,
 		})
@@ -187,6 +189,7 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "browse:categories list",
 			Transform:      transform,
 		})
@@ -236,6 +239,7 @@ func handleBrowseCategoriesGetPlaylists(ctx context.Context, cmd *cli.Command) e
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "browse:categories get-playlists",
 		Transform:      transform,
 	})

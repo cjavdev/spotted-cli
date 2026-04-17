@@ -98,6 +98,7 @@ func handleEpisodesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "episodes retrieve",
 		Transform:      transform,
 	})
@@ -138,6 +139,7 @@ func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "episodes bulk-retrieve",
 		Transform:      transform,
 	})

@@ -157,6 +157,7 @@ func handleArtistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "artists retrieve",
 		Transform:      transform,
 	})
@@ -197,6 +198,7 @@ func handleArtistsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "artists bulk-retrieve",
 		Transform:      transform,
 	})
@@ -245,6 +247,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "artists list-albums",
 			Transform:      transform,
 		})
@@ -262,6 +265,7 @@ func handleArtistsListAlbums(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "artists list-albums",
 			Transform:      transform,
 		})
@@ -304,6 +308,7 @@ func handleArtistsListRelatedArtists(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "artists list-related-artists",
 		Transform:      transform,
 	})
@@ -352,6 +357,7 @@ func handleArtistsTopTracks(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "artists top-tracks",
 		Transform:      transform,
 	})

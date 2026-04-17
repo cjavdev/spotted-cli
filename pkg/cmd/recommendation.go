@@ -304,6 +304,7 @@ func handleRecommendationsGet(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "recommendations get",
 		Transform:      transform,
 	})
@@ -342,6 +343,7 @@ func handleRecommendationsListAvailableGenreSeeds(ctx context.Context, cmd *cli.
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "recommendations list-available-genre-seeds",
 		Transform:      transform,
 	})

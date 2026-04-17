@@ -113,6 +113,7 @@ func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:top list-top-artists",
 			Transform:      transform,
 		})
@@ -125,6 +126,7 @@ func handleMeTopListTopArtists(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:top list-top-artists",
 			Transform:      transform,
 		})
@@ -166,6 +168,7 @@ func handleMeTopListTopTracks(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:top list-top-tracks",
 			Transform:      transform,
 		})
@@ -178,6 +181,7 @@ func handleMeTopListTopTracks(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:top list-top-tracks",
 			Transform:      transform,
 		})

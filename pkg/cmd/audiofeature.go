@@ -81,6 +81,7 @@ func handleAudioFeaturesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "audio-features retrieve",
 		Transform:      transform,
 	})
@@ -121,6 +122,7 @@ func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "audio-features bulk-retrieve",
 		Transform:      transform,
 	})

@@ -155,6 +155,7 @@ func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:tracks list",
 			Transform:      transform,
 		})
@@ -167,6 +168,7 @@ func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:tracks list",
 			Transform:      transform,
 		})
@@ -208,6 +210,7 @@ func handleMeTracksCheck(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "me:tracks check",
 		Transform:      transform,
 	})

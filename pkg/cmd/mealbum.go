@@ -136,6 +136,7 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:albums list",
 			Transform:      transform,
 		})
@@ -148,6 +149,7 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:albums list",
 			Transform:      transform,
 		})
@@ -189,6 +191,7 @@ func handleMeAlbumsCheck(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "me:albums check",
 		Transform:      transform,
 	})

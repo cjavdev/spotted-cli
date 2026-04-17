@@ -98,6 +98,7 @@ func handleTracksRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "tracks retrieve",
 		Transform:      transform,
 	})
@@ -138,6 +139,7 @@ func handleTracksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "tracks bulk-retrieve",
 		Transform:      transform,
 	})

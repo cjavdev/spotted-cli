@@ -216,6 +216,7 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "playlists:tracks update",
 		Transform:      transform,
 	})
@@ -264,6 +265,7 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "playlists:tracks list",
 			Transform:      transform,
 		})
@@ -281,6 +283,7 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "playlists:tracks list",
 			Transform:      transform,
 		})
@@ -330,6 +333,7 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "playlists:tracks add",
 		Transform:      transform,
 	})
@@ -378,6 +382,7 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "playlists:tracks remove",
 		Transform:      transform,
 	})

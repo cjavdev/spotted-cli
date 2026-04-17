@@ -323,6 +323,7 @@ func handleMePlayerGetCurrentlyPlaying(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "me:player get-currently-playing",
 		Transform:      transform,
 	})
@@ -361,6 +362,7 @@ func handleMePlayerGetDevices(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "me:player get-devices",
 		Transform:      transform,
 	})
@@ -401,6 +403,7 @@ func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "me:player get-state",
 		Transform:      transform,
 	})
@@ -441,6 +444,7 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:player list-recently-played",
 			Transform:      transform,
 		})
@@ -453,6 +457,7 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "me:player list-recently-played",
 			Transform:      transform,
 		})
