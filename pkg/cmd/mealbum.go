@@ -109,8 +109,6 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAlbumListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -121,6 +119,8 @@ func handleMeAlbumsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAlbumListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -164,8 +164,6 @@ func handleMeAlbumsCheck(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAlbumCheckParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -176,6 +174,8 @@ func handleMeAlbumsCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAlbumCheckParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -205,8 +205,6 @@ func handleMeAlbumsRemove(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAlbumRemoveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -217,6 +215,8 @@ func handleMeAlbumsRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAlbumRemoveParams{}
 
 	return client.Me.Albums.Remove(ctx, params, options...)
 }
@@ -229,8 +229,6 @@ func handleMeAlbumsSave(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAlbumSaveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -241,6 +239,8 @@ func handleMeAlbumsSave(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAlbumSaveParams{}
 
 	return client.Me.Albums.Save(ctx, params, options...)
 }

@@ -113,8 +113,6 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeFollowingBulkGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -125,6 +123,8 @@ func handleMeFollowingBulkRetrieve(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeFollowingBulkGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -154,8 +154,6 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeFollowingCheckParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -166,6 +164,8 @@ func handleMeFollowingCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeFollowingCheckParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -195,8 +195,6 @@ func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeFollowingFollowParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -207,6 +205,8 @@ func handleMeFollowingFollow(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeFollowingFollowParams{}
 
 	return client.Me.Following.Follow(ctx, params, options...)
 }
@@ -219,8 +219,6 @@ func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeFollowingUnfollowParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -231,6 +229,8 @@ func handleMeFollowingUnfollow(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeFollowingUnfollowParams{}
 
 	return client.Me.Following.Unfollow(ctx, params, options...)
 }

@@ -20,9 +20,10 @@ var usersPlaylistsCreate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "user-id",
-			Usage:    "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
-			Required: true,
+			Name:      "user-id",
+			Usage:     "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Required:  true,
+			PathParam: "user_id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "name",
@@ -56,9 +57,10 @@ var usersPlaylistsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "user-id",
-			Usage:    "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
-			Required: true,
+			Name:      "user-id",
+			Usage:     "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Required:  true,
+			PathParam: "user_id",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -92,8 +94,6 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.UserPlaylistNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -104,6 +104,8 @@ func handleUsersPlaylistsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.UserPlaylistNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -141,8 +143,6 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.UserPlaylistListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -153,6 +153,8 @@ func handleUsersPlaylistsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.UserPlaylistListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

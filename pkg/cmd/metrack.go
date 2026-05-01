@@ -128,8 +128,6 @@ func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeTrackListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -140,6 +138,8 @@ func handleMeTracksList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeTrackListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -183,8 +183,6 @@ func handleMeTracksCheck(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeTrackCheckParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -195,6 +193,8 @@ func handleMeTracksCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeTrackCheckParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -224,8 +224,6 @@ func handleMeTracksRemove(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeTrackRemoveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -236,6 +234,8 @@ func handleMeTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeTrackRemoveParams{}
 
 	return client.Me.Tracks.Remove(ctx, params, options...)
 }
@@ -248,8 +248,6 @@ func handleMeTracksSave(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeTrackSaveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -260,6 +258,8 @@ func handleMeTracksSave(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeTrackSaveParams{}
 
 	return client.Me.Tracks.Save(ctx, params, options...)
 }

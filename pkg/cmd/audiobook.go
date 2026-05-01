@@ -20,9 +20,10 @@ var audiobooksRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -61,9 +62,10 @@ var audiobooksListChapters = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the audiobook.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -102,8 +104,6 @@ func handleAudiobooksRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.AudiobookGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -114,6 +114,8 @@ func handleAudiobooksRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.AudiobookGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -148,8 +150,6 @@ func handleAudiobooksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.AudiobookBulkGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -160,6 +160,8 @@ func handleAudiobooksBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.AudiobookBulkGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -192,8 +194,6 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.AudiobookListChaptersParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -204,6 +204,8 @@ func handleAudiobooksListChapters(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.AudiobookListChaptersParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

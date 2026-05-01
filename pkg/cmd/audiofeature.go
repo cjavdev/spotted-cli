@@ -20,9 +20,10 @@ var audioFeaturesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleAudioFeaturesRetrieve,
@@ -95,8 +96,6 @@ func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.AudioFeatureBulkGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -107,6 +106,8 @@ func handleAudioFeaturesBulkRetrieve(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
+	params := spotted.AudioFeatureBulkGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

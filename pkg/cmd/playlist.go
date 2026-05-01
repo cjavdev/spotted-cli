@@ -20,9 +20,10 @@ var playlistsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "additional-types",
@@ -50,9 +51,10 @@ var playlistsUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "collaborative",
@@ -90,8 +92,6 @@ func handlePlaylistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -102,6 +102,8 @@ func handlePlaylistsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -139,8 +141,6 @@ func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -151,6 +151,8 @@ func handlePlaylistsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistUpdateParams{}
 
 	return client.Playlists.Update(
 		ctx,

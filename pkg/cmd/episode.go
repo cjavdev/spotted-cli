@@ -20,9 +20,10 @@ var episodesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the episode.",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the episode.",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -66,8 +67,6 @@ func handleEpisodesRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.EpisodeGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -78,6 +77,8 @@ func handleEpisodesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.EpisodeGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -112,8 +113,6 @@ func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.EpisodeBulkGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -124,6 +123,8 @@ func handleEpisodesBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.EpisodeBulkGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

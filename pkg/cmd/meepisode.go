@@ -110,8 +110,6 @@ func handleMeEpisodesList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeEpisodeListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -122,6 +120,8 @@ func handleMeEpisodesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeEpisodeListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -165,8 +165,6 @@ func handleMeEpisodesCheck(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeEpisodeCheckParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -177,6 +175,8 @@ func handleMeEpisodesCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeEpisodeCheckParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -206,8 +206,6 @@ func handleMeEpisodesRemove(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeEpisodeRemoveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -218,6 +216,8 @@ func handleMeEpisodesRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeEpisodeRemoveParams{}
 
 	return client.Me.Episodes.Remove(ctx, params, options...)
 }
@@ -230,8 +230,6 @@ func handleMeEpisodesSave(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeEpisodeSaveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -242,6 +240,8 @@ func handleMeEpisodesSave(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeEpisodeSaveParams{}
 
 	return client.Me.Episodes.Save(ctx, params, options...)
 }

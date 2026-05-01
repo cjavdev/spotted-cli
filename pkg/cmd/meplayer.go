@@ -296,8 +296,6 @@ func handleMePlayerGetCurrentlyPlaying(ctx context.Context, cmd *cli.Command) er
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerGetCurrentlyPlayingParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -308,6 +306,8 @@ func handleMePlayerGetCurrentlyPlaying(ctx context.Context, cmd *cli.Command) er
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerGetCurrentlyPlayingParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -376,8 +376,6 @@ func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerGetStateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -388,6 +386,8 @@ func handleMePlayerGetState(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerGetStateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -417,8 +417,6 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerListRecentlyPlayedParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -429,6 +427,8 @@ func handleMePlayerListRecentlyPlayed(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerListRecentlyPlayedParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -472,8 +472,6 @@ func handleMePlayerPausePlayback(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerPausePlaybackParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -484,6 +482,8 @@ func handleMePlayerPausePlayback(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerPausePlaybackParams{}
 
 	return client.Me.Player.PausePlayback(ctx, params, options...)
 }
@@ -496,8 +496,6 @@ func handleMePlayerSeekToPosition(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerSeekToPositionParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -508,6 +506,8 @@ func handleMePlayerSeekToPosition(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerSeekToPositionParams{}
 
 	return client.Me.Player.SeekToPosition(ctx, params, options...)
 }
@@ -520,8 +520,6 @@ func handleMePlayerSetRepeatMode(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerSetRepeatModeParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -532,6 +530,8 @@ func handleMePlayerSetRepeatMode(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerSetRepeatModeParams{}
 
 	return client.Me.Player.SetRepeatMode(ctx, params, options...)
 }
@@ -544,8 +544,6 @@ func handleMePlayerSetVolume(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerSetVolumeParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -556,6 +554,8 @@ func handleMePlayerSetVolume(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerSetVolumeParams{}
 
 	return client.Me.Player.SetVolume(ctx, params, options...)
 }
@@ -568,8 +568,6 @@ func handleMePlayerSkipNext(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerSkipNextParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -580,6 +578,8 @@ func handleMePlayerSkipNext(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerSkipNextParams{}
 
 	return client.Me.Player.SkipNext(ctx, params, options...)
 }
@@ -592,8 +592,6 @@ func handleMePlayerSkipPrevious(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerSkipPreviousParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -604,6 +602,8 @@ func handleMePlayerSkipPrevious(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerSkipPreviousParams{}
 
 	return client.Me.Player.SkipPrevious(ctx, params, options...)
 }
@@ -616,8 +616,6 @@ func handleMePlayerStartPlayback(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerStartPlaybackParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -628,6 +626,8 @@ func handleMePlayerStartPlayback(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerStartPlaybackParams{}
 
 	return client.Me.Player.StartPlayback(ctx, params, options...)
 }
@@ -640,8 +640,6 @@ func handleMePlayerToggleShuffle(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerToggleShuffleParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -652,6 +650,8 @@ func handleMePlayerToggleShuffle(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerToggleShuffleParams{}
 
 	return client.Me.Player.ToggleShuffle(ctx, params, options...)
 }
@@ -664,8 +664,6 @@ func handleMePlayerTransfer(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerTransferParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -676,6 +674,8 @@ func handleMePlayerTransfer(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerTransferParams{}
 
 	return client.Me.Player.Transfer(ctx, params, options...)
 }

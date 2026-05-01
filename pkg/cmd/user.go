@@ -20,9 +20,10 @@ var usersRetrieveProfile = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "user-id",
-			Usage:    "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
-			Required: true,
+			Name:      "user-id",
+			Usage:     "The user's [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids).\n",
+			Required:  true,
+			PathParam: "user_id",
 		},
 	},
 	Action:          handleUsersRetrieveProfile,

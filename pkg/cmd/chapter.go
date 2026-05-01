@@ -20,9 +20,10 @@ var chaptersRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the chapter.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the chapter.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -66,8 +67,6 @@ func handleChaptersRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.ChapterGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -78,6 +77,8 @@ func handleChaptersRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.ChapterGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -112,8 +113,6 @@ func handleChaptersBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.ChapterBulkGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -124,6 +123,8 @@ func handleChaptersBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.ChapterBulkGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

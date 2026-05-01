@@ -22,9 +22,10 @@ var playlistsImagesUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "body",
@@ -49,9 +50,10 @@ var playlistsImagesList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 	},
 	Action:          handlePlaylistsImagesList,

@@ -96,8 +96,6 @@ func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAudiobookListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -108,6 +106,8 @@ func handleMeAudiobooksList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAudiobookListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -151,8 +151,6 @@ func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAudiobookCheckParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -163,6 +161,8 @@ func handleMeAudiobooksCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAudiobookCheckParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -192,8 +192,6 @@ func handleMeAudiobooksRemove(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAudiobookRemoveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -204,6 +202,8 @@ func handleMeAudiobooksRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAudiobookRemoveParams{}
 
 	return client.Me.Audiobooks.Remove(ctx, params, options...)
 }
@@ -216,8 +216,6 @@ func handleMeAudiobooksSave(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MeAudiobookSaveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -228,6 +226,8 @@ func handleMeAudiobooksSave(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MeAudiobookSaveParams{}
 
 	return client.Me.Audiobooks.Save(ctx, params, options...)
 }

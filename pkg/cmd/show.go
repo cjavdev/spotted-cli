@@ -20,9 +20,10 @@ var showsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "market",
@@ -61,9 +62,10 @@ var showsListEpisodes = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the show.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -102,8 +104,6 @@ func handleShowsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.ShowGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -114,6 +114,8 @@ func handleShowsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.ShowGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -148,8 +150,6 @@ func handleShowsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.ShowBulkGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -160,6 +160,8 @@ func handleShowsBulkRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.ShowBulkGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -192,8 +194,6 @@ func handleShowsListEpisodes(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.ShowListEpisodesParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -204,6 +204,8 @@ func handleShowsListEpisodes(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.ShowListEpisodesParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

@@ -20,9 +20,10 @@ var playlistsFollowersCheck = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "ids",
@@ -40,9 +41,10 @@ var playlistsFollowersFollow = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "published",
@@ -60,9 +62,10 @@ var playlistsFollowersUnfollow = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 	},
 	Action:          handlePlaylistsFollowersUnfollow,
@@ -80,8 +83,6 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistFollowerCheckParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -92,6 +93,8 @@ func handlePlaylistsFollowersCheck(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistFollowerCheckParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -129,8 +132,6 @@ func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistFollowerFollowParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -141,6 +142,8 @@ func handlePlaylistsFollowersFollow(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistFollowerFollowParams{}
 
 	return client.Playlists.Followers.Follow(
 		ctx,

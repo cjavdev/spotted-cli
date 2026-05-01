@@ -20,9 +20,10 @@ var browseCategoriesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "category-id",
-			Usage:    "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
-			Required: true,
+			Name:      "category-id",
+			Usage:     "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
+			Required:  true,
+			PathParam: "category_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "locale",
@@ -71,9 +72,10 @@ var browseCategoriesGetPlaylists = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "category-id",
-			Usage:    "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
-			Required: true,
+			Name:      "category-id",
+			Usage:     "The [Spotify category ID](/documentation/web-api/concepts/spotify-uris-ids) for the category.\n",
+			Required:  true,
+			PathParam: "category_id",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -103,8 +105,6 @@ func handleBrowseCategoriesRetrieve(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.BrowseCategoryGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -115,6 +115,8 @@ func handleBrowseCategoriesRetrieve(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := spotted.BrowseCategoryGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -149,8 +151,6 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.BrowseCategoryListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -161,6 +161,8 @@ func handleBrowseCategoriesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.BrowseCategoryListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -207,8 +209,6 @@ func handleBrowseCategoriesGetPlaylists(ctx context.Context, cmd *cli.Command) e
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.BrowseCategoryGetPlaylistsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -219,6 +219,8 @@ func handleBrowseCategoriesGetPlaylists(ctx context.Context, cmd *cli.Command) e
 	if err != nil {
 		return err
 	}
+
+	params := spotted.BrowseCategoryGetPlaylistsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

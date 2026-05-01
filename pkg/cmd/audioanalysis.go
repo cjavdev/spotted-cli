@@ -20,9 +20,10 @@ var audioAnalysisRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the track.\n",
-			Required: true,
+			Name:      "id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids)\nfor the track.\n",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleAudioAnalysisRetrieve,

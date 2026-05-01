@@ -52,8 +52,6 @@ func handleMePlayerQueueAdd(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.MePlayerQueueAddParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -64,6 +62,8 @@ func handleMePlayerQueueAdd(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.MePlayerQueueAddParams{}
 
 	return client.Me.Player.Queue.Add(ctx, params, options...)
 }

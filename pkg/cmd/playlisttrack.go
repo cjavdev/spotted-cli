@@ -20,9 +20,10 @@ var playlistsTracksUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "insert-before",
@@ -64,9 +65,10 @@ var playlistsTracksList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "additional-types",
@@ -110,9 +112,10 @@ var playlistsTracksAdd = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "position",
@@ -140,9 +143,10 @@ var playlistsTracksRemove = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "playlist-id",
-			Usage:    "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
-			Required: true,
+			Name:      "playlist-id",
+			Usage:     "The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist.\n",
+			Required:  true,
+			PathParam: "playlist_id",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "track",
@@ -184,8 +188,6 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistTrackUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -196,6 +198,8 @@ func handlePlaylistsTracksUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistTrackUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -233,8 +237,6 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistTrackListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -245,6 +247,8 @@ func handlePlaylistsTracksList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistTrackListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -301,8 +305,6 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistTrackAddParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -313,6 +315,8 @@ func handlePlaylistsTracksAdd(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistTrackAddParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -350,8 +354,6 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := spotted.PlaylistTrackRemoveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -362,6 +364,8 @@ func handlePlaylistsTracksRemove(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := spotted.PlaylistTrackRemoveParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
